@@ -98,11 +98,11 @@ class CTVFLInlineContextTests: XCTestCase {
         CTVFLGlobalContext.push()
         
         let overridingName2 = "test"
-        XCTAssert(overridingName2 != name2)
+        XCTAssertNotEqual(overridingName2, name2)
         
         setVariableName(overridingName2, for: variable2)
         
-        XCTAssert(context._existedNames.elementsEqual(Set([name1, name1Prime, name2, overridingName2])))
+        XCTAssertEqual(context._existedNames, Set([name1, name1Prime, name2, overridingName2]))
         
         CTVFLGlobalContext.pop()
     }
