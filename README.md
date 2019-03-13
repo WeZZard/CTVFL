@@ -1,5 +1,8 @@
 # CTVFL: Compile-Time Visual Format Language
 
+[![Build Status](https://travis-ci.com/WeZZard/CTVFL.svg?branch=master)](https://travis-ci.com/WeZZard/CTVFL)
+[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+
 [中文](./使用說明.md)
 
 CTVFL is a tiny framework offers compile-time safe Visual Format Langauge to
