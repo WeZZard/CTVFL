@@ -12,8 +12,8 @@ import AppKit
 #endif
 
 // MARK: Layoutable-to-Layoutable Spacing
-public func - <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLLayoutableConvertible>(lhs: View, rhs: View) -> CTVFLLayoutableToLayoutableSpaceSyntax<CTVFLLayoutable, CTVFLLayoutable> {
-    return CTVFLLayoutableToLayoutableSpaceSyntax(lhs: View._makeLayoutable(lhs), rhs: View._makeLayoutable(rhs))
+public func - <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpaceSyntax<CTVFLLayoutable, CTVFLLayoutable> {
+    return CTVFLLayoutableToLayoutableSpaceSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeLayoutable(rhs))
 }
 
 public func - <Lhs, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpaceSyntax<Lhs, CTVFLLayoutable> {
