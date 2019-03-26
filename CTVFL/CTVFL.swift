@@ -6,9 +6,9 @@
 //
 
 #if os(iOS) || os(tvOS)
-    import UIKit
+import UIKit
 #elseif os(macOS)
-    import AppKit
+import AppKit
 #endif
 
 // MARK: - Make and Install Constraint Group
@@ -19,87 +19,44 @@ public func constrain(
     ) -> CTVFLConstraintGroup
 {
     let repacingGroup = gruop ?? CTVFLConstraintGroup()
-    let globalContext = CTVFLGlobalContext.push()
+    let transaction = _CTVFLTransaction.push()
     closure()
-    let constraints = globalContext.constraints
-    CTVFLGlobalContext.pop()
+    let constraints = transaction.constraints
+    _CTVFLTransaction.pop()
     repacingGroup._replaceConstraints(constraints)
     return repacingGroup
 }
 
-// MARK: - Setting Variable Name
-public func setVariableName(
-    _ variableName: String,
-    for variable: CTVFLVariable
-    )
-{
-    if let sahredContext = CTVFLGlobalContext.shared {
-        sahredContext.setOverridingName(variableName, for: variable)
-    } else {
-        debugPrint(
-            """
-            Since there is no active global context, setting Compile-Time
-             Visual Format Language's variable \(variable) with name
-             \"\(variableName)\" didn't have any work.
-            """
-        )
-    }
-}
-
 // MARK: - Building Inline VFL Block
 @discardableResult
-public func withVFL<T: CTVFLLexicon>(
-    V verticalDescription: @autoclosure ()-> T,
+public func withVFL<T: CTVFLPopulatableOperand>(
+    V description: @autoclosure ()-> T,
     options: VFLOptions = []
-    ) -> [NSLayoutConstraint]
+    ) -> [Constraint] where
+    T.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
+    T.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary
 {
-    let inlineContext = CTVFLInlineContext._push()
-    let lexicon = verticalDescription()
-    let visualFormat = lexicon._makeVisualFormat(
-        with: inlineContext,
-        orientation: .vertical
+    let operand = description()
+    let constraints = operand.makeConstraints(
+        orientation: .vertical,
+        options: options
     )
-    CTVFLInlineContext._pop()
-    let constraints = Constraint.constraints(
-        withVisualFormat: visualFormat,
-        options: options,
-        metrics: nil,
-        views: inlineContext._views
-    )
-    if let globalContext = CTVFLGlobalContext.shared {
-        globalContext.registerConstraints(
-            constraints,
-            with: inlineContext._views.values
-        )
-    }
     return constraints
 }
 
 @discardableResult
-public func withVFL<T: CTVFLLexicon>(
-    H horizontalDescription: @autoclosure ()-> T,
+public func withVFL<T: CTVFLPopulatableOperand>(
+    H description: @autoclosure ()-> T,
     options: VFLOptions = []
-    ) -> [NSLayoutConstraint]
+    ) -> [Constraint] where
+    T.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
+    T.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary
 {
-    let inlineContext = CTVFLInlineContext._push()
-    let lexicon = horizontalDescription()
-    let visualFormat = lexicon._makeVisualFormat(
-        with: inlineContext,
-        orientation: .horizontal
+    let operand = description()
+    let constraints = operand.makeConstraints(
+        orientation: .horizontal,
+        options: options
     )
-    CTVFLInlineContext._pop()
-    let constraints = Constraint.constraints(
-        withVisualFormat: visualFormat,
-        options: options,
-        metrics: nil,
-        views: inlineContext._views
-    )
-    if let globalContext = CTVFLGlobalContext.shared {
-        globalContext.registerConstraints(
-            constraints,
-            with: inlineContext._views.values
-        )
-    }
     return constraints
 }
 

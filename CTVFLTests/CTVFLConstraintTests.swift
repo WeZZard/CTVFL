@@ -38,13 +38,13 @@ class CTVFLConstraintTests: XCTestCase {
     }
     
     func testInitWithHolderLayoutConstraint() {
-        let constraint = CTVFLConstraint(view: view, constraint: viewWidthConstraint)
+        let constraint = _CTVFLConstraint(view: view, constraint: viewWidthConstraint)
         XCTAssert(constraint.view === view)
         XCTAssert(constraint.constraint === viewWidthConstraint)
     }
     
     func testIsActive() {
-        let constraint = CTVFLConstraint(view: view, constraint: viewWidthConstraint)
+        let constraint = _CTVFLConstraint(view: view, constraint: viewWidthConstraint)
         
         XCTAssert(viewWidthConstraint.isActive == constraint.isActive)
         
@@ -58,14 +58,14 @@ class CTVFLConstraintTests: XCTestCase {
     }
     
     func testInstall() {
-        let constraint = CTVFLConstraint(view: view, constraint: viewWidthConstraint)
+        let constraint = _CTVFLConstraint(view: view, constraint: viewWidthConstraint)
         XCTAssert(view.constraints.index(of: constraint.constraint) == nil)
         constraint.install()
         XCTAssert(view.constraints.index(of: constraint.constraint) != nil)
     }
     
     func testUninstall() {
-        let constraint = CTVFLConstraint(view: view, constraint: viewWidthConstraint)
+        let constraint = _CTVFLConstraint(view: view, constraint: viewWidthConstraint)
         XCTAssert(view.constraints.index(of: constraint.constraint) == nil)
         constraint.install()
         XCTAssert(view.constraints.index(of: constraint.constraint) != nil)

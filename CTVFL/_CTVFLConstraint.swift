@@ -1,11 +1,11 @@
 //
-//  CTVFLConstraint.swift
+//  _CTVFLConstraint.swift
 //  CTVFL
 //
 //  Created by WeZZard on 9/19/17.
 //
 
-internal class CTVFLConstraint {
+internal class _CTVFLConstraint {
     // Set to unowned to avoid a retain cycle on the associated view.
     internal unowned var view: View
     

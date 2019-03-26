@@ -18,7 +18,7 @@ class CTVFLPredicateTests: XCTestCase {
     
     var relation: Relation!
     
-    var predicateObject: CTVFLVariantPredicateObject!
+    var predicateObject: CTVFLWherePredicateContent!
     
     var predicate: CTVFLPredicate!
     
@@ -52,160 +52,124 @@ class CTVFLPredicateTests: XCTestCase {
     // MARK: Testing <=
     func testLessThanOrEqualPredicateWithIntegerLiteral() {
         let predicate = <=1
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "<=\(1.0)")
+        fatalError()
     }
     
     func testLessThanOrEqualPredicateWithFloatLiteral() {
         let predicate = <=1.0
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "<=\(1.0)")
+        fatalError()
     }
     
     func testLessThanOrEqualPredicateWithInt() {
         let value = Int(1)
         let predicate = <=value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "<=\(1.0)")
+        fatalError()
     }
     
     func testLessThanOrEqualPredicateWithDouble() {
         let value = Double(1.0)
         let predicate = <=value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "<=\(value)")
+        fatalError()
     }
     
     func testLessThanOrEqualPredicateWithFloat() {
         let value = Float(1.0)
         let predicate = <=value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "<=\(value)")
+        fatalError()
     }
     
     func testLessThanOrEqualPredicateWithCGFloat() {
         let value = CGFloat(1.0)
         let predicate = <=value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "<=\(value)")
+        fatalError()
     }
     
     // MARK: Testing ==
     func testEqualPredicateWithIntegerLiteral() {
         let predicate = ==1
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "==\(1.0)")
+        fatalError()
     }
     
     func testEqualPredicateWithFloatLiteral() {
         let predicate = ==1.0
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "==\(1.0)")
+        fatalError()
     }
     
     func testEqualPredicateWithInt() {
         let value = Int(1)
         let predicate = ==value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "==\(1.0)")
+        fatalError()
     }
     
     func testEqualPredicateWithDouble() {
         let value = Double(1.0)
         let predicate = ==value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "==\(value)")
+        fatalError()
     }
     
     func testEqualPredicateWithFloat() {
         let value = Float(1.0)
         let predicate = ==value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "==\(value)")
+        fatalError()
     }
     
     func testEqualPredicateWithCGFloat() {
         let value = CGFloat(1.0)
         let predicate = ==value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == "==\(value)")
+        fatalError()
     }
     
     // MARK: Testing >=
     func testGreaterThanOrEqualPredicateWithIntegerLiteral() {
         let predicate = >=1
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == ">=\(1.0)")
+        fatalError()
     }
     
     func testGreaterThanOrEqualPredicateWithFloatLiteral() {
         let predicate = >=1.0
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == ">=\(1.0)")
+        fatalError()
     }
     
     func testGreaterThanOrEqualPredicateWithInt() {
         let value = Int(1)
         let predicate = >=value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == ">=\(1.0)")
+        fatalError()
     }
     
     func testGreaterThanOrEqualPredicateWithDouble() {
         let value = Double(1.0)
         let predicate = >=value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == ">=\(value)")
+        fatalError()
     }
     
     func testGreaterThanOrEqualPredicateWithFloat() {
         let value = Float(1.0)
         let predicate = >=value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == ">=\(value)")
+        fatalError()
     }
     
     func testGreaterThanOrEqualPredicateWithCGFloat() {
         let value = CGFloat(1.0)
         let predicate = >=value
-        let context = CTVFLInlineContext()
         
-        let primitiveVisualFormat = predicate.makePrimitiveVisualFormat(with: context)
-        XCTAssert(primitiveVisualFormat == ">=\(value)")
+        fatalError()
     }
 }
 

@@ -5,20 +5,21 @@
 //  Created by WeZZard on 9/19/17.
 //
 
-import CoreGraphics
+#if os(iOS) || os(tvOS)
+import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
 
 public protocol CTVFLPredicating {
     func _toCTVFLPredicate() -> CTVFLPredicate
 }
 
-public struct CTVFLPredicate: CTVFLPredicating, CTVFLSpaceableLexicon,
-    Equatable
-{
-    public typealias _FirstLexiconType = CTVFLLexiconConstantType
-    
-    public typealias _LastLexiconType = CTVFLLexiconConstantType
-    
-    public typealias _SyntaxState = CTVFLSyntaxNotTerminated
+public struct CTVFLPredicate: CTVFLPredicating, Equatable, CTVFLOperand {
+    public typealias LeadingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
+    public typealias TrailingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
+    public typealias SyntaxEnd = CTVFLSyntaxEndWithConstant
+    public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
     
     internal enum _Relation: CustomStringConvertible {
         case equal
@@ -35,14 +36,41 @@ public struct CTVFLPredicate: CTVFLPredicating, CTVFLSpaceableLexicon,
         }
     }
     
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
+        return [
+            [
+                .pushAttribute(_layoutAttribute(for: orientation)),
+                .pushRelation(_layoutRelation)
+            ],
+            _predicate.opCodes(for: orientation)
+        ].flatMap({$0})
+    }
+    
+    internal func _layoutAttribute(for orientation: CTVFLConstraintOrientation)
+        -> LayoutAttribute
+    {
+        switch orientation {
+        case .horizontal:   return .width
+        case .vertical:     return .height
+        }
+    }
+    
+    internal var _layoutRelation: LayoutRelation {
+        switch _relation {
+        case .equal:                return .equal
+        case .greaterThanOrEqual:   return .greaterThanOrEqual
+        case .lessThanOrEqual:      return .lessThanOrEqual
+        }
+    }
+    
     internal let _priority: Priority
     
     internal let _relation: _Relation
     
-    internal let _predicate: CTVFLVariantPredicateObject
+    internal let _predicate: CTVFLWherePredicateContent
     
     internal init(
-        predicate: CTVFLVariantPredicateObject,
+        predicate: CTVFLWherePredicateContent,
         relation: _Relation,
         priority: Priority
         )
@@ -53,13 +81,13 @@ public struct CTVFLPredicate: CTVFLPredicating, CTVFLSpaceableLexicon,
     }
     
     internal init(
-        variable: CTVFLVariable,
+        layoutable: CTVFLLayoutable,
         relation: _Relation,
         priority: Priority = .required
         )
     {
         self.init(
-            predicate: .variable(variable),
+            predicate: .layoutable(layoutable),
             relation: relation,
             priority: priority
         )
@@ -91,48 +119,27 @@ public struct CTVFLPredicate: CTVFLPredicating, CTVFLSpaceableLexicon,
     public func _toCTVFLPredicate() -> CTVFLPredicate {
         return self
     }
-    
-    public func makePrimitiveVisualFormat(
-        with inlineContext: CTVFLInlineContext
-        ) -> String
-    {
-        let relation = _relation.description
-        let predicate = _predicate.makePrimitiveVisualFormat(
-            with: inlineContext
-        )
-        if _priority != .required {
-            return "\(relation)\(predicate)@\(_priority.rawValue)"
-        } else {
-            return "\(relation)\(predicate)"
-        }
-    }
-    
-    public static func == (lhs: CTVFLPredicate, rhs: CTVFLPredicate) -> Bool {
-        return lhs._predicate == rhs._predicate
-            && lhs._priority == rhs._priority
-            && lhs._relation == rhs._relation
-    }
 }
 
 // MARK: - Compositing Predicate
-public prefix func <= <P: CTVFLVariableConvertible>(predicate: P) -> CTVFLPredicate {
-    return .init(variable: P._makeVariable(predicate), relation: .greaterThanOrEqual)
+public prefix func <= <P: CTVFLLayoutableConvertible>(predicate: P) -> CTVFLPredicate {
+    return .init(layoutable: P._makeLayoutable(predicate), relation: .greaterThanOrEqual)
 }
 
 public prefix func <= <P: CTVFLConstantConvertible>(predicate: P) -> CTVFLPredicate {
     return .init(constant: P._makeConstant(predicate), relation: .lessThanOrEqual)
 }
 
-public prefix func >= <P: CTVFLVariableConvertible>(predicate: P) -> CTVFLPredicate {
-    return .init(variable: P._makeVariable(predicate), relation: .greaterThanOrEqual)
+public prefix func >= <P: CTVFLLayoutableConvertible>(predicate: P) -> CTVFLPredicate {
+    return .init(layoutable: P._makeLayoutable(predicate), relation: .greaterThanOrEqual)
 }
 
 public prefix func >= <P: CTVFLConstantConvertible>(predicate: P) -> CTVFLPredicate {
     return .init(constant: P._makeConstant(predicate), relation: .greaterThanOrEqual)
 }
 
-public prefix func == <P: CTVFLVariableConvertible>(predicate: P) -> CTVFLPredicate {
-    return .init(variable: P._makeVariable(predicate), relation: .equal)
+public prefix func == <P: CTVFLLayoutableConvertible>(predicate: P) -> CTVFLPredicate {
+    return .init(layoutable: P._makeLayoutable(predicate), relation: .equal)
 }
 
 public prefix func == <P: CTVFLConstantConvertible>(predicate: P) -> CTVFLPredicate {
@@ -159,4 +166,3 @@ public func ~ (lhs: CTVFLPredicate, rhs: Double) -> CTVFLPredicate {
 public func ~ (lhs: CTVFLPredicate, rhs: CGFloat) -> CTVFLPredicate {
     return lhs._byUpdatingPriority(Priority(Float(rhs)))
 }
-

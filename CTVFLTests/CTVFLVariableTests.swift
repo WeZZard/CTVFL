@@ -1,5 +1,5 @@
 //
-//  CTVFLVariableTests.swift
+//  CTVFLLayoutableTests.swift
 //  CTVFL
 //
 //  Created by WeZZard on 9/20/17.
@@ -10,48 +10,48 @@ import XCTest
 @testable
 import CTVFL
 
-class CTVFLVariableTests: XCTestCase {
+class CTVFLLayoutableTests: XCTestCase {
     var view: View!
-    var variable: CTVFLVariable!
+    var layoutable: CTVFLLayoutable!
     
     override func setUp() {
         super.setUp()
         view = View()
-        variable = CTVFLVariable(rawValue: view)
+        layoutable = CTVFLLayoutable(rawValue: view)
     }
     
     override func tearDown() {
         super.tearDown()
-        variable = nil
+        layoutable = nil
     }
     
     func testHashValue() {
-        XCTAssert(variable.hashValue == view.hashValue)
+        XCTAssert(layoutable.hashValue == view.hashValue)
     }
     
     func testEqualOperator() {
-        let variableWithSameView = CTVFLVariable(rawValue: view)
-        XCTAssert(variable == variableWithSameView)
+        let layoutableWithSameView = CTVFLLayoutable(rawValue: view)
+        XCTAssert(layoutable == layoutableWithSameView)
         
-        let variableWithAnotherView = CTVFLVariable(rawValue: View())
-        XCTAssert(variable != variableWithAnotherView)
+        let layoutableWithAnotherView = CTVFLLayoutable(rawValue: View())
+        XCTAssert(layoutable != layoutableWithAnotherView)
     }
     
     func testInitWithView() {
-        let anotherVariable = CTVFLVariable(view)
-        XCTAssert(variable == anotherVariable)
+        let anotherLayoutable = CTVFLLayoutable(view)
+        XCTAssert(layoutable == anotherLayoutable)
     }
     
-    func test_view() {
-        XCTAssert(variable._view === view)
+    func test_item() {
+        XCTAssert(layoutable._item === view)
     }
     
-    func testView_makeVariable() {
+    func testView_makeLayoutable() {
         let view = View()
         
-        let variable = View._makeVariable(view)
+        let layoutable = View._makeLayoutable(view)
         
-        XCTAssert(variable._view === view)
-        XCTAssert(variable.rawValue === view)
+        XCTAssert(layoutable._item === view)
+        XCTAssert(layoutable.rawValue === view)
     }
 }

@@ -1,42 +1,43 @@
 //
-//  CTVFLGlobalContext.swift
+//  _CTVFLTransaction.swift
 //  CTVFL
 //
-//  Created by WeZZard on 9/19/17.
+//  Created on 2019/3/26.
 //
 
-internal class CTVFLGlobalContext {
-    // MARK: Managing Overriding Variable Names
+
+internal class _CTVFLTransaction {
+    // MARK: Managing Overriding Layoutable Names
     internal func setOverridingName(
         _ name: String,
-        for variable: CTVFLVariable
+        for layoutable: CTVFLLayoutable
         )
     {
-        overridingNameForVariable[variable] = name
+        overridingNameForLayoutable[layoutable] = name
     }
     
-    internal func overridingName(for variable: CTVFLVariable) -> String? {
-        if let existedName = overridingNameForVariable[variable] {
+    internal func overridingName(for layoutable: CTVFLLayoutable) -> String? {
+        if let existedName = overridingNameForLayoutable[layoutable] {
             return existedName
         } else {
             return nil
         }
     }
     
-    internal var overridingNameForVariable: [CTVFLVariable : String] = [:]
+    internal var overridingNameForLayoutable: [CTVFLLayoutable : String] = [:]
     
-    internal var overridingVariables: [String: CTVFLVariable] {
-        var variables = [String: CTVFLVariable]()
-        for (variable, name) in overridingNameForVariable {
-            variables[name] = variable
+    internal var overridingLayoutables: [String: CTVFLLayoutable] {
+        var layoutables = [String: CTVFLLayoutable]()
+        for (layoutable, name) in overridingNameForLayoutable {
+            layoutables[name] = layoutable
         }
-        return variables
+        return layoutables
     }
     
     // MARK: Managing Constraints
-    internal var constraints: [CTVFLConstraint] { return _cosntraints_ }
+    internal var constraints: [_CTVFLConstraint] { return _cosntraints_ }
     
-    private var _cosntraints_: [CTVFLConstraint]
+    private var _cosntraints_: [_CTVFLConstraint]
     
     internal func registerConstraints<C, V>(
         _ constraints: C,
@@ -52,7 +53,7 @@ internal class CTVFLGlobalContext {
         }
         
         if let hostView = views._commonAncestor {
-            let installables: [CTVFLConstraint] = constraints.map {
+            let installables: [_CTVFLConstraint] = constraints.map {
                 .init(view: hostView, constraint: $0)
             }
             _cosntraints_.append(contentsOf: installables)
@@ -68,22 +69,22 @@ internal class CTVFLGlobalContext {
     
     // MARK: Managing Context Stack
     @discardableResult
-    internal static func push() -> CTVFLGlobalContext {
-        let pushed = CTVFLGlobalContext()
+    internal static func push() -> _CTVFLTransaction {
+        let pushed = _CTVFLTransaction()
         contexts.append(pushed)
         return pushed
     }
     
     @discardableResult
-    internal static func pop() -> CTVFLGlobalContext {
+    internal static func pop() -> _CTVFLTransaction {
         return contexts.removeLast()
     }
     
-    internal static var shared: CTVFLGlobalContext? {
+    internal static var shared: _CTVFLTransaction? {
         return contexts.last
     }
     
-    internal static private(set) var contexts: [CTVFLGlobalContext] = []
+    internal static private(set) var contexts: [_CTVFLTransaction] = []
     
     internal init() {
         _cosntraints_ = []

@@ -46,8 +46,8 @@ class CTVFLConstraintGroupTests: XCTestCase {
     }
     
     func testReplaceConstraints() {
-        let constraint1 = CTVFLConstraint(view: view, constraint: viewWidth100Constraint)
-        let constraint2 = CTVFLConstraint(view: view, constraint: viewHeight100Constraint)
+        let constraint1 = _CTVFLConstraint(view: view, constraint: viewWidth100Constraint)
+        let constraint2 = _CTVFLConstraint(view: view, constraint: viewHeight100Constraint)
         let constraints = [constraint1, constraint2]
         let group = CTVFLConstraintGroup()
         XCTAssert(group._constraints.isEmpty)
@@ -56,8 +56,8 @@ class CTVFLConstraintGroupTests: XCTestCase {
     }
     
     func testIsActive() {
-        let constraint1 = CTVFLConstraint(view: view, constraint: viewWidth100Constraint)
-        let constraint2 = CTVFLConstraint(view: view, constraint: viewHeight100Constraint)
+        let constraint1 = _CTVFLConstraint(view: view, constraint: viewWidth100Constraint)
+        let constraint2 = _CTVFLConstraint(view: view, constraint: viewHeight100Constraint)
         let constraints = [constraint1, constraint2]
         let group = CTVFLConstraintGroup()
         XCTAssert(!group.areAllAcrive)

@@ -7,21 +7,27 @@
 
 // MARK: Type Normalizations
 #if os(iOS) || os(tvOS)
-    import UIKit
-    
-    public typealias View = UIView
-    
-    public typealias Priority = UILayoutPriority
-    
-    public typealias VFLOptions = NSLayoutFormatOptions
+import UIKit
+
+public typealias View = UIView
+
+public typealias Priority = UILayoutPriority
+
+public typealias VFLOptions = NSLayoutFormatOptions
+
+public typealias LayoutAttribute = NSLayoutAttribute
 #else
-    import AppKit
-    
-    public typealias View = NSView
-    
-    public typealias Priority = NSLayoutConstraint.Priority
-    
-    public typealias VFLOptions = NSLayoutConstraint.FormatOptions
+import AppKit
+
+public typealias View = NSView
+
+public typealias Priority = NSLayoutConstraint.Priority
+
+public typealias VFLOptions = NSLayoutConstraint.FormatOptions
+
+public typealias LayoutAttribute = NSLayoutConstraint.Attribute
+
+public typealias LayoutRelation = NSLayoutConstraint.Relation
 #endif
 
 public typealias Constraint = NSLayoutConstraint

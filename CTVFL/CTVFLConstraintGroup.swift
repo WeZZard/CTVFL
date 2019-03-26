@@ -6,7 +6,7 @@
 //
 
 public class CTVFLConstraintGroup {
-    internal private(set) var _constraints: [CTVFLConstraint]
+    internal private(set) var _constraints: [_CTVFLConstraint]
     
     /// The active state of the contained constraints.
     @available(macOS, introduced: 10.10)
@@ -30,7 +30,7 @@ public class CTVFLConstraintGroup {
     }
     
     internal func _replaceConstraints(
-        _ constraints: [CTVFLConstraint]
+        _ constraints: [_CTVFLConstraint]
         )
     {
         uninstall()

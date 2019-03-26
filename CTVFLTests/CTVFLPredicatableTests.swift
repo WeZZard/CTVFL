@@ -18,10 +18,10 @@ class CTVFLPredicatableTests: XCTestCase {
         let predicate1 = ==0
         let predicate2 = >=0
         
-        let predicatedVariable = view.where(predicate0, predicate1, predicate2)
+        let predicatedLayoutable = view.where(predicate0, predicate1, predicate2)
         
-        XCTAssert(predicatedVariable._variable == CTVFLVariable(view))
+        XCTAssert(predicatedLayoutable._layoutable == CTVFLLayoutable(view))
         
-        XCTAssert(predicatedVariable._predicates == [predicate0, predicate1, predicate2])
+        XCTAssert(predicatedLayoutable._predicates == [predicate0, predicate1, predicate2])
     }
 }

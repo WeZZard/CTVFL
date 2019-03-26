@@ -1,5 +1,5 @@
 //
-//  CTVFLPredicatedVariableTests.swift
+//  CTVFLPredicatedLayoutableTests.swift
 //  CTVFL
 //
 //  Created by WeZZard on 9/20/17.
@@ -10,10 +10,10 @@ import XCTest
 @testable
 import CTVFL
 
-class CTVFLPredicatedVariableTests: XCTestCase {
-    func testInitWithVariablePredicates() {
+class CTVFLPredicatedLayoutableTests: XCTestCase {
+    func testInitWithLayoutablePredicates() {
         let view = View()
-        let variable = CTVFLVariable(view)
+        let layoutable = CTVFLLayoutable(view)
         
         let predicate0 = <=0
         let predicate1 = ==0
@@ -21,40 +21,12 @@ class CTVFLPredicatedVariableTests: XCTestCase {
         
         let predicates = [predicate0, predicate1, predicate2]
         
-        let predicatedVariable = CTVFLPredicatedVariable(
-            variable: variable, predicates: predicates
+        let predicatedLayoutable = CTVFLPredicatedLayoutable(
+            layoutable: layoutable, predicates: predicates
         )
         
-        XCTAssert(predicatedVariable._variable == variable)
+        XCTAssert(predicatedLayoutable._layoutable == layoutable)
         
-        XCTAssert(predicatedVariable._predicates == predicates)
-    }
-    
-    func testMakePrimitiveVisualFormatWithInlineContext() {
-        let view = View()
-        let variable = CTVFLVariable(view)
-        
-        let predicate0 = <=0
-        let predicate1 = ==0
-        let predicate2 = >=0
-        
-        let predicates = [predicate0, predicate1, predicate2]
-        
-        let predicatedVariable = CTVFLPredicatedVariable(
-            variable: variable, predicates: predicates
-        )
-        
-        let context = CTVFLInlineContext()
-        let primitiveVisualFormat = predicatedVariable.makePrimitiveVisualFormat(with: context)
-        
-        let variableName = context._name(forVariable: variable)
-        
-        let predicateString = predicates
-            .map({$0.makePrimitiveVisualFormat(with: context)})
-            .joined(separator: ",")
-        
-        let expectedPrimitiveVisualFormat = "[\(variableName)(\(predicateString))]"
-        
-        XCTAssert(primitiveVisualFormat == expectedPrimitiveVisualFormat)
+        XCTAssert(predicatedLayoutable._predicates == predicates)
     }
 }
