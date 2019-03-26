@@ -12,7 +12,7 @@ import CTVFL
 
 // MARK: - CTVFLPredicateTests
 class CTVFLPredicateTests: XCTestCase {
-    typealias Relation = CTVFLPredicate._Relation
+    typealias Relation = CTVFLLayoutRelation
     
     var priority: Priority!
     
@@ -20,7 +20,7 @@ class CTVFLPredicateTests: XCTestCase {
     
     var predicateObject: CTVFLWherePredicateContent!
     
-    var predicate: CTVFLPredicate!
+    var predicate: CTVFLLayoutablePredicate!
     
     override func setUp() {
         super.setUp()
@@ -30,7 +30,7 @@ class CTVFLPredicateTests: XCTestCase {
             ? .equal
             : (relationSeed == 1 ? .greaterThanOrEqual : .lessThanOrEqual)
         predicateObject = .constant(CTVFLConstant(rawValue: 100))
-        predicate = CTVFLPredicate(predicate: predicateObject, relation: relation, priority: priority)
+        predicate = CTVFLLayoutablePredicate(predicate: predicateObject, relation: relation, priority: priority)
     }
     
     override func tearDown() {
@@ -175,7 +175,7 @@ class CTVFLPredicateTests: XCTestCase {
 
 // MARK: - CTVFLPredicateRelationTests
 class CTVFLPredicateRelationTests: XCTestCase {
-    typealias Relation = CTVFLPredicate._Relation
+    typealias Relation = CTVFLLayoutRelation
     
     func testEqual() {
         XCTAssert(Relation.equal.description == "==")

@@ -12,7 +12,7 @@ import CTVFL
 
 class CTVFLVariantPredicateObjectTests: XCTestCase {
     func testEqualOperator() {
-        let aConstant = CTVFLConstant(rawValue: Double(arc4random()))
+        let aConstant = CTVFLConstant(rawValue: Float(arc4random()))
         let aConstantPredicateObject = CTVFLWherePredicateContent.constant(aConstant)
         
         let aView = View()

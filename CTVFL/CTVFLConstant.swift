@@ -7,7 +7,8 @@
 
 import CoreGraphics
 
-public struct CTVFLConstant: RawRepresentable, CustomStringConvertible,
+public struct CTVFLConstant: Equatable, RawRepresentable,
+    CustomStringConvertible,
     CTVFLOperand
 {
     public typealias LeadingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
@@ -15,7 +16,7 @@ public struct CTVFLConstant: RawRepresentable, CustomStringConvertible,
     public typealias SyntaxEnd = CTVFLSyntaxEndWithConstant
     public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
     
-    public typealias RawValue = Double
+    public typealias RawValue = Float
     
     public var rawValue: RawValue
     
@@ -27,8 +28,12 @@ public struct CTVFLConstant: RawRepresentable, CustomStringConvertible,
         return rawValue.description
     }
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
-        return [.pushConstant(CGFloat(rawValue))]
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+        return [
+            .moveConstant(self),
+            .moveRelation(.equal),
+            .movePriority(.required),
+        ]
     }
 }
 
@@ -47,14 +52,14 @@ extension Int: CTVFLConstantConvertible {
 extension Float: CTVFLConstantConvertible {
     @inline(__always)
     public static func _makeConstant(_ value: Float) -> CTVFLConstant {
-        return .init(rawValue: .init(value))
+        return .init(rawValue: value)
     }
 }
 
 extension Double: CTVFLConstantConvertible {
     @inline(__always)
     public static func _makeConstant(_ value: Double) -> CTVFLConstant {
-        return .init(rawValue: value)
+        return .init(rawValue: .init(value))
     }
 }
 

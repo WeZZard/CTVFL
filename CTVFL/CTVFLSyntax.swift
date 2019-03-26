@@ -11,8 +11,10 @@ import UIKit
 import AppKit
 #endif
 
+/// `view - view`
+///
 public struct CTVFLLayoutableToLayoutableSpaceSyntax<Lhs: CTVFLOperand, Rhs: CTVFLOperand>:
-    CTVFLPopulatableOperand where
+    CTVFLPopulatableOperand, _CTVFLBinarySyntax where
     Lhs.SyntaxEnd == CTVFLSyntaxEndWithLayoutable,
     Rhs.SyntaxEnd == CTVFLSyntaxEndWithLayoutable,
     Lhs.SyntaxTermination == CTVFLSyntaxIsNotTerminated
@@ -28,24 +30,28 @@ public struct CTVFLLayoutableToLayoutableSpaceSyntax<Lhs: CTVFLOperand, Rhs: CTV
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
         return [
-            lhs.opCodes(forOrientation: orientation, withOptions: options),
-            [.storeItem, .pop],
-            lhs.opCodes(forOrientation: orientation, withOptions: options),
-            [.storeItem, .pop],
             [
-                .loadItem,
-                .loadItem,
-                .pushAttribute(.trailing),
-                .pushRelation(.equal),
+                .push,
+                .moveAttribute(_lhsAttribute(forOrientation: orientation, withOptions: options)),
             ],
-        ].flatMap({$0})
+            lhs.opCodes(forOrientation: orientation, withOptions: options),
+            rhs.opCodes(forOrientation: orientation, withOptions: options),
+            [
+                .moveAttribute(_rhsAttribute(forOrientation: orientation, withOptions: options)),
+                .moveRelation(.equal),
+                .moveConstant(CTVFLConstant(rawValue: 8)),
+                .pop
+            ],
+        ].flatMap({$0}) + [.loadRhsItem]
     }
 }
 
+/// `n - view`
+///
 public struct CTVFLConstantToLayoutableSpaceSyntax<Lhs: CTVFLOperand, Rhs: CTVFLOperand>:
-    CTVFLPopulatableOperand where
+    CTVFLPopulatableOperand, _CTVFLBinarySyntax where
     Lhs.SyntaxEnd == CTVFLSyntaxEndWithConstant,
     Rhs.SyntaxEnd == CTVFLSyntaxEndWithLayoutable,
     Lhs.SyntaxTermination == CTVFLSyntaxIsNotTerminated
@@ -61,13 +67,19 @@ public struct CTVFLConstantToLayoutableSpaceSyntax<Lhs: CTVFLOperand, Rhs: CTVFL
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
-        fatalError()
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+        return [
+            lhs.opCodes(forOrientation: orientation, withOptions: options),
+            rhs.opCodes(forOrientation: orientation, withOptions: options),
+            [.moveAttribute(_rhsAttribute(forOrientation: orientation, withOptions: options)), .pop],
+        ].flatMap({$0})
     }
 }
 
+/// `view - n`
+///
 public struct CTVFLLayoutableToConstantSpaceSyntax<Lhs: CTVFLOperand, Rhs: CTVFLOperand>:
-    CTVFLPopulatableOperand where
+    CTVFLPopulatableOperand, _CTVFLBinarySyntax where
     Lhs.SyntaxEnd == CTVFLSyntaxEndWithLayoutable,
     Rhs.SyntaxEnd == CTVFLSyntaxEndWithConstant,
     Lhs.SyntaxTermination == CTVFLSyntaxIsNotTerminated
@@ -83,13 +95,19 @@ public struct CTVFLLayoutableToConstantSpaceSyntax<Lhs: CTVFLOperand, Rhs: CTVFL
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
-        fatalError()
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+        return [
+            [.push, .moveAttribute(_lhsAttribute(forOrientation: orientation, withOptions: options))],
+            lhs.opCodes(forOrientation: orientation, withOptions: options),
+            rhs.opCodes(forOrientation: orientation, withOptions: options),
+        ].flatMap({$0})
     }
 }
 
+/// `view1 | view2`
+///
 public struct CTVFLAdjacentSyntax<Lhs: CTVFLOperand, Rhs: CTVFLOperand>:
-    CTVFLPopulatableOperand where
+    CTVFLPopulatableOperand, _CTVFLBinarySyntax where
     Lhs.SyntaxEnd == CTVFLSyntaxEndWithLayoutable,
     Rhs.SyntaxEnd == CTVFLSyntaxEndWithLayoutable,
     Lhs.SyntaxTermination == CTVFLSyntaxIsNotTerminated
@@ -105,42 +123,27 @@ public struct CTVFLAdjacentSyntax<Lhs: CTVFLOperand, Rhs: CTVFLOperand>:
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
-        fatalError()
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+        return [
+            [
+                .push,
+                .moveAttribute(_lhsAttribute(forOrientation: orientation, withOptions: options)),
+            ],
+            lhs.opCodes(forOrientation: orientation, withOptions: options),
+            rhs.opCodes(forOrientation: orientation, withOptions: options),
+            [
+                .moveAttribute(_rhsAttribute(forOrientation: orientation, withOptions: options)),
+                .moveRelation(.equal),
+                .moveConstant(CTVFLConstant(rawValue: 0)),
+                .pop
+            ],
+        ].flatMap({$0}) + [.loadRhsItem]
     }
 }
 
-public struct CTVFLSpacedLeadingSyntax<O: CTVFLOperand>: CTVFLPopulatableOperand {
-    public typealias Operand = O
-    
-    public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias TrailingLayoutBoundary = Operand.TrailingLayoutBoundary
-    public typealias SyntaxEnd = Operand.SyntaxEnd
-    public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
-    
-    public let operand: Operand
-    
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
-        fatalError()
-    }
-}
-
-public struct CTVFLSpacedTrailingSyntax<O: CTVFLOperand>: CTVFLPopulatableOperand {
-    public typealias Operand = O
-    
-    public typealias LeadingLayoutBoundary = Operand.LeadingLayoutBoundary
-    public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias SyntaxEnd = Operand.SyntaxEnd
-    public typealias SyntaxTermination = CTVFLSyntaxIsTerminated
-    
-    public let operand: Operand
-    
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
-        fatalError()
-    }
-}
-
-public struct CTVFLLeadingSyntax<O: CTVFLOperand>: CTVFLPopulatableOperand where
+/// `|-view`
+///
+public struct CTVFLSpacedLeadingLayoutableSyntax<O: CTVFLOperand>: CTVFLPopulatableOperand, _CTVFLLeadingSyntax where
     O.SyntaxEnd == CTVFLSyntaxEndWithLayoutable
 {
     public typealias Operand = O
@@ -152,12 +155,28 @@ public struct CTVFLLeadingSyntax<O: CTVFLOperand>: CTVFLPopulatableOperand where
     
     public let operand: Operand
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
-        fatalError()
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+        return [
+            [
+                .push,
+                .moveConstant(CTVFLConstant(rawValue: 8)),
+                .moveRelation(.equal),
+                .moveItem(.container),
+                .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
+                .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
+            ],
+            operand.opCodes(forOrientation: orientation, withOptions: options),
+            [
+                .pop,
+                .loadRhsItem,
+            ],
+        ].flatMap({$0})
     }
 }
 
-public struct CTVFLTrailingSyntax<O: CTVFLOperand>: CTVFLPopulatableOperand where
+/// `view-|`
+///
+public struct CTVFLSpacedTrailingLayoutableSyntax<O: CTVFLOperand>: CTVFLPopulatableOperand, _CTVFLTrailingSyntax where
     O.SyntaxEnd == CTVFLSyntaxEndWithLayoutable
 {
     public typealias Operand = O
@@ -169,33 +188,256 @@ public struct CTVFLTrailingSyntax<O: CTVFLOperand>: CTVFLPopulatableOperand wher
     
     public let operand: Operand
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
-        fatalError()
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+        return [
+            [
+                .push,
+                .moveConstant(CTVFLConstant(rawValue: 8)),
+                .moveRelation(.equal),
+                .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
+            ],
+            operand.opCodes(forOrientation: orientation, withOptions: options),
+            [
+                .moveItem(.container),
+                .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
+                .pop,
+                .loadLhsItem,
+            ],
+        ].flatMap({$0})
     }
 }
 
-public struct CTVFLLeadingSpaceSyntax: CTVFLOperand {
+/// `|view`
+///
+public struct CTVFLLeadingLayoutableSyntax<O: CTVFLOperand>: CTVFLPopulatableOperand, _CTVFLLeadingSyntax where
+    O.SyntaxEnd == CTVFLSyntaxEndWithLayoutable
+{
+    public typealias Operand = O
+    
     public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias TrailingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
-    public typealias SyntaxEnd = CTVFLSyntaxEndWithConstant
+    public typealias TrailingLayoutBoundary = Operand.TrailingLayoutBoundary
+    public typealias SyntaxEnd = Operand.SyntaxEnd
     public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
     
-    public let operand: CTVFLConstant
+    public let operand: Operand
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
-        fatalError()
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+        return [
+            [
+                .push,
+                .moveConstant(CTVFLConstant(rawValue: 0)),
+                .moveRelation(.equal),
+                .moveItem(.container),
+                .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
+                .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
+            ],
+            operand.opCodes(forOrientation: orientation, withOptions: options),
+            [
+                .pop,
+                .loadRhsItem,
+            ],
+        ].flatMap({$0})
     }
 }
 
-public struct CTVFLTrailingSpaceSyntax: CTVFLOperand {
-    public typealias LeadingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
+/// `view|`
+///
+public struct CTVFLTrailingLayoutableSyntax<O: CTVFLOperand>: CTVFLPopulatableOperand, _CTVFLTrailingSyntax where
+    O.SyntaxEnd == CTVFLSyntaxEndWithLayoutable
+{
+    public typealias Operand = O
+    
+    public typealias LeadingLayoutBoundary = Operand.LeadingLayoutBoundary
     public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias SyntaxEnd = CTVFLSyntaxEndWithConstant
+    public typealias SyntaxEnd = Operand.SyntaxEnd
     public typealias SyntaxTermination = CTVFLSyntaxIsTerminated
     
-    public let operand: CTVFLConstant
+    public let operand: Operand
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
-        fatalError()
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+        return [
+            [
+                .push,
+                .moveConstant(CTVFLConstant(rawValue: 0)),
+                .moveRelation(.equal),
+            ],
+            operand.opCodes(forOrientation: orientation, withOptions: options),
+            [
+                .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
+                .moveItem(.container),
+                .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
+                .pop,
+                .loadLhsItem,
+            ],
+        ].flatMap({$0})
+    }
+}
+
+/// `|-n`
+///
+public struct CTVFLLeadingConstantSyntax<O: CTVFLOperand>: CTVFLOperand, _CTVFLLeadingSyntax where
+    O.SyntaxEnd == CTVFLSyntaxEndWithConstant
+{
+    public typealias Operand = O
+    
+    public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
+    public typealias TrailingLayoutBoundary = Operand.TrailingLayoutBoundary
+    public typealias SyntaxEnd = Operand.SyntaxEnd
+    public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
+    
+    public let operand: Operand
+    
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+        return [
+            [
+                .push,
+                .moveItem(.container),
+                .moveAttribute(_attribute(forOrientation: orientation, withOptions: options))
+            ],
+            operand.opCodes(forOrientation: orientation, withOptions: options),
+        ].flatMap({$0})
+    }
+}
+
+/// `n-|`
+///
+public struct CTVFLTrailingConstantSyntax<O: CTVFLOperand>: CTVFLOperand, _CTVFLTrailingSyntax where
+    O.SyntaxEnd == CTVFLSyntaxEndWithConstant
+{
+    public typealias Operand = O
+    
+    public typealias LeadingLayoutBoundary = Operand.LeadingLayoutBoundary
+    public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
+    public typealias SyntaxEnd = Operand.SyntaxEnd
+    public typealias SyntaxTermination = CTVFLSyntaxIsTerminated
+    
+    public let operand: Operand
+    
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+        return [
+            operand.opCodes(forOrientation: orientation, withOptions: options),
+            [
+                .moveItem(.container),
+                .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
+                .pop,
+            ],
+        ].flatMap({$0})
+    }
+}
+
+// MARK: -
+
+internal protocol _CTVFLLeadingSyntax: CTVFLOperand {
+    func _attribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute
+}
+
+extension _CTVFLLeadingSyntax {
+    internal func _attribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute {
+        switch orientation {
+        case .horizontal:
+            if options.contains(.directionLeftToRight) {
+                return .left
+            } else if options.contains(.directionRightToLeft) {
+                return .right
+            } else {
+                return .leading
+            }
+        case .vertical:
+            #if os(iOS) || os(tvOS)
+            if #available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *) {
+                if options.contains(.spacingBaselineToBaseline) {
+                    return .firstBaseline
+                }
+            }
+            return .top
+            #elseif os(macOS)
+            return .top
+            #endif
+        }
+    }
+}
+
+internal protocol _CTVFLTrailingSyntax: CTVFLOperand {
+    func _attribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute
+}
+
+extension _CTVFLTrailingSyntax {
+    internal func _attribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute {
+        switch orientation {
+        case .horizontal:
+            if options.contains(.directionLeftToRight) {
+                return .right
+            } else if options.contains(.directionRightToLeft) {
+                return .left
+            } else {
+                return .trailing
+            }
+        case .vertical:
+            #if os(iOS) || os(tvOS)
+            if #available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *) {
+                if options.contains(.spacingBaselineToBaseline) {
+                    return .lastBaseline
+                }
+            }
+            return .bottom
+            #elseif os(macOS)
+            return .bottom
+            #endif
+        }
+    }
+}
+
+internal protocol _CTVFLBinarySyntax: CTVFLOperand {
+    func _lhsAttribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute
+    func _rhsAttribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute
+}
+
+extension _CTVFLBinarySyntax {
+    internal func _lhsAttribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute {
+        switch orientation {
+        case .horizontal:
+            if options.contains(.directionLeftToRight) {
+                return .right
+            } else if options.contains(.directionRightToLeft) {
+                return .left
+            } else {
+                return .trailing
+            }
+        case .vertical:
+            #if os(iOS) || os(tvOS)
+            if #available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *) {
+                if options.contains(.spacingBaselineToBaseline) {
+                    return .lastBaseline
+                }
+            }
+            return .bottom
+            #elseif os(macOS)
+            return .bottom
+            #endif
+        }
+    }
+    
+    internal func _rhsAttribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute {
+        switch orientation {
+        case .horizontal:
+            if options.contains(.directionLeftToRight) {
+                return .left
+            } else if options.contains(.directionRightToLeft) {
+                return .right
+            } else {
+                return .leading
+            }
+        case .vertical:
+            #if os(iOS) || os(tvOS)
+            if #available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *) {
+                if options.contains(.spacingBaselineToBaseline) {
+                    return .firstBaseline
+                }
+            }
+            return .top
+            #elseif os(macOS)
+            return .top
+            #endif
+        }
     }
 }

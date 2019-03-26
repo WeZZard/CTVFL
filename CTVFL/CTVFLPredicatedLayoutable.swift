@@ -13,7 +13,7 @@ public class CTVFLPredicatedLayoutable: CTVFLPopulatableOperand {
     
     internal let _layoutable: CTVFLLayoutable
     
-    internal let _predicates: [CTVFLPredicate]
+    internal let _predicates: [CTVFLPredicating]
     
     internal init(
         layoutable: CTVFLLayoutable,
@@ -21,14 +21,23 @@ public class CTVFLPredicatedLayoutable: CTVFLPopulatableOperand {
         )
     {
         _layoutable = layoutable
-        _predicates = predicates.map({$0._toCTVFLPredicate()})
+        _predicates = predicates.map({$0})
     }
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
+    public func opCodes(
+        forOrientation orientation: CTVFLConstraintOrientation,
+        withOptions options: CTVFLOptions
+        ) -> [CTVFLOpCode]
+    {
         return _predicates.map({ (predicate) -> [[CTVFLOpCode]] in [
-            [.pushItem(.view(_layoutable._item))],
-            predicate.opCodes(forOrientation: orientation, withOptions: options),
-            [.makeConstraint]
-        ]}).flatMap({$0.flatMap{$0}})
+            [
+                .push,
+                .moveItem(.layoutable(_layoutable)),
+            ],
+            predicate.opCodes(forOrientation: orientation, forObject: .dimension, withOptions: options),
+            [
+                .pop
+            ],
+        ]}).flatMap({$0.flatMap{$0}}) + [.loadLhsItem]
     }
 }

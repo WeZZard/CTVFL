@@ -11,12 +11,12 @@ import XCTest
 import CTVFL
 
 class CTVFLLayoutableTests: XCTestCase {
-    var view: View!
+    var view: CTVFLView!
     var layoutable: CTVFLLayoutable!
     
     override func setUp() {
         super.setUp()
-        view = View()
+        view = CTVFLView()
         layoutable = CTVFLLayoutable(rawValue: view)
     }
     
@@ -26,15 +26,15 @@ class CTVFLLayoutableTests: XCTestCase {
     }
     
     func testHashValue() {
-        XCTAssert(layoutable.hashValue == view.hashValue)
+        XCTAssertEqual(layoutable!.hashValue, ObjectIdentifier(view).hashValue)
     }
     
     func testEqualOperator() {
         let layoutableWithSameView = CTVFLLayoutable(rawValue: view)
-        XCTAssert(layoutable == layoutableWithSameView)
+        XCTAssertEqual(layoutable, layoutableWithSameView)
         
-        let layoutableWithAnotherView = CTVFLLayoutable(rawValue: View())
-        XCTAssert(layoutable != layoutableWithAnotherView)
+        let layoutableWithAnotherView = CTVFLLayoutable(rawValue: CTVFLView())
+        XCTAssertNotEqual(layoutable, layoutableWithAnotherView)
     }
     
     func testInitWithView() {
@@ -47,9 +47,9 @@ class CTVFLLayoutableTests: XCTestCase {
     }
     
     func testView_makeLayoutable() {
-        let view = View()
+        let view = CTVFLView()
         
-        let layoutable = View._makeLayoutable(view)
+        let layoutable = CTVFLView._makeLayoutable(view)
         
         XCTAssert(layoutable._item === view)
         XCTAssert(layoutable.rawValue === view)

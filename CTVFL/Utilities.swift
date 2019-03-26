@@ -9,35 +9,37 @@
 #if os(iOS) || os(tvOS)
 import UIKit
 
-public typealias View = UIView
+public typealias CTVFLView = UIView
 
-public typealias Priority = UILayoutPriority
+public typealias CTVFLPriority = UILayoutPriority
 
-public typealias VFLOptions = NSLayoutFormatOptions
+public typealias CTVFLOptions = NSLayoutFormatOptions
 
-public typealias LayoutAttribute = NSLayoutAttribute
+public typealias CTVFLLayoutAttribute = NSLayoutAttribute
+
+public typealias CTVFLLayoutRelation = NSLayoutRelation
 #else
 import AppKit
 
-public typealias View = NSView
+public typealias CTVFLView = NSView
 
-public typealias Priority = NSLayoutConstraint.Priority
+public typealias CTVFLPriority = NSLayoutConstraint.Priority
 
-public typealias VFLOptions = NSLayoutConstraint.FormatOptions
+public typealias CTVFLOptions = NSLayoutConstraint.FormatOptions
 
-public typealias LayoutAttribute = NSLayoutConstraint.Attribute
+public typealias CTVFLLayoutAttribute = NSLayoutConstraint.Attribute
 
-public typealias LayoutRelation = NSLayoutConstraint.Relation
+public typealias CTVFLLayoutRelation = NSLayoutConstraint.Relation
 #endif
 
-public typealias Constraint = NSLayoutConstraint
+public typealias CTVFLConstraint = NSLayoutConstraint
 
 // MARK: Sequence of View
-extension Sequence where Element: View {
-    internal var _commonAncestor: View? {
+extension Sequence where Element: CTVFLView {
+    internal var _commonAncestor: CTVFLView? {
         var countForID = [ObjectIdentifier : Int]()
         
-        var baseViews = [View]()
+        var baseViews = [CTVFLView]()
         for each in self {
             baseViews.append(each)
         }

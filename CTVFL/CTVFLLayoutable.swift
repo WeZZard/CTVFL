@@ -11,7 +11,7 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLOperand {
     public typealias SyntaxEnd = CTVFLSyntaxEndWithLayoutable
     public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
     
-    public typealias RawValue = View
+    public typealias RawValue = AnyObject
     
     public var rawValue: RawValue
     
@@ -19,23 +19,23 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLOperand {
         self.rawValue = rawValue
     }
     
-    public init(_ view: View) {
+    public init(_ view: AnyObject) {
         rawValue = view
     }
     
-    internal var _item: View { return rawValue }
+    internal var _item: AnyObject { return rawValue }
     
     // MARK: Hashable
     public var hashValue: Int {
-        return rawValue.hashValue
+        return ObjectIdentifier(rawValue).hashValue
     }
     
     public static func == (lhs: CTVFLLayoutable, rhs: CTVFLLayoutable) -> Bool {
         return lhs.rawValue === rhs.rawValue
     }
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode] {
-        return [.pushItem(.view(_item))]
+    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+        return [.moveItem(.layoutable(self))]
     }
 }
 
@@ -44,9 +44,9 @@ public protocol CTVFLLayoutableConvertible {
     static func _makeLayoutable(_ value: Self) -> CTVFLLayoutable
 }
 
-extension View: CTVFLLayoutableConvertible {
+extension CTVFLView: CTVFLLayoutableConvertible {
     @inline(__always)
-    public static func _makeLayoutable(_ value: View) -> CTVFLLayoutable {
+    public static func _makeLayoutable(_ value: CTVFLView) -> CTVFLLayoutable {
         return .init(rawValue: value)
     }
 }

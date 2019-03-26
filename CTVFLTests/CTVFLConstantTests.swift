@@ -11,13 +11,13 @@ import XCTest
 import CTVFL
 
 class CTVFLConstantTests: XCTestCase {
-    var double: Double!
+    var float: Float!
     var constant: CTVFLConstant!
     
     override func setUp() {
         super.setUp()
-        double = (Double(arc4random_uniform(100)) / Double(arc4random_uniform(100)))
-        constant = CTVFLConstant(rawValue: double)
+        float = (Float(arc4random_uniform(100)) / Float(arc4random_uniform(100)))
+        constant = CTVFLConstant(rawValue: float)
     }
     
     override func tearDown() {
@@ -26,46 +26,46 @@ class CTVFLConstantTests: XCTestCase {
     }
     
     func testRawValue() {
-        XCTAssert(constant.rawValue == double)
+        XCTAssert(constant.rawValue == float)
     }
     
     func testDescription() {
-        XCTAssert(constant.description == double.description)
+        XCTAssert(constant.description == float.description)
     }
     
     func testInt_makeConstant() {
         let rawValue = Int(arc4random())
-        let rawValueDoubleRepresentation = Double(rawValue)
+        let rawValueFloatRepresentation = Float(rawValue)
         
         let constant = Int._makeConstant(rawValue)
         
-        XCTAssert(constant.rawValue == rawValueDoubleRepresentation)
+        XCTAssert(constant.rawValue == rawValueFloatRepresentation)
     }
     
     func testFloat_makeConstant() {
         let rawValue = Float(arc4random())
-        let rawValueDoubleRepresentation = Double(rawValue)
+        let rawValueFloatRepresentation = Float(rawValue)
         
         let constant = Float._makeConstant(rawValue)
         
-        XCTAssert(constant.rawValue == rawValueDoubleRepresentation)
+        XCTAssert(constant.rawValue == rawValueFloatRepresentation)
     }
     
     func testDouble_makeConstant() {
-        let rawValue = Double(arc4random())
-        let rawValueDoubleRepresentation = Double(rawValue)
+        let rawValue = Float(arc4random())
+        let rawValueFloatRepresentation = Float(rawValue)
         
-        let constant = Double._makeConstant(rawValue)
+        let constant = Float._makeConstant(rawValue)
         
-        XCTAssert(constant.rawValue == rawValueDoubleRepresentation)
+        XCTAssert(constant.rawValue == rawValueFloatRepresentation)
     }
     
     func testCGFloat_makeConstant() {
         let rawValue = CGFloat(arc4random())
-        let rawValueDoubleRepresentation = Double(rawValue)
+        let rawValueFloatRepresentation = Float(rawValue)
         
         let constant = CGFloat._makeConstant(rawValue)
         
-        XCTAssert(constant.rawValue == rawValueDoubleRepresentation)
+        XCTAssert(constant.rawValue == rawValueFloatRepresentation)
     }
 }

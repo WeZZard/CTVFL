@@ -7,48 +7,32 @@
 
 
 internal class _CTVFLTransaction {
-    // MARK: Managing Overriding Layoutable Names
-    internal func setOverridingName(
-        _ name: String,
-        for layoutable: CTVFLLayoutable
-        )
-    {
-        overridingNameForLayoutable[layoutable] = name
-    }
-    
-    internal func overridingName(for layoutable: CTVFLLayoutable) -> String? {
-        if let existedName = overridingNameForLayoutable[layoutable] {
-            return existedName
-        } else {
-            return nil
-        }
-    }
-    
-    internal var overridingNameForLayoutable: [CTVFLLayoutable : String] = [:]
-    
-    internal var overridingLayoutables: [String: CTVFLLayoutable] {
-        var layoutables = [String: CTVFLLayoutable]()
-        for (layoutable, name) in overridingNameForLayoutable {
-            layoutables[name] = layoutable
-        }
-        return layoutables
-    }
-    
     // MARK: Managing Constraints
     internal var constraints: [_CTVFLConstraint] { return _cosntraints_ }
     
     private var _cosntraints_: [_CTVFLConstraint]
     
-    internal func registerConstraints<C, V>(
-        _ constraints: C,
-        with views: V
-        ) where
-        C: Sequence, C.Element == Constraint,
-        V: Sequence, V.Element == View
+    internal func pushConstraints<C>(_ constraints: C) where
+        C: Sequence, C.Element == CTVFLConstraint
     {
-        for eachView in views {
-            if eachView.translatesAutoresizingMaskIntoConstraints {
-                eachView.translatesAutoresizingMaskIntoConstraints = false
+        var views = Set<CTVFLView>()
+        
+        for eachConstraint in constraints {
+            let firstViewOrNil = eachConstraint.firstItem as? CTVFLView
+            let secondViewOrNil = eachConstraint.secondItem as? CTVFLView
+            
+            if let firstView = firstViewOrNil {
+                if firstView.translatesAutoresizingMaskIntoConstraints {
+                    firstView.translatesAutoresizingMaskIntoConstraints = false
+                }
+                views.insert(firstView)
+            }
+            
+            if let secondView = secondViewOrNil {
+                if secondView.translatesAutoresizingMaskIntoConstraints {
+                    secondView.translatesAutoresizingMaskIntoConstraints = false
+                }
+                views.insert(secondView)
             }
         }
         

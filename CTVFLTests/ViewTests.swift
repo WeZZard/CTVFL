@@ -12,15 +12,15 @@ import CTVFL
 
 class ViewTests: XCTestCase {
     func testCommonAncestorWithZeroView() {
-        XCTAssert([View]()._commonAncestor == nil)
+        XCTAssert([CTVFLView]()._commonAncestor == nil)
     }
     
     func testCommonAncestorWithOneView() {
-        XCTAssert([View()]._commonAncestor == nil)
+        XCTAssert([CTVFLView()]._commonAncestor == nil)
         
-        let rootView = View()
+        let rootView = CTVFLView()
         
-        let upperView = View()
+        let upperView = CTVFLView()
         
         rootView.addSubview(upperView)
         
@@ -28,24 +28,24 @@ class ViewTests: XCTestCase {
     }
     
     func testCommonAncestorWithViewsHaveNoCommonAncestor() {
-        let views = (0...5).map({ _ in View()})
+        let views = (0...5).map({ _ in CTVFLView()})
         XCTAssert(views._commonAncestor == nil)
     }
     
     func testCommonAncestorWithViewsHaveCommonAncestor() {
-        let rootView = View()
+        let rootView = CTVFLView()
         
-        let viewA1 = View()
-        let viewA2 = View()
-        let viewA3 = View()
-        let viewA4 = View()
-        let viewA5 = View()
+        let viewA1 = CTVFLView()
+        let viewA2 = CTVFLView()
+        let viewA3 = CTVFLView()
+        let viewA4 = CTVFLView()
+        let viewA5 = CTVFLView()
         
-        let viewB1 = View()
-        let viewB2 = View()
-        let viewB3 = View()
-        let viewB4 = View()
-        let viewB5 = View()
+        let viewB1 = CTVFLView()
+        let viewB2 = CTVFLView()
+        let viewB3 = CTVFLView()
+        let viewB4 = CTVFLView()
+        let viewB5 = CTVFLView()
         
         
         rootView.addSubview(viewA1)

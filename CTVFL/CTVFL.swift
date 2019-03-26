@@ -31,32 +31,36 @@ public func constrain(
 @discardableResult
 public func withVFL<T: CTVFLPopulatableOperand>(
     V description: @autoclosure ()-> T,
-    options: VFLOptions = []
-    ) -> [Constraint] where
+    options: CTVFLOptions = []
+    ) -> [CTVFLConstraint] where
     T.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
     T.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary
 {
-    let operand = description()
-    let constraints = operand.makeConstraints(
+    let constraints = description().makeConstraints(
         orientation: .vertical,
         options: options
     )
+    if let transaction = _CTVFLTransaction.shared {
+        transaction.pushConstraints(constraints)
+    }
     return constraints
 }
 
 @discardableResult
 public func withVFL<T: CTVFLPopulatableOperand>(
     H description: @autoclosure ()-> T,
-    options: VFLOptions = []
-    ) -> [Constraint] where
+    options: CTVFLOptions = []
+    ) -> [CTVFLConstraint] where
     T.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
     T.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary
 {
-    let operand = description()
-    let constraints = operand.makeConstraints(
+    let constraints = description().makeConstraints(
         orientation: .horizontal,
         options: options
     )
+    if let transaction = _CTVFLTransaction.shared {
+        transaction.pushConstraints(constraints)
+    }
     return constraints
 }
 

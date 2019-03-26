@@ -24,8 +24,6 @@ class _CTVFLTransactionTests: XCTestCase {
     }
     
     func testInit() {
-        XCTAssert(context.overridingNameForLayoutable.isEmpty)
-        XCTAssert(context.overridingLayoutables.isEmpty)
         XCTAssert(context.constraints.isEmpty)
     }
     
@@ -47,18 +45,7 @@ class _CTVFLTransactionTests: XCTestCase {
         XCTAssert(_CTVFLTransaction.shared == nil)
     }
     
-    func testRegisterConstraints() {
-        fatalError()
-    }
-    
-    func testOverridingNameForLayoutables() {
-        let layoutableName = "test"
-        let view = View()
-        let layoutable = CTVFLLayoutable(view)
-        XCTAssert(context.overridingLayoutables.isEmpty)
-        context.setOverridingName(layoutableName, for: layoutable)
-        XCTAssert(context.overridingName(for: layoutable) == layoutableName)
-        XCTAssert(context.overridingNameForLayoutable[layoutable] == layoutableName)
-        XCTAssert(context.overridingLayoutables[layoutableName] == layoutable)
+    func testPushConstraints() {
+        
     }
 }

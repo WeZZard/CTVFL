@@ -7,9 +7,9 @@
 
 internal class _CTVFLConstraint {
     // Set to unowned to avoid a retain cycle on the associated view.
-    internal unowned var view: View
+    internal unowned var view: CTVFLView
     
-    internal let constraint: Constraint
+    internal let constraint: CTVFLConstraint
     
     internal func install() {
         view.addConstraint(constraint)
@@ -26,7 +26,7 @@ internal class _CTVFLConstraint {
         set { constraint.isActive = newValue }
     }
     
-    internal init(view: View, constraint: Constraint) {
+    internal init(view: CTVFLView, constraint: CTVFLConstraint) {
         self.view = view
         self.constraint = constraint
     }

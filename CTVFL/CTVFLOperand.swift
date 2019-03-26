@@ -13,24 +13,36 @@ import AppKit
 
 // MARK: - CTVFLOperand
 public enum CTVFLOpCode {
-    case pushItem(CTVFLItem)
-    case pushAttribute(LayoutAttribute)
-    case pushRelation(LayoutRelation)
-    case pushConstant(CGFloat)
-    case makeConstraint
-    case storeItem
-    case loadItem
+    case push
     case pop
+    case moveItem(CTVFLItem)
+    case moveAttribute(CTVFLLayoutAttribute)
+    case moveRelation(CTVFLLayoutRelation)
+    case moveConstant(CTVFLConstant)
+    case movePriority(CTVFLPriority)
+    case loadLhsItem
+    case loadRhsItem
 }
 
 public enum CTVFLItem {
-    case superview
-    case view(View)
+    case container
+    case layoutable(CTVFLLayoutable)
     
-    var asView: View! {
+    internal var _layoutable: CTVFLLayoutable? {
         switch self {
-        case let .view(view): return view
-        case .superview: return nil
+        case let .layoutable(layoutable): return layoutable
+        default: return nil
+        }
+    }
+    
+    internal func _getView(with another: CTVFLItem?) -> CTVFLView! {
+        switch (self, another) {
+        case let (.layoutable(layoutable), _):
+            return layoutable._item as? CTVFLView
+        case let (.container, .some(.layoutable(layoutable))):
+            return (layoutable._item as? CTVFLView)?.superview
+        default:
+            return nil
         }
     }
 }
@@ -41,7 +53,7 @@ public protocol CTVFLOperand {
     associatedtype SyntaxEnd: CTVFLSyntaxEnd
     associatedtype SyntaxTermination: CTVFLSyntaxTermination
     
-    func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: VFLOptions) -> [CTVFLOpCode]
+    func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode]
 }
 
 // MARK: - CTVFLPopulatableOperand
@@ -51,115 +63,207 @@ public enum CTVFLConstraintOrientation {
 }
 
 public protocol CTVFLPopulatableOperand: CTVFLOperand {
-    func makeConstraints(orientation: CTVFLConstraintOrientation, options: VFLOptions) -> [Constraint]
+    func makeConstraints(orientation: CTVFLConstraintOrientation, options: CTVFLOptions) -> [CTVFLConstraint]
 }
 
 extension CTVFLPopulatableOperand {
-    public func makeConstraints(orientation: CTVFLConstraintOrientation, options: VFLOptions) -> [Constraint] {
-        var constraints = [Constraint]()
-        var items = [CTVFLItem]()
-        var item1: CTVFLItem!, item2: CTVFLItem!
-        var attribute1: LayoutAttribute!, attribute2: LayoutAttribute!
-        var relation: LayoutRelation!
-        var constant: CGFloat!
-        var itemIndex = 0, attributeIndex = 0
+    public func makeConstraints(orientation: CTVFLConstraintOrientation, options: CTVFLOptions) -> [CTVFLConstraint] {
+        typealias Level = (
+            item1: CTVFLItem?,
+            attribute1: CTVFLLayoutAttribute?,
+            item2: CTVFLItem?,
+            attribute2: CTVFLLayoutAttribute?,
+            relation: CTVFLLayoutRelation?,
+            constant: CTVFLConstant?,
+            priority: CTVFLPriority
+        )
+        
+        let emptyLevel: Level = (
+            item1: nil,
+            attribute1: nil,
+            item2: nil,
+            attribute2: nil,
+            relation: nil,
+            constant: nil,
+            priority: .required
+        )
+        
+        var stack: [Level] = [emptyLevel]
+        
+        var constraints = [CTVFLConstraint]()
+        
+        var itemsToBeAligned = [AnyObject]()
+        
+        let needsAlign = !options.intersection(.alignmentMask).isEmpty
+        
         for each in opCodes(forOrientation: orientation, withOptions: options) {
+            let currentLevel = stack.endIndex - 1
+            
             switch each {
-            case let .pushItem(item):
-                if itemIndex == 0 {
-                    item1 = item
-                    itemIndex += 1
-                } else if itemIndex == 1 {
-                    item2 = item
-                    itemIndex += 1
-                } else {
-                    NSException(
-                        name: .internalInconsistencyException,
-                        reason: "Invalid item index: \(itemIndex).",
-                        userInfo: nil
-                    ).raise()
-                }
-                break
-            case let .pushAttribute(attr):
-                if attributeIndex == 0 {
-                    attribute1 = attr
-                    attributeIndex += 1
-                } else if attributeIndex == 1 {
-                    attribute2 = attr
-                    attributeIndex += 1
-                } else {
-                    NSException(
-                        name: .internalInconsistencyException,
-                        reason: "Invalid attribute index: \(attributeIndex).",
-                        userInfo: nil
-                    ).raise()
-                }
-                break
-            case let .pushRelation(rel):
-                relation = rel
-                break
-            case let .pushConstant(value):
-                constant = value
-            case .makeConstraint:
+            case .push:
+                stack.append(emptyLevel)
+            case .pop:
+                let (
+                    item1,
+                    attribute1,
+                    item2,
+                    attribute2,
+                    relation,
+                    constant,
+                    priority
+                ) = stack.popLast()!
+                
                 let constraint = NSLayoutConstraint(
-                    item: item1!,
+                    item: item1!._getView(with: item2),
                     attribute: attribute1!,
                     relatedBy: relation!,
-                    toItem: item2,
+                    toItem: item2?._getView(with: item1),
                     attribute: attribute2 ?? .notAnAttribute,
                     multiplier: 1,
-                    constant: constant ?? 0
+                    constant: (constant?.rawValue).map({CGFloat($0)}) ?? 0
                 )
+                constraint.priority = priority
                 constraints.append(constraint)
-            case .pop:
-                item1 = nil
-                item2 = nil
-                attribute1 = nil
-                attribute2 = nil
-                relation = nil
-                constant = nil
-                itemIndex = 0
-                attributeIndex = 0
-            case .storeItem:
-                if let item = item2 {
-                    items.append(item)
-                } else if let item = item1 {
-                    items.append(item)
+            case let .moveItem(item):
+                if needsAlign {
+                    switch item {
+                    case let .layoutable(layoutable):
+                        itemsToBeAligned.append(layoutable._item)
+                    default: break
+                    }
+                }
+                
+                if stack[currentLevel].item1 == nil {
+                    stack[currentLevel].item1 = item
+                } else if stack[currentLevel].item2 == nil {
+                    stack[currentLevel].item2 = item
                 } else {
                     NSException(
                         name: .internalInconsistencyException,
-                        reason: "No item to store.",
+                        reason: "Items overflow.",
                         userInfo: nil
                     ).raise()
                 }
-            case .loadItem:
-                if itemIndex == 0 {
-                    item1 = items.first!
-                    itemIndex += 1
+            case let .moveAttribute(attr):
+                if stack[currentLevel].attribute1 == nil {
+                    stack[currentLevel].attribute1 = attr
+                } else if stack[currentLevel].attribute2 == nil {
+                    stack[currentLevel].attribute2 = attr
+                } else {
+                    NSException(
+                        name: .internalInconsistencyException,
+                        reason: "Attributes overflow.",
+                        userInfo: nil
+                    ).raise()
                 }
-                if itemIndex == 1 {
-                    item2 = items.first!
-                    itemIndex += 1
+            case let .moveRelation(rel):
+                stack[currentLevel].relation = rel
+            case let .moveConstant(value):
+                stack[currentLevel].constant = value
+            case let .movePriority(value):
+                stack[currentLevel].priority = value
+            case .loadLhsItem:
+                let item: CTVFLItem = .layoutable(CTVFLLayoutable(rawValue: constraints.last!.firstItem!))
+                if stack[currentLevel].item1 == nil {
+                    stack[currentLevel].item1 = item
+                } else if stack[currentLevel].item2 == nil {
+                    stack[currentLevel].item2 = item
+                } else {
+                    NSException(
+                        name: .internalInconsistencyException,
+                        reason: "Items overflow.",
+                        userInfo: nil
+                    ).raise()
+                }
+            case .loadRhsItem:
+                let item: CTVFLItem = .layoutable(CTVFLLayoutable(rawValue: constraints.last!.secondItem!))
+                if stack[currentLevel].item1 == nil {
+                    stack[currentLevel].item1 = item
+                } else if stack[currentLevel].item2 == nil {
+                    stack[currentLevel].item2 = item
+                } else {
+                    NSException(
+                        name: .internalInconsistencyException,
+                        reason: "Items overflow.",
+                        userInfo: nil
+                    ).raise()
+                }
+                break
+            }
+        }
+        
+        if needsAlign {
+            let attributes = _attributes(forOptions: options)
+            
+            for index in 0..<(itemsToBeAligned.endIndex >> 1) {
+                let firstItem = itemsToBeAligned[index << 1]
+                let secondItem = itemsToBeAligned[(index << 1) + 1]
+                
+                for eachAttribute in attributes {
+                    let constraint = NSLayoutConstraint(
+                        item: firstItem,
+                        attribute: eachAttribute,
+                        relatedBy: .equal,
+                        toItem: secondItem,
+                        attribute: eachAttribute,
+                        multiplier: 1,
+                        constant: 0
+                    )
+                    
+                    constraints.append(constraint)
                 }
             }
         }
-        if !(item1 == nil
-            && item2 == nil
-            && attribute1 == nil
-            && attribute2 == nil
-            && relation == nil
-            && constant == nil
-            && itemIndex == 0
-            && attributeIndex == 0
-            )
-        {
-            NSException(
-                name: .internalInconsistencyException,
-                reason: "Inconsistent stack. Did you forget pop?",
-                userInfo: nil
-            ).raise()
-        }
+        
         return constraints
+    }
+    
+    internal func _attributes(forOptions options: CTVFLOptions) -> [CTVFLLayoutAttribute] {
+        var attributes = [CTVFLLayoutAttribute]()
+        
+        if options.contains(.alignAllBottom) {
+            attributes.append(.bottom)
+        }
+        
+        if options.contains(.alignAllTop) {
+            attributes.append(.top)
+        }
+        
+        if options.contains(.alignAllLeft) {
+            attributes.append(.left)
+        }
+        
+        if options.contains(.alignAllRight) {
+            attributes.append(.right)
+        }
+        
+        if options.contains(.alignAllCenterX) {
+            attributes.append(.centerX)
+        }
+        
+        if options.contains(.alignAllCenterY) {
+            attributes.append(.centerY)
+        }
+        
+        if options.contains(.alignAllLeading) {
+            attributes.append(.leading)
+        }
+        
+        if options.contains(.alignAllTrailing) {
+            attributes.append(.trailing)
+        }
+        
+        if #available(OSXApplicationExtension 10.11, *) {
+            if options.contains(.alignAllFirstBaseline) {
+                attributes.append(.firstBaseline)
+            }
+        }
+        
+        if options.contains(.alignAllLastBaseline) {
+            attributes.append(.lastBaseline)
+        }
+        
+        return attributes
     }
 }
 

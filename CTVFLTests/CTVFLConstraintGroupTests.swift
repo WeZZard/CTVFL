@@ -11,17 +11,17 @@ import XCTest
 import CTVFL
 
 class CTVFLConstraintGroupTests: XCTestCase {
-    var view: View!
-    var subview: View!
+    var view: CTVFLView!
+    var subview: CTVFLView!
     
     var viewWidth100Constraint: NSLayoutConstraint!
     var viewHeight100Constraint: NSLayoutConstraint!
     
     override func setUp() {
         super.setUp()
-        view = View()
+        view = CTVFLView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        subview = View()
+        subview = CTVFLView()
         subview.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(subview)

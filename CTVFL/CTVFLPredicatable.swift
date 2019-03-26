@@ -11,7 +11,7 @@ public protocol CTVFLPredicatable {
         -> CTVFLPredicatedLayoutable
 }
 
-extension View: CTVFLPredicatable {
+extension CTVFLView: CTVFLPredicatable {
     public func `where`(
         _ predicates: CTVFLPredicating...
         ) -> CTVFLPredicatedLayoutable
