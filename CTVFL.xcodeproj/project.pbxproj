@@ -10,9 +10,9 @@
 		9C6503DA1F72BC9B006881E5 /* CTVFL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9CB77A3C1F71548A0052448F /* CTVFL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C6503E01F72BCBE006881E5 /* CTVFL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9CB77A751F7154A50052448F /* CTVFL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C6503E11F72BCEE006881E5 /* CTVFL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9CB77A591F7154970052448F /* CTVFL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		9C6503E71F72C0DC006881E5 /* ViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6503E61F72C0DC006881E5 /* ViewTests.swift */; };
-		9C6503E81F72C0DC006881E5 /* ViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6503E61F72C0DC006881E5 /* ViewTests.swift */; };
-		9C6503E91F72C0DC006881E5 /* ViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6503E61F72C0DC006881E5 /* ViewTests.swift */; };
+		9C6503E71F72C0DC006881E5 /* CTVFLViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6503E61F72C0DC006881E5 /* CTVFLViewTests.swift */; };
+		9C6503E81F72C0DC006881E5 /* CTVFLViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6503E61F72C0DC006881E5 /* CTVFLViewTests.swift */; };
+		9C6503E91F72C0DC006881E5 /* CTVFLViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6503E61F72C0DC006881E5 /* CTVFLViewTests.swift */; };
 		9C6503EF1F72C13B006881E5 /* _CTVFLTransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6503EE1F72C13B006881E5 /* _CTVFLTransactionTests.swift */; };
 		9C6503F01F72C13B006881E5 /* _CTVFLTransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6503EE1F72C13B006881E5 /* _CTVFLTransactionTests.swift */; };
 		9C6503F11F72C13B006881E5 /* _CTVFLTransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C6503EE1F72C13B006881E5 /* _CTVFLTransactionTests.swift */; };
@@ -161,7 +161,7 @@
 
 /* Begin PBXFileReference section */
 		9C6503E21F72BEC7006881E5 /* CTVFLPredicateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLPredicateTests.swift; sourceTree = "<group>"; };
-		9C6503E61F72C0DC006881E5 /* ViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewTests.swift; sourceTree = "<group>"; };
+		9C6503E61F72C0DC006881E5 /* CTVFLViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLViewTests.swift; sourceTree = "<group>"; };
 		9C6503EE1F72C13B006881E5 /* _CTVFLTransactionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _CTVFLTransactionTests.swift; sourceTree = "<group>"; };
 		9C6503F21F72C160006881E5 /* CTVFLPredicatedLayoutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLPredicatedLayoutable.swift; sourceTree = "<group>"; };
 		9C6503F61F72C201006881E5 /* CTVFLConstraintTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLConstraintTests.swift; sourceTree = "<group>"; };
@@ -289,7 +289,7 @@
 				9C6503FA1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift */,
 				9C6503F61F72C201006881E5 /* CTVFLConstraintTests.swift */,
 				9C6503EE1F72C13B006881E5 /* _CTVFLTransactionTests.swift */,
-				9C6503E61F72C0DC006881E5 /* ViewTests.swift */,
+				9C6503E61F72C0DC006881E5 /* CTVFLViewTests.swift */,
 			);
 			path = CTVFLTests;
 			sourceTree = "<group>";
@@ -618,7 +618,7 @@
 				9C65040B1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */,
 				9C6503FB1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift in Sources */,
 				9C6503EF1F72C13B006881E5 /* _CTVFLTransactionTests.swift in Sources */,
-				9C6503E71F72C0DC006881E5 /* ViewTests.swift in Sources */,
+				9C6503E71F72C0DC006881E5 /* CTVFLViewTests.swift in Sources */,
 				9C6504031F72C280006881E5 /* CTVFLPredicatableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -659,7 +659,7 @@
 				9C65040C1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */,
 				9C6503FC1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift in Sources */,
 				9C6503F01F72C13B006881E5 /* _CTVFLTransactionTests.swift in Sources */,
-				9C6503E81F72C0DC006881E5 /* ViewTests.swift in Sources */,
+				9C6503E81F72C0DC006881E5 /* CTVFLViewTests.swift in Sources */,
 				9C6504041F72C280006881E5 /* CTVFLPredicatableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -700,7 +700,7 @@
 				9C65040D1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */,
 				9C6503FD1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift in Sources */,
 				9C6503F11F72C13B006881E5 /* _CTVFLTransactionTests.swift in Sources */,
-				9C6503E91F72C0DC006881E5 /* ViewTests.swift in Sources */,
+				9C6503E91F72C0DC006881E5 /* CTVFLViewTests.swift in Sources */,
 				9C6504051F72C280006881E5 /* CTVFLPredicatableTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

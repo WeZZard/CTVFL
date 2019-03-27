@@ -1,5 +1,5 @@
 //
-//  ViewTests.swift
+//  CTVFLViewTests.swift
 //  CTVFL
 //
 //  Created by WeZZard on 9/20/17.
@@ -10,14 +10,16 @@ import XCTest
 @testable
 import CTVFL
 
-class ViewTests: XCTestCase {
-    func testCommonAncestorWithZeroView() {
+class CTVFLViewTests: XCTestCase {
+    func test_commonAncestor_returnsNil_withNoView() {
         XCTAssert([CTVFLView]()._commonAncestor == nil)
     }
     
-    func testCommonAncestorWithOneView() {
+    func test_commonAncestor_returnsNil_withOneViewWithoutSuperview() {
         XCTAssert([CTVFLView()]._commonAncestor == nil)
-        
+    }
+    
+    func test_commonAncestor_returnsSuperview_withOneViewWithSuperview() {
         let rootView = CTVFLView()
         
         let upperView = CTVFLView()
@@ -27,12 +29,24 @@ class ViewTests: XCTestCase {
         XCTAssert([upperView]._commonAncestor === rootView)
     }
     
-    func testCommonAncestorWithViewsHaveNoCommonAncestor() {
+    func test_commonAncestor_returnsSuperview_withNestedView() {
+        XCTAssert([CTVFLView()]._commonAncestor == nil)
+        
+        let rootView = CTVFLView()
+        
+        let upperView = CTVFLView()
+        
+        rootView.addSubview(upperView)
+        
+        XCTAssert([rootView, upperView]._commonAncestor === rootView)
+    }
+    
+    func test_commonAncestor_returnsNil_withViewsWithoutNoCommonAncestor() {
         let views = (0...5).map({ _ in CTVFLView()})
         XCTAssert(views._commonAncestor == nil)
     }
     
-    func testCommonAncestorWithViewsHaveCommonAncestor() {
+    func test_commonAncestor_returnsCommonAncestor_withViewsHaveCommonAncestor() {
         let rootView = CTVFLView()
         
         let viewA1 = CTVFLView()

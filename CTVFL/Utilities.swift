@@ -39,14 +39,11 @@ extension Sequence where Element: CTVFLView {
     internal var _commonAncestor: CTVFLView? {
         var countForID = [ObjectIdentifier : Int]()
         
-        var baseViews = [CTVFLView]()
-        for each in self {
-            baseViews.append(each)
-        }
+        let baseViews = ContiguousArray<CTVFLView>(self.map({$0}))
         
-        let thresholdCount = baseViews.count
+        let inputViewCount = baseViews.count
         
-        var ancestorViews = baseViews.map({$0.superview}).compactMap({$0})
+        var ancestorViews = baseViews
         
         while !ancestorViews.isEmpty {
             let nextAncestor = ancestorViews.removeFirst()
@@ -55,16 +52,16 @@ extension Sequence where Element: CTVFLView {
             
             if var count = countForID[ancestorID] {
                 count += 1
-                if count < thresholdCount {
+                if count < inputViewCount {
                     countForID[ancestorID] = count
                 } else {
                     return nextAncestor
                 }
             } else {
-                if 1 < thresholdCount {
+                if 1 < inputViewCount {
                     countForID[ancestorID] = 1
                 } else {
-                    return nextAncestor
+                    return nextAncestor.superview
                 }
             }
             
