@@ -6,7 +6,11 @@
 //
 
 public class CTVFLConstraintGroup {
-    internal private(set) var _constraints: [_CTVFLConstraint]
+    internal var _constraints: ContiguousArray<_CTVFLConstraint> {
+        return _constraints_
+    }
+    
+    private var _constraints_: ContiguousArray<_CTVFLConstraint>
     
     /// The active state of the contained constraints.
     @available(macOS, introduced: 10.10)
@@ -26,16 +30,16 @@ public class CTVFLConstraintGroup {
     }
     
     internal init() {
-        _constraints = []
+        _constraints_ = []
     }
     
     internal func _replaceConstraints(
-        _ constraints: [_CTVFLConstraint]
+        _ constraints: ContiguousArray<_CTVFLConstraint>
         )
     {
         uninstall()
         
-        _constraints = constraints
+        _constraints_ = constraints
         
         install()
     }

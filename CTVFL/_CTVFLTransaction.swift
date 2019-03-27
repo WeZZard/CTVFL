@@ -7,47 +7,65 @@
 
 
 internal class _CTVFLTransaction {
-    // MARK: Managing Constraints
-    internal var constraints: [_CTVFLConstraint] { return _cosntraints_ }
+    typealias _Constraints = ContiguousArray<_CTVFLConstraint>
     
-    private var _cosntraints_: [_CTVFLConstraint]
+    // MARK: Managing Constraints
+    internal var constraints: _Constraints { return _cosntraints_ }
+    
+    private var _cosntraints_: _Constraints
     
     internal func pushConstraints<C>(_ constraints: C) where
         C: Sequence, C.Element == CTVFLConstraint
     {
+        typealias CTVFLConstraints = ContiguousArray<CTVFLConstraint>
+        
         var views = Set<CTVFLView>()
+        
+        var remoteConstraints = CTVFLConstraints()
+        var localConstraints = CTVFLConstraints()
         
         for eachConstraint in constraints {
             let firstViewOrNil = eachConstraint.firstItem as? CTVFLView
             let secondViewOrNil = eachConstraint.secondItem as? CTVFLView
             
-            if let firstView = firstViewOrNil {
-                if firstView.translatesAutoresizingMaskIntoConstraints {
-                    firstView.translatesAutoresizingMaskIntoConstraints = false
-                }
+            if let firstView = firstViewOrNil, !views.contains(firstView) {
+                firstView.translatesAutoresizingMaskIntoConstraints = false
                 views.insert(firstView)
             }
             
-            if let secondView = secondViewOrNil {
-                if secondView.translatesAutoresizingMaskIntoConstraints {
-                    secondView.translatesAutoresizingMaskIntoConstraints = false
-                }
+            if let secondView = secondViewOrNil, !views.contains(secondView) {
+                secondView.translatesAutoresizingMaskIntoConstraints = false
                 views.insert(secondView)
+            }
+            
+            if eachConstraint.secondItem == nil {
+                localConstraints.append(eachConstraint)
+            } else {
+                remoteConstraints.append(eachConstraint)
             }
         }
         
-        if let hostView = views._commonAncestor {
-            let installables: [_CTVFLConstraint] = constraints.map {
-                .init(view: hostView, constraint: $0)
+        if !remoteConstraints.isEmpty {
+            if let hostView = views._commonAncestor {
+                let installables = remoteConstraints.map {
+                    _CTVFLConstraint(view: hostView, constraint: $0)
+                }
+                _cosntraints_.append(contentsOf: installables)
+            } else {
+                debugPrint(
+                    """
+                    No common super view found for constraints:
+                    \(Array(constraints)). Candidates: \(views).
+                    """
+                )
+            }
+        }
+        
+        if !localConstraints.isEmpty {
+            let installables = localConstraints.map{
+                _CTVFLConstraint(constraint: $0)
             }
             _cosntraints_.append(contentsOf: installables)
-        } else {
-            debugPrint(
-                """
-                No common super view found for constraints:
-                \(Array(constraints)). Candidates: \(views).
-                """
-            )
         }
     }
     

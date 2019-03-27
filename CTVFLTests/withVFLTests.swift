@@ -1,5 +1,5 @@
 //
-//  CTVFLTests.swift
+//  withVFLTests.swift
 //  CTVFL
 //
 //  Created by WeZZard on 9/20/17.
@@ -15,7 +15,7 @@ import XCTest
 
 import CTVFL
 
-class CTVFLTests: XCTestCase {
+class withVFLTests: XCTestCase {
     var rootView: CTVFLView!
     var view1: CTVFLView!
     var view2: CTVFLView!

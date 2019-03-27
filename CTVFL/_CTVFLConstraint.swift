@@ -26,8 +26,17 @@ internal class _CTVFLConstraint {
         set { constraint.isActive = newValue }
     }
     
+    /// Remote constraint.
+    ///
     internal init(view: CTVFLView, constraint: CTVFLConstraint) {
         self.view = view
+        self.constraint = constraint
+    }
+    
+    /// Local constraint.
+    ///
+    internal init(constraint: CTVFLConstraint) {
+        self.view = constraint.firstItem as! CTVFLView
         self.constraint = constraint
     }
 }
