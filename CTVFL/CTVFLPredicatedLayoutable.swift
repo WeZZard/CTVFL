@@ -24,17 +24,17 @@ public class CTVFLPredicatedLayoutable: CTVFLPopulatableOperand {
         _predicates = predicates.map({$0})
     }
     
-    public func opCodes(
+    public func opcodes(
         forOrientation orientation: CTVFLConstraintOrientation,
         withOptions options: CTVFLOptions
-        ) -> [CTVFLOpCode]
+        ) -> [CTVFLOpcode]
     {
-        return _predicates.map({ (predicate) -> [[CTVFLOpCode]] in [
+        return _predicates.map({ (predicate) -> [[CTVFLOpcode]] in [
             [
                 .push,
                 .moveItem(.layoutable(_layoutable)),
             ],
-            predicate.opCodes(forOrientation: orientation, forObject: .dimension, withOptions: options),
+            predicate.opcodes(forOrientation: orientation, forObject: .dimension, withOptions: options),
             [
                 .pop
             ],

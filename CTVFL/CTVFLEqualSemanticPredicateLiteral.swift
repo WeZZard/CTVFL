@@ -15,14 +15,14 @@ extension CTVFLEqualSemanticPredicateLiteral where Self: BinaryInteger {
         return .constant(CTVFLConstantPredicate(constant: .init(rawValue: Float(self)), relation: .equal, priority: priority))
     }
     
-    public func opCodes(
+    public func opcodes(
         forOrientation orientation: CTVFLConstraintOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions
-        ) -> [CTVFLOpCode]
+        ) -> [CTVFLOpcode]
     {
         return CTVFLConstantPredicate(constant: .init(rawValue: Float(self)), relation: .equal, priority: .required)
-            .opCodes(forOrientation: orientation, forObject: object, withOptions: options)
+            .opcodes(forOrientation: orientation, forObject: object, withOptions: options)
     }
     
     public func toCTVFLGenericPredicate() -> CTVFLGenericPredicate {
@@ -35,14 +35,14 @@ extension CTVFLEqualSemanticPredicateLiteral where Self: BinaryFloatingPoint {
         return .constant(CTVFLConstantPredicate(constant: .init(rawValue: Float(self)), relation: .equal, priority: priority))
     }
     
-    public func opCodes(
+    public func opcodes(
         forOrientation orientation: CTVFLConstraintOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions
-        ) -> [CTVFLOpCode]
+        ) -> [CTVFLOpcode]
     {
         return CTVFLConstantPredicate(constant: .init(rawValue: Float(self)), relation: .equal, priority: .required)
-            .opCodes(forOrientation: orientation, forObject: object, withOptions: options)
+            .opcodes(forOrientation: orientation, forObject: object, withOptions: options)
     }
     
     public func toCTVFLGenericPredicate() -> CTVFLGenericPredicate {

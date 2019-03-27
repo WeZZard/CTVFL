@@ -48,11 +48,11 @@ public struct CTVFLLayoutablePredicate: CTVFLPredicating, Equatable {
         )
     }
     
-    public func opCodes(
+    public func opcodes(
         forOrientation orientation: CTVFLConstraintOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions
-        ) -> [CTVFLOpCode]
+        ) -> [CTVFLOpcode]
     {
         let layoutAttribute = _layoutAttribute(forOrientation: orientation, forObject: object)
         return [

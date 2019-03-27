@@ -34,7 +34,7 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLOperand {
         return lhs.rawValue === rhs.rawValue
     }
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
         return [.moveItem(.layoutable(self))]
     }
 }

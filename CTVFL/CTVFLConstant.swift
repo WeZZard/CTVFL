@@ -28,7 +28,7 @@ public struct CTVFLConstant: Equatable, RawRepresentable,
         return rawValue.description
     }
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
+    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
         return [
             .moveConstant(self),
             .moveRelation(.equal),

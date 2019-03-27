@@ -19,11 +19,11 @@ public enum CTVFLPredicatedObject {
 public protocol CTVFLPredicating {
     func byUpdatingPriority(_ priority: CTVFLPriority) -> CTVFLGenericPredicate
     
-    func opCodes(
+    func opcodes(
         forOrientation orientation: CTVFLConstraintOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions
-    ) -> [CTVFLOpCode]
+    ) -> [CTVFLOpcode]
     
     func toCTVFLGenericPredicate() -> CTVFLGenericPredicate
 }

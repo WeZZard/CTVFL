@@ -12,7 +12,7 @@ import AppKit
 #endif
 
 // MARK: - CTVFLOperand
-public enum CTVFLOpCode {
+public enum CTVFLOpcode {
     case push
     case pop
     case moveItem(CTVFLItem)
@@ -53,7 +53,7 @@ public protocol CTVFLOperand {
     associatedtype SyntaxEnd: CTVFLSyntaxEnd
     associatedtype SyntaxTermination: CTVFLSyntaxTermination
     
-    func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode]
+    func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode]
 }
 
 // MARK: - CTVFLPopulatableOperand
@@ -96,7 +96,7 @@ extension CTVFLPopulatableOperand {
         
         let needsAlign = !options.intersection(.alignmentMask).isEmpty
         
-        for each in opCodes(forOrientation: orientation, withOptions: options) {
+        for each in opcodes(forOrientation: orientation, withOptions: options) {
             let currentLevel = stack.endIndex - 1
             
             switch each {
@@ -192,12 +192,12 @@ extension CTVFLPopulatableOperand {
             }
         }
         
-        if needsAlign {
+        if needsAlign && itemsToBeAligned.endIndex > 1 {
             let attributes = _attributes(forOptions: options)
             
-            for index in 0..<(itemsToBeAligned.endIndex >> 1) {
-                let firstItem = itemsToBeAligned[index << 1]
-                let secondItem = itemsToBeAligned[(index << 1) + 1]
+            for index in 0..<(itemsToBeAligned.endIndex - 1) {
+                let firstItem = itemsToBeAligned[index]
+                let secondItem = itemsToBeAligned[index + 1]
                 
                 for eachAttribute in attributes {
                     let constraint = NSLayoutConstraint(

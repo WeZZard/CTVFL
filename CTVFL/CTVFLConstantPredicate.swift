@@ -46,15 +46,15 @@ public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLOperand, Equatable 
         return .constant(self)
     }
     
-    public func opCodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpCode] {
-        return opCodes(forOrientation: orientation, forObject: .position, withOptions: options)
+    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
+        return opcodes(forOrientation: orientation, forObject: .position, withOptions: options)
     }
     
-    public func opCodes(
+    public func opcodes(
         forOrientation orientation: CTVFLConstraintOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions
-        ) -> [CTVFLOpCode]
+        ) -> [CTVFLOpcode]
     {
         let layoutAttribute = _layoutAttribute(forOrientation: orientation, forObject: object)
         return [
