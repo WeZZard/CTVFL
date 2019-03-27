@@ -6,17 +6,17 @@
 //
 
 public class CTVFLConstraintGroup {
-    internal var _constraints: ContiguousArray<_CTVFLConstraint> {
-        return _constraints_
+    internal var _handlers: ContiguousArray<_CTVFLConstraintHandler> {
+        return _handlers_
     }
     
-    private var _constraints_: ContiguousArray<_CTVFLConstraint>
+    private var _handlers_: ContiguousArray<_CTVFLConstraintHandler>
     
     /// The active state of the contained constraints.
     @available(macOS, introduced: 10.10)
     @available(macOSApplicationExtension, introduced: 10.10)
     public func setActive(_ active: Bool) {
-        for constraint in _constraints {
+        for constraint in _handlers {
             constraint.isActive = active
         }
     }
@@ -24,35 +24,35 @@ public class CTVFLConstraintGroup {
     @available(macOS, introduced: 10.10)
     @available(macOSApplicationExtension, introduced: 10.10)
     public var areAllAcrive: Bool {
-        return _constraints.isEmpty
+        return _handlers.isEmpty
             ? false
-            : _constraints.map({ $0.isActive }).reduce(true, { $0 && $1 })
+            : _handlers.map({ $0.isActive }).reduce(true, { $0 && $1 })
     }
     
     internal init() {
-        _constraints_ = []
+        _handlers_ = []
     }
     
-    internal func _replaceConstraints(
-        _ constraints: ContiguousArray<_CTVFLConstraint>
+    internal func _replaceConstraintHandlers(
+        _ constraintHandlers: ContiguousArray<_CTVFLConstraintHandler>
         )
     {
         uninstall()
         
-        _constraints_ = constraints
+        _handlers_ = constraintHandlers
         
         install()
     }
     
     public func uninstall() {
-        for constraint in _constraints {
-            constraint.uninstall()
+        for handler in _handlers {
+            handler.uninstall()
         }
     }
     
     public func install() {
-        for constraint in _constraints {
-            constraint.install()
+        for handler in _handlers {
+            handler.install()
         }
     }
 }

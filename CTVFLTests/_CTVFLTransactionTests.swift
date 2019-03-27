@@ -24,7 +24,7 @@ class _CTVFLTransactionTests: XCTestCase {
     }
     
     func testInit() {
-        XCTAssert(context.constraints.isEmpty)
+        XCTAssert(context.handlers.isEmpty)
     }
     
     func testManagingContextStack() {

@@ -7,65 +7,54 @@
 
 
 internal class _CTVFLTransaction {
-    typealias _Constraints = ContiguousArray<_CTVFLConstraint>
+    // MARK: Managing Constraint Handlers
+    internal var handlers: ContiguousArray<_CTVFLConstraintHandler> {
+        return _handlers_
+    }
     
-    // MARK: Managing Constraints
-    internal var constraints: _Constraints { return _cosntraints_ }
-    
-    private var _cosntraints_: _Constraints
+    private var _handlers_: ContiguousArray<_CTVFLConstraintHandler>
     
     internal func pushConstraints<C>(_ constraints: C) where
         C: Sequence, C.Element == CTVFLConstraint
     {
-        typealias CTVFLConstraints = ContiguousArray<CTVFLConstraint>
-        
-        var views = Set<CTVFLView>()
-        
-        var remoteConstraints = CTVFLConstraints()
-        var localConstraints = CTVFLConstraints()
+        var cachedCommonAncestors = [[CTVFLView] : CTVFLView]()
         
         for eachConstraint in constraints {
-            let firstViewOrNil = eachConstraint.firstItem as? CTVFLView
-            let secondViewOrNil = eachConstraint.secondItem as? CTVFLView
-            
-            if let firstView = firstViewOrNil, !views.contains(firstView) {
+            if let firstView = eachConstraint.firstItem as? CTVFLView {
                 firstView.translatesAutoresizingMaskIntoConstraints = false
-                views.insert(firstView)
-            }
-            
-            if let secondView = secondViewOrNil, !views.contains(secondView) {
-                secondView.translatesAutoresizingMaskIntoConstraints = false
-                views.insert(secondView)
-            }
-            
-            if eachConstraint.secondItem == nil {
-                localConstraints.append(eachConstraint)
-            } else {
-                remoteConstraints.append(eachConstraint)
-            }
-        }
-        
-        if !remoteConstraints.isEmpty {
-            if let hostView = views._commonAncestor {
-                let installables = remoteConstraints.map {
-                    _CTVFLConstraint(view: hostView, constraint: $0)
+                
+                if let secondView = eachConstraint.secondItem as? CTVFLView {
+                    secondView.translatesAutoresizingMaskIntoConstraints = false
+                    
+                    let views = [firstView, secondView]
+                    
+                    if let commonAncestor = cachedCommonAncestors[views]
+                        ?? views._commonAncestor
+                    {
+                        cachedCommonAncestors[views] = commonAncestor
+                        let handler = _CTVFLConstraintHandler(
+                            view: commonAncestor,
+                            constraint: eachConstraint
+                        )
+                        _handlers_.append(handler)
+                    } else {
+                        debugPrint(
+                            """
+                            No common super view found for constraint:
+                            \(eachConstraint). Candidate views: \(views).
+                            """
+                        )
+                    }
+                } else {
+                    let handler = _CTVFLConstraintHandler(
+                        view: firstView,
+                        constraint: eachConstraint
+                    )
+                    _handlers_.append(handler)
                 }
-                _cosntraints_.append(contentsOf: installables)
             } else {
-                debugPrint(
-                    """
-                    No common super view found for constraints:
-                    \(Array(constraints)). Candidates: \(views).
-                    """
-                )
+                debugPrint("Invalid constraint: \(eachConstraint).")
             }
-        }
-        
-        if !localConstraints.isEmpty {
-            let installables = localConstraints.map{
-                _CTVFLConstraint(constraint: $0)
-            }
-            _cosntraints_.append(contentsOf: installables)
         }
     }
     
@@ -89,6 +78,6 @@ internal class _CTVFLTransaction {
     internal static private(set) var contexts: [_CTVFLTransaction] = []
     
     internal init() {
-        _cosntraints_ = []
+        _handlers_ = []
     }
 }
