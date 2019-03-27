@@ -28,12 +28,11 @@ public struct CTVFLConstant: Equatable, RawRepresentable,
         return rawValue.description
     }
     
-    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
-        return [
-            .moveConstant(self),
-            .moveRelation(.equal),
-            .movePriority(.required),
-        ]
+    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+        storage._ensureTailElements(3)
+        storage.append(.moveConstant(self))
+        storage.append(.moveRelation(.equal))
+        storage.append(.movePriority(.required))
     }
 }
 

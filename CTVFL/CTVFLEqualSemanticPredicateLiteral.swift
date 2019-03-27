@@ -15,14 +15,15 @@ extension CTVFLEqualSemanticPredicateLiteral where Self: BinaryInteger {
         return .constant(CTVFLConstantPredicate(constant: .init(rawValue: Float(self)), relation: .equal, priority: priority))
     }
     
-    public func opcodes(
+    public func generateOpcodes(
         forOrientation orientation: CTVFLConstraintOrientation,
         forObject object: CTVFLPredicatedObject,
-        withOptions options: CTVFLOptions
-        ) -> [CTVFLOpcode]
+        withOptions options: CTVFLOptions,
+        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        )
     {
         return CTVFLConstantPredicate(constant: .init(rawValue: Float(self)), relation: .equal, priority: .required)
-            .opcodes(forOrientation: orientation, forObject: object, withOptions: options)
+            .generateOpcodes(forOrientation: orientation, forObject: object, withOptions: options, withStorage: &storage)
     }
     
     public func toCTVFLGenericPredicate() -> CTVFLGenericPredicate {
@@ -35,14 +36,15 @@ extension CTVFLEqualSemanticPredicateLiteral where Self: BinaryFloatingPoint {
         return .constant(CTVFLConstantPredicate(constant: .init(rawValue: Float(self)), relation: .equal, priority: priority))
     }
     
-    public func opcodes(
+    public func generateOpcodes(
         forOrientation orientation: CTVFLConstraintOrientation,
         forObject object: CTVFLPredicatedObject,
-        withOptions options: CTVFLOptions
-        ) -> [CTVFLOpcode]
+        withOptions options: CTVFLOptions,
+        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        )
     {
         return CTVFLConstantPredicate(constant: .init(rawValue: Float(self)), relation: .equal, priority: .required)
-            .opcodes(forOrientation: orientation, forObject: object, withOptions: options)
+            .generateOpcodes(forOrientation: orientation, forObject: object, withOptions: options, withStorage: &storage)
     }
     
     public func toCTVFLGenericPredicate() -> CTVFLGenericPredicate {

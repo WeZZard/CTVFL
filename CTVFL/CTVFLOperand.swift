@@ -53,7 +53,18 @@ public protocol CTVFLOperand {
     associatedtype SyntaxEnd: CTVFLSyntaxEnd
     associatedtype SyntaxTermination: CTVFLSyntaxTermination
     
-    func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode]
+    func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>)
+}
+
+
+extension ContiguousArray where Element == CTVFLOpcode {
+    @inline(__always)
+    internal mutating func _ensureTailElements(_ addition: Int) {
+        let targetCapacity = Swift.max(100, count + addition)
+        if capacity < targetCapacity {
+            reserveCapacity(targetCapacity)
+        }
+    }
 }
 
 // MARK: - CTVFLPopulatableOperand
@@ -88,18 +99,26 @@ extension CTVFLPopulatableOperand {
             priority: .required
         )
         
-        var stack: [Level] = [emptyLevel]
+        var stack: ContiguousArray<Level> = [emptyLevel]
+        stack.reserveCapacity(10)
         
-        var constraints = [CTVFLConstraint]()
+        var constraints = ContiguousArray<CTVFLConstraint>()
+        constraints.reserveCapacity(10)
         
-        var itemsToBeAligned = [AnyObject]()
+        var itemsToBeAligned = ContiguousArray<AnyObject>()
+        itemsToBeAligned.reserveCapacity(10)
         
         let needsAlign = !options.intersection(.alignmentMask).isEmpty
         
-        for each in opcodes(forOrientation: orientation, withOptions: options) {
+        var opcodes = ContiguousArray<CTVFLOpcode>()
+        
+        self.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &opcodes)
+        
+        for index in 0..<opcodes.endIndex {
+            let eachOpcode = opcodes[index]
             let currentLevel = stack.endIndex - 1
             
-            switch each {
+            switch eachOpcode {
             case .push:
                 stack.append(emptyLevel)
             case .pop:
@@ -113,8 +132,8 @@ extension CTVFLPopulatableOperand {
                     priority
                 ) = stack.popLast()!
                 
-                let constraint = NSLayoutConstraint(
-                    item: item1!._getView(with: item2),
+                let constraint = NSLayoutConstraint.___ctvfl_constraint(
+                    withItem: item1!._getView(with: item2),
                     attribute: attribute1!,
                     relatedBy: relation!,
                     toItem: item2?._getView(with: item1),
@@ -215,7 +234,7 @@ extension CTVFLPopulatableOperand {
             }
         }
         
-        return constraints
+        return Array(constraints)
     }
     
     internal func _attributes(forOptions options: CTVFLOptions) -> [CTVFLLayoutAttribute] {

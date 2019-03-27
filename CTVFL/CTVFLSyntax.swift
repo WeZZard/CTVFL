@@ -30,22 +30,18 @@ public struct CTVFLLayoutableToLayoutableSpaceSyntax<Lhs: CTVFLOperand, Rhs: CTV
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
-        let lhsOpcodes = lhs.opcodes(forOrientation: orientation, withOptions: options)
-        let rhsOpcodes = rhs.opcodes(forOrientation: orientation, withOptions: options)
-        
-        var opcodes = [CTVFLOpcode]()
-        opcodes.reserveCapacity(2 + lhsOpcodes.count + rhsOpcodes.count + 5)
-        opcodes.append(.push)
-        opcodes.append(.moveAttribute(_lhsAttribute(forOrientation: orientation, withOptions: options)))
-        opcodes.append(contentsOf: lhsOpcodes)
-        opcodes.append(contentsOf: rhsOpcodes)
-        opcodes.append(.moveAttribute(_rhsAttribute(forOrientation: orientation, withOptions: options)))
-        opcodes.append(.moveRelation(.equal))
-        opcodes.append(.moveConstant(CTVFLConstant(rawValue: 8)))
-        opcodes.append(.pop)
-        opcodes.append(.loadRhsItem)
-        return opcodes
+    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+        storage._ensureTailElements(2)
+        storage.append(.push)
+        storage.append(.moveAttribute(_lhsAttribute(forOrientation: orientation, withOptions: options)))
+        lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(5)
+        storage.append(.moveAttribute(_rhsAttribute(forOrientation: orientation, withOptions: options)))
+        storage.append(.moveRelation(.equal))
+        storage.append(.moveConstant(CTVFLConstant(rawValue: 8)))
+        storage.append(.pop)
+        storage.append(.loadRhsItem)
     }
 }
 
@@ -68,16 +64,12 @@ public struct CTVFLConstantToLayoutableSpaceSyntax<Lhs: CTVFLOperand, Rhs: CTVFL
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
-        let list1 = lhs.opcodes(forOrientation: orientation, withOptions: options)
-        let list2 = rhs.opcodes(forOrientation: orientation, withOptions: options)
-        let list3: [CTVFLOpcode] = [.moveAttribute(_rhsAttribute(forOrientation: orientation, withOptions: options)), .pop]
-        var opcodes = [CTVFLOpcode]()
-        opcodes.reserveCapacity(list1.count + list2.count + list3.count)
-        opcodes.append(contentsOf: list1)
-        opcodes.append(contentsOf: list2)
-        opcodes.append(contentsOf: list3)
-        return opcodes
+    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+        lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(2)
+        storage.append(.moveAttribute(_rhsAttribute(forOrientation: orientation, withOptions: options)))
+        storage.append(.pop)
     }
 }
 
@@ -100,16 +92,12 @@ public struct CTVFLLayoutableToConstantSpaceSyntax<Lhs: CTVFLOperand, Rhs: CTVFL
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
-        let list1: [CTVFLOpcode] = [.push, .moveAttribute(_lhsAttribute(forOrientation: orientation, withOptions: options))]
-        let list2 = lhs.opcodes(forOrientation: orientation, withOptions: options)
-        let list3 = rhs.opcodes(forOrientation: orientation, withOptions: options)
-        var opcodes = [CTVFLOpcode]()
-        opcodes.reserveCapacity(list1.count + list2.count + list3.count)
-        opcodes.append(contentsOf: list1)
-        opcodes.append(contentsOf: list2)
-        opcodes.append(contentsOf: list3)
-        return opcodes
+    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+        storage._ensureTailElements(2)
+        storage.append(.push)
+        storage.append(.moveAttribute(_lhsAttribute(forOrientation: orientation, withOptions: options)))
+        lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
     }
 }
 
@@ -132,27 +120,18 @@ public struct CTVFLAdjacentSyntax<Lhs: CTVFLOperand, Rhs: CTVFLOperand>:
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
-        let list1: [CTVFLOpcode] = [
-            .push,
-            .moveAttribute(_lhsAttribute(forOrientation: orientation, withOptions: options)),
-        ]
-        let list2 = lhs.opcodes(forOrientation: orientation, withOptions: options)
-        let list3 = rhs.opcodes(forOrientation: orientation, withOptions: options)
-        let list4: [CTVFLOpcode] = [
-            .moveAttribute(_rhsAttribute(forOrientation: orientation, withOptions: options)),
-            .moveRelation(.equal),
-            .moveConstant(CTVFLConstant(rawValue: 0)),
-            .pop,
-            .loadRhsItem
-        ]
-        var opcodes = [CTVFLOpcode]()
-        opcodes.reserveCapacity(list1.count + list2.count + list3.count + list4.count)
-        opcodes.append(contentsOf: list1)
-        opcodes.append(contentsOf: list2)
-        opcodes.append(contentsOf: list3)
-        opcodes.append(contentsOf: list4)
-        return opcodes
+    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+        storage._ensureTailElements(2)
+        storage.append(.push)
+        storage.append(.moveAttribute(_lhsAttribute(forOrientation: orientation, withOptions: options)))
+        lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(5)
+        storage.append(.moveAttribute(_rhsAttribute(forOrientation: orientation, withOptions: options)))
+        storage.append(.moveRelation(.equal))
+        storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
+        storage.append(.pop)
+        storage.append(.loadRhsItem)
     }
 }
 
@@ -170,26 +149,18 @@ public struct CTVFLSpacedLeadingLayoutableSyntax<O: CTVFLOperand>: CTVFLPopulata
     
     public let operand: Operand
     
-    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
-        let list1: [CTVFLOpcode] = [
-            .push,
-            .moveConstant(CTVFLConstant(rawValue: 8)),
-            .moveRelation(.equal),
-            .moveItem(.container),
-            .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
-            .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
-        ]
-        let list2 = operand.opcodes(forOrientation: orientation, withOptions: options)
-        let list3: [CTVFLOpcode] = [
-            .pop,
-            .loadRhsItem,
-        ]
-        var opcodes = [CTVFLOpcode]()
-        opcodes.reserveCapacity(list1.count + list2.count + list3.count)
-        opcodes.append(contentsOf: list1)
-        opcodes.append(contentsOf: list2)
-        opcodes.append(contentsOf: list3)
-        return opcodes
+    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+        storage._ensureTailElements(7)
+        storage.append(.push)
+        storage.append(.moveConstant(CTVFLConstant(rawValue: 8)))
+        storage.append(.moveRelation(.equal))
+        storage.append(.moveItem(.container))
+        storage.append(.moveAttribute(_attribute(forOrientation: orientation, withOptions: options)))
+        storage.append(.moveAttribute(_attribute(forOrientation: orientation, withOptions: options)))
+        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(2)
+        storage.append(.pop)
+        storage.append(.loadRhsItem)
     }
 }
 
@@ -207,26 +178,18 @@ public struct CTVFLSpacedTrailingLayoutableSyntax<O: CTVFLOperand>: CTVFLPopulat
     
     public let operand: Operand
     
-    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
-        let list1: [CTVFLOpcode] = [
-            .push,
-            .moveConstant(CTVFLConstant(rawValue: 8)),
-            .moveRelation(.equal),
-            .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
-        ]
-        let list2 = operand.opcodes(forOrientation: orientation, withOptions: options)
-        let list3: [CTVFLOpcode] = [
-            .moveItem(.container),
-            .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
-            .pop,
-            .loadLhsItem,
-        ]
-        var opcodes = [CTVFLOpcode]()
-        opcodes.reserveCapacity(list1.count + list2.count + list3.count)
-        opcodes.append(contentsOf: list1)
-        opcodes.append(contentsOf: list2)
-        opcodes.append(contentsOf: list3)
-        return opcodes
+    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+        storage._ensureTailElements(4)
+        storage.append(.push)
+        storage.append(.moveConstant(CTVFLConstant(rawValue: 8)))
+        storage.append(.moveRelation(.equal))
+        storage.append(.moveAttribute(_attribute(forOrientation: orientation, withOptions: options)))
+        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(4)
+        storage.append(.moveItem(.container))
+        storage.append(.moveAttribute(_attribute(forOrientation: orientation, withOptions: options)))
+        storage.append(.pop)
+        storage.append(.loadLhsItem)
     }
 }
 
@@ -244,26 +207,18 @@ public struct CTVFLLeadingLayoutableSyntax<O: CTVFLOperand>: CTVFLPopulatableOpe
     
     public let operand: Operand
     
-    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
-        let list1: [CTVFLOpcode] = [
-            .push,
-            .moveConstant(CTVFLConstant(rawValue: 0)),
-            .moveRelation(.equal),
-            .moveItem(.container),
-            .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
-            .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
-        ]
-        let list2 = operand.opcodes(forOrientation: orientation, withOptions: options)
-        let list3: [CTVFLOpcode] = [
-            .pop,
-            .loadRhsItem,
-        ]
-        var opcodes = [CTVFLOpcode]()
-        opcodes.reserveCapacity(list1.count + list2.count + list3.count)
-        opcodes.append(contentsOf: list1)
-        opcodes.append(contentsOf: list2)
-        opcodes.append(contentsOf: list3)
-        return opcodes
+    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+        storage._ensureTailElements(6)
+        storage.append(.push)
+        storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
+        storage.append(.moveRelation(.equal))
+        storage.append(.moveItem(.container))
+        storage.append(.moveAttribute(_attribute(forOrientation: orientation, withOptions: options)))
+        storage.append(.moveAttribute(_attribute(forOrientation: orientation, withOptions: options)))
+        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(2)
+        storage.append(.pop)
+        storage.append(.loadRhsItem)
     }
 }
 
@@ -281,26 +236,18 @@ public struct CTVFLTrailingLayoutableSyntax<O: CTVFLOperand>: CTVFLPopulatableOp
     
     public let operand: Operand
     
-    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
-        let list1: [CTVFLOpcode] = [
-            .push,
-            .moveConstant(CTVFLConstant(rawValue: 0)),
-            .moveRelation(.equal),
-        ]
-        let list2 = operand.opcodes(forOrientation: orientation, withOptions: options)
-        let list3: [CTVFLOpcode] = [
-            .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
-            .moveItem(.container),
-            .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
-            .pop,
-            .loadLhsItem,
-        ]
-        var opcodes = [CTVFLOpcode]()
-        opcodes.reserveCapacity(list1.count + list2.count + list3.count)
-        opcodes.append(contentsOf: list1)
-        opcodes.append(contentsOf: list2)
-        opcodes.append(contentsOf: list3)
-        return opcodes
+    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+        storage._ensureTailElements(3)
+        storage.append(.push)
+        storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
+        storage.append(.moveRelation(.equal))
+        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(5)
+        storage.append(.moveAttribute(_attribute(forOrientation: orientation, withOptions: options)))
+        storage.append(.moveItem(.container))
+        storage.append(.moveAttribute(_attribute(forOrientation: orientation, withOptions: options)))
+        storage.append(.pop)
+        storage.append(.loadLhsItem)
     }
 }
 
@@ -318,18 +265,12 @@ public struct CTVFLLeadingConstantSyntax<O: CTVFLOperand>: CTVFLOperand, _CTVFLL
     
     public let operand: Operand
     
-    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
-        let list1: [CTVFLOpcode] = [
-            .push,
-            .moveItem(.container),
-            .moveAttribute(_attribute(forOrientation: orientation, withOptions: options))
-        ]
-        let list2 = operand.opcodes(forOrientation: orientation, withOptions: options)
-        var opcodes = [CTVFLOpcode]()
-        opcodes.reserveCapacity(list1.count + list2.count)
-        opcodes.append(contentsOf: list1)
-        opcodes.append(contentsOf: list2)
-        return opcodes
+    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+        storage._ensureTailElements(3)
+        storage.append(.push)
+        storage.append(.moveItem(.container))
+        storage.append(.moveAttribute(_attribute(forOrientation: orientation, withOptions: options)))
+        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
     }
 }
 
@@ -347,18 +288,12 @@ public struct CTVFLTrailingConstantSyntax<O: CTVFLOperand>: CTVFLOperand, _CTVFL
     
     public let operand: Operand
     
-    public func opcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> [CTVFLOpcode] {
-        let list1 = operand.opcodes(forOrientation: orientation, withOptions: options)
-        let list2: [CTVFLOpcode] = [
-            .moveItem(.container),
-            .moveAttribute(_attribute(forOrientation: orientation, withOptions: options)),
-            .pop,
-        ]
-        var opcodes = [CTVFLOpcode]()
-        opcodes.reserveCapacity(list1.count + list2.count)
-        opcodes.append(contentsOf: list1)
-        opcodes.append(contentsOf: list2)
-        return opcodes
+    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(3)
+        storage.append(.moveItem(.container))
+        storage.append(.moveAttribute(_attribute(forOrientation: orientation, withOptions: options)))
+        storage.append(.pop)
     }
 }
 
@@ -369,12 +304,15 @@ internal protocol _CTVFLLeadingSyntax: CTVFLOperand {
 }
 
 extension _CTVFLLeadingSyntax {
+    @inline(__always)
     internal func _attribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute {
+        let rawOptions = options.rawValue
+        
         switch orientation {
         case .horizontal:
-            if options.contains(.directionLeftToRight) {
+            if (rawOptions & rawDirectionLeftToRight) != 0 {
                 return .left
-            } else if options.contains(.directionRightToLeft) {
+            } else if (rawOptions & rawDirectionRightToLeft) != 0 {
                 return .right
             } else {
                 return .leading
@@ -401,11 +339,13 @@ internal protocol _CTVFLTrailingSyntax: CTVFLOperand {
 extension _CTVFLTrailingSyntax {
     @inline(__always)
     internal func _attribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute {
+        let rawOptions = options.rawValue
+        
         switch orientation {
         case .horizontal:
-            if options.contains(.directionLeftToRight) {
+            if (rawOptions & rawDirectionLeftToRight) != 0 {
                 return .right
-            } else if options.contains(.directionRightToLeft) {
+            } else if (rawOptions & rawDirectionRightToLeft) != 0 {
                 return .left
             } else {
                 return .trailing
@@ -433,11 +373,13 @@ internal protocol _CTVFLBinarySyntax: CTVFLOperand {
 extension _CTVFLBinarySyntax {
     @inline(__always)
     internal func _lhsAttribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute {
+        let rawOptions = options.rawValue
+        
         switch orientation {
         case .horizontal:
-            if options.contains(.directionLeftToRight) {
+            if (rawOptions & rawDirectionLeftToRight) != 0 {
                 return .right
-            } else if options.contains(.directionRightToLeft) {
+            } else if (rawOptions & rawDirectionRightToLeft) != 0 {
                 return .left
             } else {
                 return .trailing
@@ -458,11 +400,13 @@ extension _CTVFLBinarySyntax {
     
     @inline(__always)
     internal func _rhsAttribute(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions) -> CTVFLLayoutAttribute {
+        let rawOptions = options.rawValue
+        
         switch orientation {
         case .horizontal:
-            if options.contains(.directionLeftToRight) {
+            if (rawOptions & rawDirectionLeftToRight) != 0 {
                 return .left
-            } else if options.contains(.directionRightToLeft) {
+            } else if (rawOptions & rawDirectionRightToLeft) != 0 {
                 return .right
             } else {
                 return .leading
@@ -481,3 +425,6 @@ extension _CTVFLBinarySyntax {
         }
     }
 }
+
+let rawDirectionLeftToRight = CTVFLOptions.directionLeftToRight.rawValue
+let rawDirectionRightToLeft = CTVFLOptions.directionRightToLeft.rawValue

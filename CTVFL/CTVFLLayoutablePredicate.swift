@@ -48,20 +48,25 @@ public struct CTVFLLayoutablePredicate: CTVFLPredicating, Equatable {
         )
     }
     
-    public func opcodes(
+    public func generateOpcodes(
         forOrientation orientation: CTVFLConstraintOrientation,
         forObject object: CTVFLPredicatedObject,
-        withOptions options: CTVFLOptions
-        ) -> [CTVFLOpcode]
+        withOptions options: CTVFLOptions,
+        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        )
     {
-        let layoutAttribute = _layoutAttribute(forOrientation: orientation, forObject: object)
-        return [
-            layoutAttribute.map({.moveAttribute($0)}),
-            .moveItem(.layoutable(_layoutable)),
-            layoutAttribute.map({.moveAttribute($0)}),
-            .moveRelation(_layoutRelation),
-            .movePriority(_priority),
-        ].compactMap({$0})
+        let layoutAttributeOrNil = _layoutAttribute(forOrientation: orientation, forObject: object)
+        
+        storage._ensureTailElements(5)
+        if let layoutAttribute = layoutAttributeOrNil {
+            storage.append(.moveAttribute(layoutAttribute))
+        }
+        storage.append(.moveItem(.layoutable(_layoutable)))
+        if let layoutAttribute = layoutAttributeOrNil {
+            storage.append(.moveAttribute(layoutAttribute))
+        }
+        storage.append(.moveRelation(_layoutRelation))
+        storage.append(.movePriority(_priority))
     }
     
     public func toCTVFLGenericPredicate() -> CTVFLGenericPredicate {

@@ -24,20 +24,19 @@ public class CTVFLPredicatedLayoutable: CTVFLPopulatableOperand {
         _predicates = predicates.map({$0})
     }
     
-    public func opcodes(
+    public func generateOpcodes(
         forOrientation orientation: CTVFLConstraintOrientation,
-        withOptions options: CTVFLOptions
-        ) -> [CTVFLOpcode]
+        withOptions options: CTVFLOptions,
+        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        )
     {
-        return _predicates.map({ (predicate) -> [[CTVFLOpcode]] in [
-            [
-                .push,
-                .moveItem(.layoutable(_layoutable)),
-            ],
-            predicate.opcodes(forOrientation: orientation, forObject: .dimension, withOptions: options),
-            [
-                .pop
-            ],
-        ]}).flatMap({$0.flatMap{$0}}) + [.loadLhsItem]
+        storage._ensureTailElements(3 * _predicates.count + 1)
+        for eachPredicate in _predicates {
+            storage.append(.push)
+            storage.append(.moveItem(.layoutable(_layoutable)))
+            eachPredicate.generateOpcodes(forOrientation: orientation, forObject: .dimension, withOptions: options, withStorage: &storage)
+            storage.append(.pop)
+        }
+        storage.append(.loadLhsItem)
     }
 }

@@ -26,24 +26,27 @@ public enum CTVFLGenericPredicate: CTVFLPredicating, Equatable {
         }
     }
     
-    public func opcodes(
+    public func generateOpcodes(
         forOrientation orientation: CTVFLConstraintOrientation,
         forObject object: CTVFLPredicatedObject,
-        withOptions options: CTVFLOptions
-        ) -> [CTVFLOpcode]
+        withOptions options: CTVFLOptions,
+        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        )
     {
         switch self {
         case let .constant(constant):
-            return constant.opcodes(
+            return constant.generateOpcodes(
                 forOrientation: orientation,
                 forObject: object,
-                withOptions: options
+                withOptions: options,
+                withStorage: &storage
             )
         case let .layoutable(layoutable):
-            return layoutable.opcodes(
+            return layoutable.generateOpcodes(
                 forOrientation: orientation,
                 forObject: object,
-                withOptions: options
+                withOptions: options,
+                withStorage: &storage
             )
         }
     }
