@@ -21,16 +21,22 @@ internal class _CTVFLTransaction {
         
         for eachConstraint in constraints {
             if let firstView = eachConstraint.firstItem as? CTVFLView {
-                firstView.translatesAutoresizingMaskIntoConstraints = false
                 
                 if let secondView = eachConstraint.secondItem as? CTVFLView {
-                    secondView.translatesAutoresizingMaskIntoConstraints = false
                     
                     let views = [firstView, secondView]
                     
                     if let commonAncestor = cachedCommonAncestors[views]
                         ?? views._commonAncestor
                     {
+                        if commonAncestor !== firstView {
+                            firstView.translatesAutoresizingMaskIntoConstraints = false
+                        }
+                        
+                        if commonAncestor !== secondView {
+                            secondView.translatesAutoresizingMaskIntoConstraints = false
+                        }
+                        
                         cachedCommonAncestors[views] = commonAncestor
                         let handler = _CTVFLConstraintHandler(
                             view: commonAncestor,
@@ -46,6 +52,8 @@ internal class _CTVFLTransaction {
                         )
                     }
                 } else {
+                    firstView.translatesAutoresizingMaskIntoConstraints = false
+                    
                     let handler = _CTVFLConstraintHandler(
                         view: firstView,
                         constraint: eachConstraint
