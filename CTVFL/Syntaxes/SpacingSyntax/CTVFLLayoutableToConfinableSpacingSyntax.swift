@@ -1,15 +1,15 @@
 //
-//  CTVFLLayoutableToLayoutableAdjacentSyntax.swift
+//  CTVFLLayoutableToConfinableSpacingSyntax.swift
 //  CTVFL
 //
 //  Created on 2019/3/28.
 //
 
 
-/// `view1 | view2`
+/// `view - layoutGuide`
 ///
-public struct CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs: CTVFLLayoutableOperand, Rhs: CTVFLLayoutableOperand>:
-    CTVFLSyntaxEvaluatable, CTVFLLayoutableOperand, _CTVFLBinarySyntax where
+public struct CTVFLLayoutableToConfinableSpacingSyntax<Lhs: CTVFLLayoutableOperand, Rhs: CTVFLConfinableOperand>:
+    CTVFLSyntaxEvaluatable, CTVFLConfinableOperand, _CTVFLBinarySyntax where
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
@@ -18,9 +18,9 @@ public struct CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs: CTVFLLayoutableOper
     
     public typealias LeadingLayoutBoundary = Lhs.LeadingLayoutBoundary
     public typealias TrailingLayoutBoundary = Rhs.TrailingLayoutBoundary
-    public typealias OperableForm = Rhs.OperableForm
+    public typealias OperableForm = CTVFLSyntaxOperableFormConfinable
     public typealias HeadAssociativity = Lhs.HeadAssociativity
-    public typealias TailAssociativity = Rhs.TailAssociativity
+    public typealias TailAssociativity = CTVFLSyntaxAssociativityIsClosed
     
     public let lhs: Lhs
     public let rhs: Rhs
@@ -36,25 +36,25 @@ public struct CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs: CTVFLLayoutableOper
         storage._ensureTailElements(6)
         storage.append(.moveAttribute(rhs.attributeForBeingConstrained(at: .rhs, forOrientation: orientation, withOptions: options)))
         storage.append(.moveRelation(.equal))
-        storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
+        storage.append(.moveUsesSystemSpace(true))
         storage.append(.moveReturnValue(.secondItem))
         storage.append(.makeConstraint)
         storage.append(.pop)
     }
 }
 
-public func | <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs, Rhs> {
-    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: lhs, rhs: rhs)
+public func - <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLConfinableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableSpacingSyntax<CTVFLLayoutable, CTVFLConfinable> {
+    return CTVFLLayoutableToConfinableSpacingSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeConfinable(rhs))
 }
 
-public func | <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<CTVFLLayoutable, CTVFLLayoutable> {
-    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeLayoutable(rhs))
+public func - <Lhs, Rhs: CTVFLConfinableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableSpacingSyntax<Lhs, CTVFLConfinable> {
+    return CTVFLLayoutableToConfinableSpacingSyntax(lhs: lhs, rhs: Rhs._makeConfinable(rhs))
 }
 
-public func | <Lhs, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs, CTVFLLayoutable> {
-    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
+public func - <Lhs: CTVFLLayoutableConvertible, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableSpacingSyntax<CTVFLLayoutable, Rhs> {
+    return CTVFLLayoutableToConfinableSpacingSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
 }
 
-public func | <Lhs: CTVFLLayoutableConvertible, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<CTVFLLayoutable, Rhs> {
-    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
+public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableSpacingSyntax<Lhs, Rhs> {
+    return CTVFLLayoutableToConfinableSpacingSyntax(lhs: lhs, rhs: rhs)
 }

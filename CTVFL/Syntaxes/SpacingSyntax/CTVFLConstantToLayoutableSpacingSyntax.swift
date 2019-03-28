@@ -1,5 +1,5 @@
 //
-//  CTVFLConstantToLayoutableSystemSpacingSyntax.swift
+//  CTVFLConstantToLayoutableSpacingSyntax.swift
 //  CTVFL
 //
 //  Created on 2019/3/28.
@@ -8,7 +8,7 @@
 
 /// `n - view`
 ///
-public struct CTVFLConstantToLayoutableSystemSpacingSyntax<Lhs: CTVFLConstantOperand, Rhs: CTVFLLayoutableOperand>:
+public struct CTVFLConstantToLayoutableSpacingSyntax<Lhs: CTVFLConstantOperand, Rhs: CTVFLLayoutableOperand>:
     CTVFLSyntaxEvaluatable, CTVFLLayoutableOperand, _CTVFLBinarySyntax where
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
@@ -19,7 +19,7 @@ public struct CTVFLConstantToLayoutableSystemSpacingSyntax<Lhs: CTVFLConstantOpe
     public typealias LeadingLayoutBoundary = Lhs.LeadingLayoutBoundary
     public typealias TrailingLayoutBoundary = Rhs.TrailingLayoutBoundary
     public typealias OperableForm = CTVFLSyntaxOperableFormLayoutable
-    public typealias HeadAssociativity = Rhs.HeadAssociativity
+    public typealias HeadAssociativity = Lhs.HeadAssociativity
     public typealias TailAssociativity = Rhs.TailAssociativity
     
     public let lhs: Lhs
@@ -36,4 +36,12 @@ public struct CTVFLConstantToLayoutableSystemSpacingSyntax<Lhs: CTVFLConstantOpe
         storage.append(.makeConstraint)
         storage.append(.pop)
     }
+}
+
+public func - <Lhs, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLConstantToLayoutableSpacingSyntax<Lhs, CTVFLLayoutable> {
+    return CTVFLConstantToLayoutableSpacingSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
+}
+
+public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLConstantToLayoutableSpacingSyntax<Lhs, Rhs> {
+    return CTVFLConstantToLayoutableSpacingSyntax(lhs: lhs, rhs: rhs)
 }

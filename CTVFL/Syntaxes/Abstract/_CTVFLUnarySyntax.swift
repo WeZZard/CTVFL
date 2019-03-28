@@ -22,9 +22,9 @@ extension _CTVFLUnarySyntax {
         case .lhs:
             switch orientation {
             case .horizontal:
-                if (rawOptions & rawDirectionLeftToRight) != 0 {
+                if (rawOptions & _rawDirectionLeftToRight) != 0 {
                     return .left
-                } else if (rawOptions & rawDirectionRightToLeft) != 0 {
+                } else if (rawOptions & _rawDirectionRightToLeft) != 0 {
                     return .right
                 } else {
                     return .leading
@@ -32,7 +32,7 @@ extension _CTVFLUnarySyntax {
             case .vertical:
                 #if os(iOS) || os(tvOS)
                 if #available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *) {
-                    if (rawOptions & rawSpacingBaselineToBaseline) != 0 {
+                    if (rawOptions & _rawSpacingBaselineToBaseline) != 0 {
                         return .firstBaseline
                     }
                 }
@@ -44,9 +44,9 @@ extension _CTVFLUnarySyntax {
         case .rhs:
             switch orientation {
             case .horizontal:
-                if (rawOptions & rawDirectionLeftToRight) != 0 {
+                if (rawOptions & _rawDirectionLeftToRight) != 0 {
                     return .right
-                } else if (rawOptions & rawDirectionRightToLeft) != 0 {
+                } else if (rawOptions & _rawDirectionRightToLeft) != 0 {
                     return .left
                 } else {
                     return .trailing
@@ -54,7 +54,7 @@ extension _CTVFLUnarySyntax {
             case .vertical:
                 #if os(iOS) || os(tvOS)
                 if #available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *) {
-                    if (rawOptions & rawSpacingBaselineToBaseline) != 0 {
+                    if (rawOptions & _rawSpacingBaselineToBaseline) != 0 {
                         return .lastBaseline
                     }
                 }
@@ -67,7 +67,7 @@ extension _CTVFLUnarySyntax {
     }
 }
 
-extension _CTVFLUnarySyntax where Self: CTVFLLayoutableOperand, Operand: CTVFLLayoutableOperand {
+extension _CTVFLUnarySyntax where Self: CTVFLObjectBasedOperand, Operand: CTVFLObjectBasedOperand {
     public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
         return operand.attributeForBeingConstrained(at: side, forOrientation: orientation, withOptions: options)
     }
@@ -75,7 +75,7 @@ extension _CTVFLUnarySyntax where Self: CTVFLLayoutableOperand, Operand: CTVFLLa
 
 #if os(iOS) || os(tvOS)
 @available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *)
-let rawSpacingBaselineToBaseline = CTVFLOptions.spacingBaselineToBaseline.rawValue
+let _rawSpacingBaselineToBaseline = CTVFLOptions.spacingBaselineToBaseline.rawValue
 #endif
-let rawDirectionLeftToRight = CTVFLOptions.directionLeftToRight.rawValue
-let rawDirectionRightToLeft = CTVFLOptions.directionRightToLeft.rawValue
+let _rawDirectionLeftToRight = CTVFLOptions.directionLeftToRight.rawValue
+let _rawDirectionRightToLeft = CTVFLOptions.directionRightToLeft.rawValue

@@ -1,33 +1,11 @@
 //
-//  CTVFL.swift
+//  WithVFL.swift
 //  CTVFL
 //
-//  Created by WeZZard on 9/19/17.
+//  Created on 2019/3/28.
 //
 
-#if os(iOS) || os(tvOS)
-import UIKit
-#elseif os(macOS)
-import AppKit
-#endif
 
-// MARK: - Make and Install Constraint Group
-@discardableResult
-public func constrain(
-    toReplace gruop: CTVFLConstraintGroup? = nil,
-    using closure: () -> Void
-    ) -> CTVFLConstraintGroup
-{
-    let repacingGroup = gruop ?? CTVFLConstraintGroup()
-    let transaction = _CTVFLTransaction.push()
-    closure()
-    let constraints = transaction.handlers
-    _CTVFLTransaction.pop()
-    repacingGroup._replaceConstraintHandlers(constraints)
-    return repacingGroup
-}
-
-// MARK: - Building Inline VFL Block
 @discardableResult
 public func withVFL<T: CTVFLOperand & CTVFLSyntaxEvaluatable>(
     V description: @autoclosure ()-> T,
@@ -63,26 +41,3 @@ public func withVFL<T: CTVFLOperand & CTVFLSyntaxEvaluatable>(
     }
     return constraints
 }
-
-// MARK: Oeprators
-precedencegroup CTVFLPriorityModifyPrecedence {
-    associativity: left
-    lowerThan: ComparisonPrecedence
-    higherThan: AssignmentPrecedence
-}
-
-infix operator ~ : CTVFLPriorityModifyPrecedence
-
-prefix operator <=
-
-prefix operator >=
-
-prefix operator ==
-
-prefix operator |-
-
-postfix operator -|
-
-prefix operator |
-
-postfix operator |

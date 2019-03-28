@@ -30,3 +30,11 @@ public struct CTVFLLeadingConstantSyntax<O: CTVFLConstantOperand>:
         operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
     }
 }
+
+public prefix func |- <Operand: CTVFLConstantConvertible>(operand: Operand) -> CTVFLLeadingConstantSyntax<CTVFLConstant> {
+    return CTVFLLeadingConstantSyntax(operand: Operand._makeConstant(operand))
+}
+
+public prefix func |- <Operand>(operand: Operand) -> CTVFLLeadingConstantSyntax<Operand> {
+    return CTVFLLeadingConstantSyntax(operand: operand)
+}

@@ -1,15 +1,15 @@
 //
-//  CTVFLLayoutableToLayoutableAdjacentSyntax.swift
+//  CTVFLLayoutableToConfinableAdjacentSyntax.swift
 //  CTVFL
 //
 //  Created on 2019/3/28.
 //
 
 
-/// `view1 | view2`
+/// `view | layoutGuide`
 ///
-public struct CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs: CTVFLLayoutableOperand, Rhs: CTVFLLayoutableOperand>:
-    CTVFLSyntaxEvaluatable, CTVFLLayoutableOperand, _CTVFLBinarySyntax where
+public struct CTVFLLayoutableToConfinableAdjacentSyntax<Lhs: CTVFLLayoutableOperand, Rhs: CTVFLConfinableOperand>:
+    CTVFLSyntaxEvaluatable, CTVFLConfinableOperand, _CTVFLBinarySyntax where
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
@@ -18,9 +18,9 @@ public struct CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs: CTVFLLayoutableOper
     
     public typealias LeadingLayoutBoundary = Lhs.LeadingLayoutBoundary
     public typealias TrailingLayoutBoundary = Rhs.TrailingLayoutBoundary
-    public typealias OperableForm = Rhs.OperableForm
+    public typealias OperableForm = CTVFLSyntaxOperableFormConfinable
     public typealias HeadAssociativity = Lhs.HeadAssociativity
-    public typealias TailAssociativity = Rhs.TailAssociativity
+    public typealias TailAssociativity = CTVFLSyntaxAssociativityIsClosed
     
     public let lhs: Lhs
     public let rhs: Rhs
@@ -43,18 +43,18 @@ public struct CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs: CTVFLLayoutableOper
     }
 }
 
-public func | <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs, Rhs> {
-    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: lhs, rhs: rhs)
+public func | <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableAdjacentSyntax<Lhs, Rhs> {
+    return CTVFLLayoutableToConfinableAdjacentSyntax(lhs: lhs, rhs: rhs)
 }
 
-public func | <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<CTVFLLayoutable, CTVFLLayoutable> {
-    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeLayoutable(rhs))
+public func | <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLConfinableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableAdjacentSyntax<CTVFLLayoutable, CTVFLConfinable> {
+    return CTVFLLayoutableToConfinableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeConfinable(rhs))
 }
 
-public func | <Lhs, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs, CTVFLLayoutable> {
-    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
+public func | <Lhs, Rhs: CTVFLConfinableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableAdjacentSyntax<Lhs, CTVFLConfinable> {
+    return CTVFLLayoutableToConfinableAdjacentSyntax(lhs: lhs, rhs: Rhs._makeConfinable(rhs))
 }
 
-public func | <Lhs: CTVFLLayoutableConvertible, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<CTVFLLayoutable, Rhs> {
-    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
+public func | <Lhs: CTVFLLayoutableConvertible, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableAdjacentSyntax<CTVFLLayoutable, Rhs> {
+    return CTVFLLayoutableToConfinableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
 }

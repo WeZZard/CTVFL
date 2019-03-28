@@ -1,5 +1,5 @@
 //
-//  CTVFLTrailingLayoutableWithSystemSpacingSyntax.swift
+//  CTVFLTrailingLayoutableWithSpacingSyntax.swift
 //  CTVFL
 //
 //  Created on 2019/3/28.
@@ -8,7 +8,7 @@
 
 /// `view-|`
 ///
-public struct CTVFLTrailingLayoutableWithSystemSpacingSyntax<O: CTVFLLayoutableOperand>:
+public struct CTVFLTrailingLayoutableWithSpacingSyntax<O: CTVFLLayoutableOperand>:
     CTVFLSyntaxEvaluatable, CTVFLLayoutableOperand, _CTVFLTrailingSyntax where
     O.TailAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
@@ -36,4 +36,12 @@ public struct CTVFLTrailingLayoutableWithSystemSpacingSyntax<O: CTVFLLayoutableO
         storage.append(.makeConstraint)
         storage.append(.pop)
     }
+}
+
+public postfix func -| <Operand: CTVFLLayoutableConvertible>(operand: Operand) -> CTVFLTrailingLayoutableWithSpacingSyntax<CTVFLLayoutable> {
+    return CTVFLTrailingLayoutableWithSpacingSyntax(operand: Operand._makeLayoutable(operand))
+}
+
+public postfix func -| <Operand>(operand: Operand) -> CTVFLTrailingLayoutableWithSpacingSyntax<Operand> {
+    return CTVFLTrailingLayoutableWithSpacingSyntax(operand: operand)
 }

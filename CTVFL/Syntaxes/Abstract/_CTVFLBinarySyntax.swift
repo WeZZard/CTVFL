@@ -16,7 +16,7 @@ public protocol _CTVFLBinarySyntax: CTVFLOperand where
     var rhs: RhsOperand { get }
 }
 
-extension _CTVFLBinarySyntax where Self: CTVFLLayoutableOperand, RhsOperand: CTVFLLayoutableOperand {
+extension _CTVFLBinarySyntax where Self: CTVFLObjectBasedOperand, RhsOperand: CTVFLObjectBasedOperand {
     public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
         return rhs.attributeForBeingConstrained(at: side, forOrientation: orientation, withOptions: options)
     }

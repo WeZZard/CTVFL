@@ -28,32 +28,6 @@ class withVFLTests: XCTestCase {
         rootView.addSubview(view3)
     }
     
-    /*
-    func testCanCompile_withViewAndLayoutGuide() {
-        let h = withVFL(H: view1.safeAreaLayoutGuide - view1)
-        let v = withVFL(V: view1.safeAreaLayoutGuide - view1)
-        
-        XCTAssertEqual(h.count, 1)
-        XCTAssert(h[0].firstItem === view1.safeAreaLayoutGuide)
-        XCTAssertEqual(h[0].firstAttribute, .leading)
-        XCTAssert(h[0].secondItem === view1)
-        XCTAssertEqual(h[0].secondAttribute, .leading)
-        XCTAssertEqual(h[0].relation, .equal)
-        XCTAssertEqual(h[0].constant, 8)
-        XCTAssertEqual(h[0].multiplier, 1)
-        XCTAssertEqual(h[0].priority, .required)
-        
-        XCTAssertEqual(v.count, 1)
-        XCTAssert(v[0].firstItem === view1.safeAreaLayoutGuide)
-        XCTAssertEqual(v[0].firstAttribute, .top)
-        XCTAssert(v[0].secondItem === view1)
-        XCTAssertEqual(v[0].secondAttribute, .top)
-        XCTAssertEqual(v[0].relation, .equal)
-        XCTAssertEqual(v[0].constant, 8)
-        XCTAssertEqual(v[0].multiplier, 1)
-        XCTAssertEqual(v[0].priority, .required)
-    }*/
-    
     func testCanCompile_predicatedView_ofEqualSemantic() {
         let h = withVFL(H: view1.where(200))
         let v = withVFL(V: view1.where(200))

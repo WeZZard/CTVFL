@@ -32,3 +32,11 @@ public struct CTVFLTrailingConstantSyntax<O: CTVFLConstantOperand>:
         storage.append(.pop)
     }
 }
+
+public postfix func -| <Operand: CTVFLConstantConvertible>(operand: Operand) -> CTVFLTrailingConstantSyntax<CTVFLConstant> {
+    return CTVFLTrailingConstantSyntax(operand: Operand._makeConstant(operand))
+}
+
+public postfix func -| <Operand>(operand: Operand) -> CTVFLTrailingConstantSyntax<Operand> {
+    return CTVFLTrailingConstantSyntax(operand: operand)
+}

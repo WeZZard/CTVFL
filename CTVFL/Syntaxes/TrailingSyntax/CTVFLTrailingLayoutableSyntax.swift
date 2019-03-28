@@ -37,3 +37,11 @@ public struct CTVFLTrailingLayoutableSyntax<O: CTVFLLayoutableOperand>:
         storage.append(.pop)
     }
 }
+
+public postfix func | <Operand: CTVFLLayoutableConvertible>(operand: Operand) -> CTVFLTrailingLayoutableSyntax<CTVFLLayoutable> {
+    return CTVFLTrailingLayoutableSyntax(operand: Operand._makeLayoutable(operand))
+}
+
+public postfix func | <Operand>(operand: Operand) -> CTVFLTrailingLayoutableSyntax<Operand> {
+    return CTVFLTrailingLayoutableSyntax(operand: operand)
+}

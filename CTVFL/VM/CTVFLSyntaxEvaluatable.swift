@@ -76,7 +76,7 @@ extension CTVFLSyntaxEvaluatable {
                         name: .internalInconsistencyException,
                         reason: "Items overflow.",
                         userInfo: nil
-                        ).raise()
+                    ).raise()
                 }
             case let .moveAttribute(attr):
                 if stack[currentLevel].firstAttribute == nil {
@@ -88,7 +88,7 @@ extension CTVFLSyntaxEvaluatable {
                         name: .internalInconsistencyException,
                         reason: "Attributes overflow.",
                         userInfo: nil
-                        ).raise()
+                    ).raise()
                 }
             case let .moveRelation(rel):
                 stack[currentLevel].relation = rel
@@ -149,13 +149,13 @@ extension CTVFLSyntaxEvaluatable {
                     if #available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *) {
                         let constraint = anchor1._ctvfl_constraintUsingSystemSpacing(with: rel, to: anchor2)
                         constraint.priority = priority
-                        constraints.append((constraint, sel1, sel2))
+                        constraints.append((constraint))
                     } else {
                         let anchor1 = sel1._ctvfl_anchor(for: attr1)
                         let anchor2 = sel2._ctvfl_anchor(for: attr2)
                         let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2, constant: 8)
                         constraint.priority = priority
-                        constraints.append((constraint, sel1, sel2))
+                        constraints.append((constraint))
                     }
                     #endif
                 case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), .none, false):

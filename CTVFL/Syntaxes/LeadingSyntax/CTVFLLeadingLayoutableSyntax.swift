@@ -38,3 +38,11 @@ public struct CTVFLLeadingLayoutableSyntax<O: CTVFLLayoutableOperand>:
         storage.append(.pop)
     }
 }
+
+public prefix func | <Operand: CTVFLLayoutableConvertible>(operand: Operand) -> CTVFLLeadingLayoutableSyntax<CTVFLLayoutable> {
+    return CTVFLLeadingLayoutableSyntax(operand: Operand._makeLayoutable(operand))
+}
+
+public prefix func | <Operand>(operand: Operand) -> CTVFLLeadingLayoutableSyntax<Operand> {
+    return CTVFLLeadingLayoutableSyntax(operand: operand)
+}
