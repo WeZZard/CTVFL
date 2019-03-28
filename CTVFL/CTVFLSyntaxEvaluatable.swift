@@ -10,35 +10,22 @@ public protocol CTVFLSyntaxEvaluatable: CTVFLOpcodeGenerating {
     func makeConstraints(orientation: CTVFLLayoutAnchorSelectableOrientation, options: CTVFLOptions) -> [CTVFLConstraint]
 }
 
+internal struct _CTVFLSyntaxEvaluationStackLevel {
+    var firstItem: CTVFLItem? = nil
+    var firstAttribute: CTVFLLayoutAttribute? = nil
+    var secondItem: CTVFLItem? = nil
+    var secondAttribute: CTVFLLayoutAttribute? = nil
+    var relation: CTVFLLayoutRelation? = nil
+    var constant: CTVFLConstant? = nil
+    var usesSystemSpace: Bool = false
+    var priority: CTVFLPriority = .required
+    var evaluationSite: CTVFLOpcode.EvaluationSite = .firstItem
+    var retVal: CTVFLItem? = nil
+}
+
 extension CTVFLSyntaxEvaluatable {
     public func makeConstraints(orientation: CTVFLLayoutAnchorSelectableOrientation, options: CTVFLOptions) -> [CTVFLConstraint] {
-        typealias Level = (
-            firstItem: CTVFLItem?,
-            firstAttribute: CTVFLLayoutAttribute?,
-            secondItem: CTVFLItem?,
-            secondAttribute: CTVFLLayoutAttribute?,
-            relation: CTVFLLayoutRelation?,
-            constant: CTVFLConstant?,
-            usesSystemSpace: Bool,
-            priority: CTVFLPriority,
-            evaluationSite: CTVFLOpcode.EvaluationSite,
-            retVal: CTVFLItem?
-        )
-        
-        let emptyLevel: Level = (
-            firstItem: nil,
-            firstAttribute: nil,
-            secondItem: nil,
-            secondAttribute: nil,
-            relation: nil,
-            constant: nil,
-            usesSystemSpace: false,
-            priority: .required,
-            evaluationSite: .firstItem,
-            retVal: nil
-        )
-        
-        var stack: ContiguousArray<Level> = [emptyLevel]
+        var stack: ContiguousArray<_CTVFLSyntaxEvaluationStackLevel> = [.init()]
         stack.reserveCapacity(10)
         
         var constraints = ContiguousArray<CTVFLConstraint>()
@@ -59,7 +46,7 @@ extension CTVFLSyntaxEvaluatable {
             
             switch eachOpcode {
             case .push:
-                stack.append(emptyLevel)
+                stack.append(.init())
             case .pop:
                 let topLevel = stack.popLast()!
                 let retVal = topLevel.retVal
@@ -131,10 +118,17 @@ extension CTVFLSyntaxEvaluatable {
                     relation,
                     constant,
                     usesSystemSpace,
-                    priority,
-                    _,
-                    _
-                ) = topLevel
+                    priority
+                ) = (
+                    topLevel.firstItem,
+                    topLevel.firstAttribute,
+                    topLevel.secondItem,
+                    topLevel.secondAttribute,
+                    topLevel.relation,
+                    topLevel.constant,
+                    topLevel.usesSystemSpace,
+                    topLevel.priority
+                )
                 
                 let firstSelector = firstItem?._getAnchorSelector(with: secondItem)
                 
