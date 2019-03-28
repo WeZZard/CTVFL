@@ -78,6 +78,7 @@ public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLConstantOperand, Eq
             switch orientation {
             case .horizontal:   return .width
             case .vertical:     return .height
+            @unknown default:   fatalError()
             }
         case .position:
             return nil

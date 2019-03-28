@@ -9,7 +9,7 @@
 /// `|view`
 ///
 public struct CTVFLLeadingLayoutableSyntax<O: CTVFLLayoutableOperand>:
-    CTVFLSyntaxEvaluatable, CTVFLLayoutableOperand, _CTVFLLeadingSyntax where
+    CTVFLEvaluatableSyntax, CTVFLLayoutableOperand, _CTVFLLeadingSyntax where
     O.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
     public typealias Operand = O
@@ -29,7 +29,7 @@ public struct CTVFLLeadingLayoutableSyntax<O: CTVFLLayoutableOperand>:
         storage.append(.moveRelation(.equal))
         storage.append(.moveItem(.container))
         storage.append(.moveAttribute(attributeForContainer(at: .lhs, forOrientation: orientation, withOptions: options)))
-        storage.append(.moveAttribute(operand.attributeForBeingConstrained(at: .rhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveAttribute(operand.attributeForBeingEvaluated(at: .rhs, forOrientation: orientation, withOptions: options)))
         storage.append(.moveEvaluationSite(.secondItem))
         operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
         storage._ensureTailElements(3)

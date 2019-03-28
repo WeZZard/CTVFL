@@ -11,14 +11,14 @@ public protocol _CTVFLUnarySyntax: CTVFLOperand {
     
     var operand: Operand { get }
     
-    func attributeForContainer(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute
+    func attributeForContainer(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute
 }
 
 extension _CTVFLUnarySyntax {
-    public func attributeForContainer(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+    public func attributeForContainer(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
         let rawOptions = options.rawValue
         
-        switch side {
+        switch site {
         case .lhs:
             switch orientation {
             case .horizontal:
@@ -40,6 +40,7 @@ extension _CTVFLUnarySyntax {
                 #elseif os(macOS)
                 return .top
                 #endif
+            @unknown default: fatalError()
             }
         case .rhs:
             switch orientation {
@@ -62,14 +63,16 @@ extension _CTVFLUnarySyntax {
                 #elseif os(macOS)
                 return .bottom
                 #endif
+            @unknown default: fatalError()
             }
+        @unknown default: fatalError()
         }
     }
 }
 
 extension _CTVFLUnarySyntax where Self: CTVFLObjectBasedOperand, Operand: CTVFLObjectBasedOperand {
-    public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
-        return operand.attributeForBeingConstrained(at: side, forOrientation: orientation, withOptions: options)
+    public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+        return operand.attributeForBeingEvaluated(at: site, forOrientation: orientation, withOptions: options)
     }
 }
 

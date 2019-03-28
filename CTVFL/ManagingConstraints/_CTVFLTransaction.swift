@@ -106,14 +106,13 @@ internal struct _NSLayoutConstraintItemsKey: Hashable {
     
     let items: [CTVFLLayoutAnchorSelectable]
     
-    let hashValue: Int
-    
-    init(items: [CTVFLLayoutAnchorSelectable]) {
-        var hasher = Hasher()
+    internal func hash(into hasher: inout Hasher) {
         for each in items {
             hasher.combine(ObjectIdentifier(each).hashValue)
         }
-        hashValue = hasher.finalize()
+    }
+    
+    init(items: [CTVFLLayoutAnchorSelectable]) {
         self.items = items
     }
     

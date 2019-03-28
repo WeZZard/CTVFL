@@ -19,9 +19,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSInteger, CTVFLLayoutAnchorSelectableSide) {
-    CTVFLLayoutAnchorSelectableSideLhs,
-    CTVFLLayoutAnchorSelectableSideRhs,
+typedef NS_ENUM(NSInteger, CTVFLSyntaxEvaluationSite) {
+    CTVFLSyntaxEvaluationSiteLhs,
+    CTVFLSyntaxEvaluationSiteRhs,
 };
 
 
@@ -56,9 +56,9 @@ __attribute__((visibility("hidden")))
 @property (nonatomic, weak, readonly, nullable) UIView * _ctvfl_ancestor;
 #endif
 
-- (CTVFLLayoutAttribute)_ctvfl_attributeForBeingConstrainedAtSide:(CTVFLLayoutAnchorSelectableSide)side
-                                                   forOrientation:(CTVFLOrientation)orientation
-                                                      withOptions:(NSLayoutFormatOptions)options;
+- (CTVFLLayoutAttribute)_ctvfl_attributeForBeingEvaluatedAtSite:(CTVFLSyntaxEvaluationSite)site
+                                                 forOrientation:(CTVFLOrientation)orientation
+                                                    withOptions:(NSLayoutFormatOptions)options;
 
 - (id<CTVFLLayoutAnchor>)_ctvfl_anchorForAttribute:(CTVFLLayoutAttribute)attribute;
 @end

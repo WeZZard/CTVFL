@@ -9,7 +9,7 @@
 /// `n - layoutGuide`
 ///
 public struct CTVFLConstantToConfinableSpacingSyntax<Lhs: CTVFLConstantOperand, Rhs: CTVFLConfinableOperand>:
-    CTVFLSyntaxEvaluatable, CTVFLConfinableOperand, _CTVFLBinarySyntax where
+    CTVFLEvaluatableSyntax, CTVFLConfinableOperand, _CTVFLBinarySyntax where
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
@@ -31,7 +31,7 @@ public struct CTVFLConstantToConfinableSpacingSyntax<Lhs: CTVFLConstantOperand, 
         storage.append(.moveEvaluationSite(.secondItem))
         rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
         storage._ensureTailElements(4)
-        storage.append(.moveAttribute(rhs.attributeForBeingConstrained(at: .rhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveAttribute(rhs.attributeForBeingEvaluated(at: .rhs, forOrientation: orientation, withOptions: options)))
         storage.append(.moveReturnValue(.secondItem))
         storage.append(.makeConstraint)
         storage.append(.pop)

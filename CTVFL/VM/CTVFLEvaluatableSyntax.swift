@@ -1,31 +1,18 @@
 //
-//  CTVFLSyntaxEvaluatable.swift
+//  CTVFLEvaluatableSyntax.swift
 //  CTVFL
 //
 //  Created on 2019/3/28.
 //
 
 
-public protocol CTVFLSyntaxEvaluatable: CTVFLOpcodeGenerating {
+public protocol CTVFLEvaluatableSyntax: CTVFLAnySyntax {
     func makeConstraints(orientation: CTVFLOrientation, options: CTVFLOptions) -> [CTVFLConstraint]
 }
 
-internal struct _CTVFLSyntaxEvaluationStackLevel {
-    var firstItem: CTVFLOpcode.Item? = nil
-    var firstAttribute: CTVFLLayoutAttribute? = nil
-    var secondItem: CTVFLOpcode.Item? = nil
-    var secondAttribute: CTVFLLayoutAttribute? = nil
-    var relation: CTVFLLayoutRelation? = nil
-    var constant: CTVFLConstant? = nil
-    var usesSystemSpace: Bool = false
-    var priority: CTVFLPriority = .required
-    var evaluationSite: CTVFLOpcode.EvaluationSite = .firstItem
-    var retVal: CTVFLOpcode.Item? = nil
-}
-
-extension CTVFLSyntaxEvaluatable {
+extension CTVFLEvaluatableSyntax {
     public func makeConstraints(orientation: CTVFLOrientation, options: CTVFLOptions) -> [CTVFLConstraint] {
-        var stack: ContiguousArray<_CTVFLSyntaxEvaluationStackLevel> = [.init()]
+        var stack: ContiguousArray<_CTVFLEvaluationStackLevel> = [.init()]
         stack.reserveCapacity(10)
         
         var constraints = ContiguousArray<CTVFLConstraint>()

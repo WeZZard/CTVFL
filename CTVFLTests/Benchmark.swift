@@ -38,7 +38,7 @@ class Benchmark: XCTestCase {
     func testVFL() {
         measure {
             for _ in 0..<100000 {
-                _ = NSLayoutConstraint.constraints(withVisualFormat: "[view1]-[view2]", options: [], metrics: nil, views: ["view1": view1, "view2": view2])
+                _ = NSLayoutConstraint.constraints(withVisualFormat: "[view1]-[view2]", options: [], metrics: nil, views: ["view1": view1 as Any, "view2": view2 as Any])
             }
         }
     }

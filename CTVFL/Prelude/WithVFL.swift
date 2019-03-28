@@ -7,7 +7,7 @@
 
 
 @discardableResult
-public func withVFL<T: CTVFLOperand & CTVFLSyntaxEvaluatable>(
+public func withVFL<T: CTVFLOperand & CTVFLEvaluatableSyntax>(
     V description: @autoclosure ()-> T,
     options: CTVFLOptions = []
     ) -> [CTVFLConstraint] where
@@ -25,7 +25,7 @@ public func withVFL<T: CTVFLOperand & CTVFLSyntaxEvaluatable>(
 }
 
 @discardableResult
-public func withVFL<T: CTVFLOperand & CTVFLSyntaxEvaluatable>(
+public func withVFL<T: CTVFLOperand & CTVFLEvaluatableSyntax>(
     H description: @autoclosure ()-> T,
     options: CTVFLOptions = []
     ) -> [CTVFLConstraint] where

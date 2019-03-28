@@ -27,8 +27,8 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLLayoutableOperan
     internal var _asAnchorSelector: CTVFLLayoutAnchorSelectable { return rawValue }
     
     // MARK: Hashable
-    public var hashValue: Int {
-        return ObjectIdentifier(rawValue).hashValue
+    public func hash(into hasher: inout Hasher) {
+        ObjectIdentifier(rawValue).hash(into: &hasher)
     }
     
     public static func == (lhs: CTVFLLayoutable, rhs: CTVFLLayoutable) -> Bool {
@@ -40,7 +40,7 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLLayoutableOperan
         storage.append(.moveItem(.layoutable(self)))
     }
     
-    public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
-        return rawValue._ctvfl_attributeForBeingConstrained(at: side, for: orientation, with: options)
+    public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+        return rawValue._ctvfl_attributeForBeingEvaluated(at: site, for: orientation, with: options)
     }
 }

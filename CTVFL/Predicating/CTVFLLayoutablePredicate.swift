@@ -16,6 +16,7 @@ public struct CTVFLLayoutablePredicate: CTVFLPredicating, Equatable {
         case .equal:                return .equal
         case .greaterThanOrEqual:   return .greaterThanOrEqual
         case .lessThanOrEqual:      return .lessThanOrEqual
+        @unknown default:           fatalError()
         }
     }
     
@@ -83,6 +84,7 @@ public struct CTVFLLayoutablePredicate: CTVFLPredicating, Equatable {
             switch orientation {
             case .horizontal:   return .width
             case .vertical:     return .height
+            @unknown default:   fatalError()
             }
         case .position:
             return nil

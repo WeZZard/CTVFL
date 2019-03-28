@@ -5,7 +5,7 @@
 //  Created by WeZZard on 9/20/17.
 //
 
-public class CTVFLPredicatedLayoutable: CTVFLSyntaxEvaluatable,
+public class CTVFLPredicatedLayoutable: CTVFLEvaluatableSyntax,
     CTVFLLayoutableOperand
 {
     public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
@@ -45,7 +45,7 @@ public class CTVFLPredicatedLayoutable: CTVFLSyntaxEvaluatable,
         }
     }
     
-    public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
-        return _layoutable.attributeForBeingConstrained(at: side, forOrientation: orientation, withOptions: options)
+    public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+        return _layoutable.attributeForBeingEvaluated(at: site, forOrientation: orientation, withOptions: options)
     }
 }

@@ -9,7 +9,7 @@
 /// `layoutGuide - n`
 ///
 public struct CTVFLConfinableToConstantSpacingSyntax<Lhs: CTVFLConfinableOperand, Rhs: CTVFLConstantOperand>:
-    CTVFLSyntaxEvaluatable, CTVFLConstantOperand, _CTVFLBinarySyntax where
+    CTVFLEvaluatableSyntax, CTVFLConstantOperand, _CTVFLBinarySyntax where
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
@@ -28,7 +28,7 @@ public struct CTVFLConfinableToConstantSpacingSyntax<Lhs: CTVFLConfinableOperand
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(2)
         storage.append(.push)
-        storage.append(.moveAttribute(lhs.attributeForBeingConstrained(at: .lhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveAttribute(lhs.attributeForBeingEvaluated(at: .lhs, forOrientation: orientation, withOptions: options)))
         lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
         storage._ensureTailElements(1)
         storage.append(.moveEvaluationSite(.secondItem))

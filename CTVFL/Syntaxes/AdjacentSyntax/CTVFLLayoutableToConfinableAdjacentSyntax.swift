@@ -9,7 +9,7 @@
 /// `view | layoutGuide`
 ///
 public struct CTVFLLayoutableToConfinableAdjacentSyntax<Lhs: CTVFLLayoutableOperand, Rhs: CTVFLConfinableOperand>:
-    CTVFLSyntaxEvaluatable, CTVFLConfinableOperand, _CTVFLBinarySyntax where
+    CTVFLEvaluatableSyntax, CTVFLConfinableOperand, _CTVFLBinarySyntax where
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
@@ -28,13 +28,13 @@ public struct CTVFLLayoutableToConfinableAdjacentSyntax<Lhs: CTVFLLayoutableOper
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(2)
         storage.append(.push)
-        storage.append(.moveAttribute(lhs.attributeForBeingConstrained(at: .lhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveAttribute(lhs.attributeForBeingEvaluated(at: .lhs, forOrientation: orientation, withOptions: options)))
         lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
         storage._ensureTailElements(1)
         storage.append(.moveEvaluationSite(.secondItem))
         rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
         storage._ensureTailElements(6)
-        storage.append(.moveAttribute(rhs.attributeForBeingConstrained(at: .rhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveAttribute(rhs.attributeForBeingEvaluated(at: .rhs, forOrientation: orientation, withOptions: options)))
         storage.append(.moveRelation(.equal))
         storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
         storage.append(.moveReturnValue(.secondItem))

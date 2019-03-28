@@ -8,8 +8,8 @@
 #import "CTVFLLayoutAnchorSelectable.h"
 #import "CTVFLLayoutAnchor.h"
 
-static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectableSide, CTVFLOrientation, NSLayoutFormatOptions);
-static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide, CTVFLOrientation, NSLayoutFormatOptions);
+static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLSyntaxEvaluationSite, CTVFLOrientation, NSLayoutFormatOptions);
+static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLSyntaxEvaluationSite, CTVFLOrientation, NSLayoutFormatOptions);
 
 static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
 
@@ -20,11 +20,11 @@ static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
     return [self superview];
 }
 
-- (CTVFLLayoutAttribute)_ctvfl_attributeForBeingConstrainedAtSide:(CTVFLLayoutAnchorSelectableSide)side
+- (CTVFLLayoutAttribute)_ctvfl_attributeForBeingEvaluatedAtSite:(CTVFLSyntaxEvaluationSite)site
                                                    forOrientation:(CTVFLOrientation)orientation
                                                       withOptions:(NSLayoutFormatOptions)options
 {
-    return _ViewGetAttribute(side, orientation, options);
+    return _ViewGetAttribute(site, orientation, options);
 }
 
 - (id<CTVFLLayoutAnchor>)_ctvfl_anchorForAttribute:(CTVFLLayoutAttribute)attribute
@@ -39,11 +39,11 @@ static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
     return [self owningView];
 }
 
-- (CTVFLLayoutAttribute)_ctvfl_attributeForBeingConstrainedAtSide:(CTVFLLayoutAnchorSelectableSide)side
+- (CTVFLLayoutAttribute)_ctvfl_attributeForBeingEvaluatedAtSite:(CTVFLSyntaxEvaluationSite)site
                                                    forOrientation:(CTVFLOrientation)orientation
                                                       withOptions:(NSLayoutFormatOptions)options
 {
-    return _LayoutGuideGetAttribute(side, orientation, options);
+    return _LayoutGuideGetAttribute(site, orientation, options);
 }
 
 - (id<CTVFLLayoutAnchor>)_ctvfl_anchorForAttribute:(CTVFLLayoutAttribute)attribute
@@ -60,11 +60,11 @@ static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
     return [self superview];
 }
 
-- (CTVFLLayoutAttribute)_ctvfl_attributeForBeingConstrainedAtSide:(CTVFLLayoutAnchorSelectableSide)side
+- (CTVFLLayoutAttribute)_ctvfl_attributeForBeingEvaluatedAtSite:(CTVFLSyntaxEvaluationSite)site
                                                    forOrientation:(CTVFLOrientation)orientation
                                                       withOptions:(NSLayoutFormatOptions)options
 {
-    return _ViewGetAttribute(side, orientation, options);
+    return _ViewGetAttribute(site, orientation, options);
 }
 
 - (id<CTVFLLayoutAnchor>)_ctvfl_anchorForAttribute:(CTVFLLayoutAttribute)attribute
@@ -79,11 +79,11 @@ static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
     return [self owningView];
 }
 
-- (CTVFLLayoutAttribute)_ctvfl_attributeForBeingConstrainedAtSide:(CTVFLLayoutAnchorSelectableSide)side
+- (CTVFLLayoutAttribute)_ctvfl_attributeForBeingEvaluatedAtSite:(CTVFLSyntaxEvaluationSite)site
                                                    forOrientation:(CTVFLOrientation)orientation
                                                       withOptions:(NSLayoutFormatOptions)options
 {
-    return _LayoutGuideGetAttribute(side, orientation, options);
+    return _LayoutGuideGetAttribute(site, orientation, options);
 }
 
 - (id<CTVFLLayoutAnchor>)_ctvfl_anchorForAttribute:(CTVFLLayoutAttribute)attribute
@@ -93,11 +93,11 @@ static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
 @end
 #endif
 
-static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectableSide side, CTVFLOrientation orientation, NSLayoutFormatOptions options) {
+static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLSyntaxEvaluationSite site, CTVFLOrientation orientation, NSLayoutFormatOptions options) {
     switch (orientation) {
         case CTVFLOrientationVertical:
-            switch (side) {
-                case CTVFLLayoutAnchorSelectableSideLhs:
+            switch (site) {
+                case CTVFLSyntaxEvaluationSiteLhs:
 #if TARGET_OS_IOS || TARGET_OS_TV
                     if (@available(iOS 11.0, tvOS 11.0, *)) {
                         if (options & NSLayoutFormatSpacingBaselineToBaseline) {
@@ -106,7 +106,7 @@ static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectable
                     }
 #endif
                     return CTVFLLayoutAttributeTop;
-                case CTVFLLayoutAnchorSelectableSideRhs:
+                case CTVFLSyntaxEvaluationSiteRhs:
 #if TARGET_OS_IOS || TARGET_OS_TV
                     if (@available(iOS 11.0, tvOS 11.0, *)) {
                         if (options & NSLayoutFormatSpacingBaselineToBaseline) {
@@ -117,8 +117,8 @@ static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectable
                     return CTVFLLayoutAttributeBottom;
             }
         case CTVFLOrientationHorizontal:
-            switch (side) {
-                case CTVFLLayoutAnchorSelectableSideLhs:
+            switch (site) {
+                case CTVFLSyntaxEvaluationSiteLhs:
                     if (options & NSLayoutFormatDirectionMask) {
                         if (options & NSLayoutFormatDirectionLeftToRight) {
                             return CTVFLLayoutAttributeLeft;
@@ -128,7 +128,7 @@ static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectable
                         }
                     }
                     return CTVFLLayoutAttributeLeading;
-                case CTVFLLayoutAnchorSelectableSideRhs:
+                case CTVFLSyntaxEvaluationSiteRhs:
                     if (options & NSLayoutFormatDirectionMask) {
                         if (options & NSLayoutFormatDirectionLeftToRight) {
                             return CTVFLLayoutAttributeRight;
@@ -142,11 +142,11 @@ static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectable
     }
 }
 
-static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide side, CTVFLOrientation orientation, NSLayoutFormatOptions options) {
+static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLSyntaxEvaluationSite site, CTVFLOrientation orientation, NSLayoutFormatOptions options) {
     switch (orientation) {
         case CTVFLOrientationVertical:
-            switch (side) {
-                case CTVFLLayoutAnchorSelectableSideLhs:
+            switch (site) {
+                case CTVFLSyntaxEvaluationSiteLhs:
 #if TARGET_OS_IOS || TARGET_OS_TV
                     if (@available(iOS 11.0, tvOS 11.0, *)) {
                         if (options & NSLayoutFormatSpacingBaselineToBaseline) {
@@ -155,7 +155,7 @@ static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide si
                     }
 #endif
                     return CTVFLLayoutAttributeBottom;
-                case CTVFLLayoutAnchorSelectableSideRhs:
+                case CTVFLSyntaxEvaluationSiteRhs:
 #if TARGET_OS_IOS || TARGET_OS_TV
                     if (@available(iOS 11.0, tvOS 11.0, *)) {
                         if (options & NSLayoutFormatSpacingBaselineToBaseline) {
@@ -166,8 +166,8 @@ static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide si
                     return CTVFLLayoutAttributeTop;
             }
         case CTVFLOrientationHorizontal:
-            switch (side) {
-                case CTVFLLayoutAnchorSelectableSideLhs:
+            switch (site) {
+                case CTVFLSyntaxEvaluationSiteLhs:
                     if (options & NSLayoutFormatDirectionMask) {
                         if (options & NSLayoutFormatDirectionLeftToRight) {
                             return CTVFLLayoutAttributeRight;
@@ -177,7 +177,7 @@ static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide si
                         }
                     }
                     return CTVFLLayoutAttributeTrailing;
-                case CTVFLLayoutAnchorSelectableSideRhs:
+                case CTVFLSyntaxEvaluationSiteRhs:
                     if (options & NSLayoutFormatDirectionMask) {
                         if (options & NSLayoutFormatDirectionLeftToRight) {
                             return CTVFLLayoutAttributeLeft;

@@ -9,7 +9,7 @@
 /// `n - view`
 ///
 public struct CTVFLConstantToLayoutableSpacingSyntax<Lhs: CTVFLConstantOperand, Rhs: CTVFLLayoutableOperand>:
-    CTVFLSyntaxEvaluatable, CTVFLLayoutableOperand, _CTVFLBinarySyntax where
+    CTVFLEvaluatableSyntax, CTVFLLayoutableOperand, _CTVFLBinarySyntax where
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
@@ -31,7 +31,7 @@ public struct CTVFLConstantToLayoutableSpacingSyntax<Lhs: CTVFLConstantOperand, 
         storage.append(.moveEvaluationSite(.secondItem))
         rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
         storage._ensureTailElements(4)
-        storage.append(.moveAttribute(rhs.attributeForBeingConstrained(at: .rhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveAttribute(rhs.attributeForBeingEvaluated(at: .rhs, forOrientation: orientation, withOptions: options)))
         storage.append(.moveReturnValue(.secondItem))
         storage.append(.makeConstraint)
         storage.append(.pop)

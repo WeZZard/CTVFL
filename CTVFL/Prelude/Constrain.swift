@@ -15,8 +15,8 @@ public func constrain(
     let repacingGroup = gruop ?? CTVFLConstraintGroup()
     let transaction = _CTVFLTransaction.push()
     closure()
-    let constraints = transaction.handlers
+    let handlers = transaction.handlers
     _CTVFLTransaction.pop()
-    repacingGroup._replaceConstraintHandlers(constraints)
+    repacingGroup._replaceConstraintHandlers(handlers)
     return repacingGroup
 }

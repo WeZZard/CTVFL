@@ -26,8 +26,8 @@ class CTVFLConstraintGroupTests: XCTestCase {
         
         view.addSubview(subview)
         
-        viewWidth100Constraint = NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 100)
-        viewHeight100Constraint = NSLayoutConstraint(item: view, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 100)
+        viewWidth100Constraint = NSLayoutConstraint(item: view as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 100)
+        viewHeight100Constraint = NSLayoutConstraint(item: view as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 100)
     }
     
     override func tearDown() {

@@ -12,7 +12,7 @@ import AppKit
 #endif
 
 // MARK: - CTVFLOperand
-public protocol CTVFLOperand: CTVFLOpcodeGenerating {
+public protocol CTVFLOperand: CTVFLAnySyntax {
     associatedtype LeadingLayoutBoundary: CTVFLSyntaxLayoutBoundary
     associatedtype TrailingLayoutBoundary: CTVFLSyntaxLayoutBoundary
     associatedtype OperableForm: CTVFLSyntaxOperableForm

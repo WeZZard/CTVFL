@@ -25,7 +25,7 @@ class _CTVFLConstraintHandlerTests: XCTestCase {
         
         view.addSubview(subview)
         
-        viewWidthConstraint = NSLayoutConstraint(item: view, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 100)
+        viewWidthConstraint = NSLayoutConstraint(item: view as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: 100)
     }
     
     override func tearDown() {
@@ -59,18 +59,18 @@ class _CTVFLConstraintHandlerTests: XCTestCase {
     
     func testInstall() {
         let handler = _CTVFLConstraintHandler(view: view, constraint: viewWidthConstraint)
-        XCTAssert(view.constraints.index(of: handler.constraint) == nil)
+        XCTAssert(view.constraints.firstIndex(of: handler.constraint) == nil)
         handler.install()
-        XCTAssert(view.constraints.index(of: handler.constraint) != nil)
+        XCTAssert(view.constraints.firstIndex(of: handler.constraint) != nil)
     }
     
     func testUninstall() {
         let handler = _CTVFLConstraintHandler(view: view, constraint: viewWidthConstraint)
-        XCTAssert(view.constraints.index(of: handler.constraint) == nil)
+        XCTAssert(view.constraints.firstIndex(of: handler.constraint) == nil)
         handler.install()
-        XCTAssert(view.constraints.index(of: handler.constraint) != nil)
+        XCTAssert(view.constraints.firstIndex(of: handler.constraint) != nil)
         handler.uninstall()
-        XCTAssert(view.constraints.index(of: handler.constraint) == nil)
+        XCTAssert(view.constraints.firstIndex(of: handler.constraint) == nil)
     }
     
 }

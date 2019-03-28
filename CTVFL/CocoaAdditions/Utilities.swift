@@ -5,55 +5,6 @@
 //  Created by WeZZard on 9/19/17.
 //
 
-// MARK: Type Normalizations
-#if os(iOS) || os(tvOS)
-import UIKit
-
-public typealias CTVFLView = UIView
-
-public typealias CTVFLPriority = UILayoutPriority
-
-public typealias CTVFLOptions = NSLayoutFormatOptions
-
-public typealias CTVFLLayoutRelation = NSLayoutRelation
-
-@available(iOSApplicationExtension 9.0, tvOSApplicationExtension 9.0, *)
-public typealias CTVFLLayoutGuide = UILayoutGuide
-#else
-import AppKit
-
-public typealias CTVFLView = NSView
-
-public typealias CTVFLPriority = NSLayoutConstraint.Priority
-
-public typealias CTVFLOptions = NSLayoutConstraint.FormatOptions
-
-public typealias CTVFLLayoutRelation = NSLayoutConstraint.Relation
-
-@available(macOSApplicationExtension 10.11, *)
-public typealias CTVFLLayoutGuide = NSLayoutGuide
-#endif
-
-public typealias CTVFLConstraint = NSLayoutConstraint
-
-extension CTVFLLayoutAttribute: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .bottom: return "Bottom"
-        case .centerX: return "CenterX"
-        case .centerY: return "CenterY"
-        case .firstBaseline: return "FirstBaseline"
-        case .height: return "Height"
-        case .lastBaseline: return "LastBaseline"
-        case .leading: return "Leading"
-        case .left: return "Left"
-        case .right: return "Right"
-        case .top: return "Top"
-        case .trailing: return "Trailing"
-        case .width: return "Width"
-        }
-    }
-}
 
 // MARK: Assertions & Predictions
 internal func _assert(
