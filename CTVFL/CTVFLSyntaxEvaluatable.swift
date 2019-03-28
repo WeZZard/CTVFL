@@ -7,7 +7,7 @@
 
 
 public protocol CTVFLSyntaxEvaluatable: CTVFLOpcodeGenerating {
-    func makeConstraints(orientation: CTVFLLayoutAnchorSelectableOrientation, options: CTVFLOptions) -> [CTVFLConstraint]
+    func makeConstraints(orientation: CTVFLOrientation, options: CTVFLOptions) -> [CTVFLConstraint]
 }
 
 internal struct _CTVFLSyntaxEvaluationStackLevel {
@@ -24,7 +24,7 @@ internal struct _CTVFLSyntaxEvaluationStackLevel {
 }
 
 extension CTVFLSyntaxEvaluatable {
-    public func makeConstraints(orientation: CTVFLLayoutAnchorSelectableOrientation, options: CTVFLOptions) -> [CTVFLConstraint] {
+    public func makeConstraints(orientation: CTVFLOrientation, options: CTVFLOptions) -> [CTVFLConstraint] {
         var stack: ContiguousArray<_CTVFLSyntaxEvaluationStackLevel> = [.init()]
         stack.reserveCapacity(10)
         

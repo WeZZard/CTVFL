@@ -17,7 +17,7 @@ public protocol _CTVFLBinarySyntax: CTVFLOperand where
 }
 
 extension _CTVFLBinarySyntax where Self: CTVFLLayoutableOperand, RhsOperand: CTVFLLayoutableOperand {
-    public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+    public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
         return rhs.attributeForBeingConstrained(at: side, forOrientation: orientation, withOptions: options)
     }
 }

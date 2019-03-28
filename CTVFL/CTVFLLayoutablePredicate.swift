@@ -49,7 +49,7 @@ public struct CTVFLLayoutablePredicate: CTVFLPredicating, Equatable {
     }
     
     public func generateOpcodes(
-        forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation,
+        forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
         withStorage storage: inout ContiguousArray<CTVFLOpcode>
@@ -74,7 +74,7 @@ public struct CTVFLLayoutablePredicate: CTVFLPredicating, Equatable {
     }
     
     internal func _layoutAttribute(
-        forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation,
+        forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject
         ) -> CTVFLLayoutAttribute?
     {

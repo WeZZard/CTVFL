@@ -11,11 +11,11 @@ public protocol _CTVFLUnarySyntax: CTVFLOperand {
     
     var operand: Operand { get }
     
-    func attributeForContainer(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute
+    func attributeForContainer(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute
 }
 
 extension _CTVFLUnarySyntax {
-    public func attributeForContainer(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+    public func attributeForContainer(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
         let rawOptions = options.rawValue
         
         switch side {
@@ -68,7 +68,7 @@ extension _CTVFLUnarySyntax {
 }
 
 extension _CTVFLUnarySyntax where Self: CTVFLLayoutableOperand, Operand: CTVFLLayoutableOperand {
-    public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+    public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
         return operand.attributeForBeingConstrained(at: side, forOrientation: orientation, withOptions: options)
     }
 }

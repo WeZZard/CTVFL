@@ -5,10 +5,10 @@
 //  Created on 2019/3/28.
 //
 
-public struct CTVFLConfinable: RawRepresentable, Hashable, CTVFLLayoutableOperand {
+public struct CTVFLConfinable: RawRepresentable, Hashable, CTVFLConfinableOperand {
     public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
     public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias OperableForm = CTVFLSyntaxOperableFormLayoutable
+    public typealias OperableForm = CTVFLSyntaxOperableFormConfinable
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
@@ -35,12 +35,12 @@ public struct CTVFLConfinable: RawRepresentable, Hashable, CTVFLLayoutableOperan
         return lhs.rawValue === rhs.rawValue
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(1)
         storage.append(.moveItem(.confinable(self)))
     }
     
-    public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+    public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
         return rawValue._ctvfl_attributeForBeingConstrained(at: side, for: orientation, with: options)
     }
 }

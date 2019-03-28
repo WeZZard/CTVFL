@@ -25,9 +25,9 @@ typedef NS_ENUM(NSInteger, CTVFLLayoutAnchorSelectableSide) {
 };
 
 
-typedef NS_ENUM(NSInteger, CTVFLLayoutAnchorSelectableOrientation) {
-    CTVFLLayoutAnchorSelectableOrientationHorizontal,
-    CTVFLLayoutAnchorSelectableOrientationVertical,
+typedef NS_ENUM(NSInteger, CTVFLOrientation) {
+    CTVFLOrientationHorizontal,
+    CTVFLOrientationVertical,
 };
 
 
@@ -57,8 +57,8 @@ __attribute__((visibility("hidden")))
 #endif
 
 - (CTVFLLayoutAttribute)_ctvfl_attributeForBeingConstrainedAtSide:(CTVFLLayoutAnchorSelectableSide)side
-                                                forOrientation:(CTVFLLayoutAnchorSelectableOrientation)orientation
-                                                   withOptions:(NSLayoutFormatOptions)options;
+                                                   forOrientation:(CTVFLOrientation)orientation
+                                                      withOptions:(NSLayoutFormatOptions)options;
 
 - (id<CTVFLLayoutAnchor>)_ctvfl_anchorForAttribute:(CTVFLLayoutAttribute)attribute;
 @end

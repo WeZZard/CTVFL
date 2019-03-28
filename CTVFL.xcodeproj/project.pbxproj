@@ -166,6 +166,9 @@
 		9CE2E4D8224CAEF400382E11 /* CTVFLOpcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4D7224CAEF400382E11 /* CTVFLOpcode.swift */; };
 		9CE2E4D9224CAEF400382E11 /* CTVFLOpcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4D7224CAEF400382E11 /* CTVFLOpcode.swift */; };
 		9CE2E4DA224CAEF400382E11 /* CTVFLOpcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4D7224CAEF400382E11 /* CTVFLOpcode.swift */; };
+		9CE2E4DC224CD20C00382E11 /* CTVFLConfinableOperand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4DB224CD20C00382E11 /* CTVFLConfinableOperand.swift */; };
+		9CE2E4DD224CD20C00382E11 /* CTVFLConfinableOperand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4DB224CD20C00382E11 /* CTVFLConfinableOperand.swift */; };
+		9CE2E4DE224CD20C00382E11 /* CTVFLConfinableOperand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4DB224CD20C00382E11 /* CTVFLConfinableOperand.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -288,6 +291,7 @@
 		9CE2E4CF224CA6ED00382E11 /* CTVFLConfinableConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLConfinableConvertible.swift; sourceTree = "<group>"; };
 		9CE2E4D3224CAB8B00382E11 /* CTVFLItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLItem.swift; sourceTree = "<group>"; };
 		9CE2E4D7224CAEF400382E11 /* CTVFLOpcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLOpcode.swift; sourceTree = "<group>"; };
+		9CE2E4DB224CD20C00382E11 /* CTVFLConfinableOperand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLConfinableOperand.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -397,6 +401,7 @@
 				9CE2E4AB224C752800382E11 /* CTVFLOpcodeGenerating.swift */,
 				9CE2E48B224C5F4A00382E11 /* CTVFLSyntaxEvaluatable.swift */,
 				9CE2E48F224C5FBF00382E11 /* CTVFLLayoutableOperand.swift */,
+				9CE2E4DB224CD20C00382E11 /* CTVFLConfinableOperand.swift */,
 				9CE2E493224C5FCE00382E11 /* CTVFLConstantOperand.swift */,
 				9C80D97F2249463D00D19009 /* CTVFLSyntax.swift */,
 				9CE2E49F224C606700382E11 /* _CTVFLBinarySyntax.swift */,
@@ -734,6 +739,7 @@
 				9CE2E420224B867000382E11 /* NSLayoutConstraint+CTVFL.m in Sources */,
 				9CE2E490224C5FBF00382E11 /* CTVFLLayoutableOperand.swift in Sources */,
 				9CE2E4A0224C606700382E11 /* _CTVFLBinarySyntax.swift in Sources */,
+				9CE2E4DC224CD20C00382E11 /* CTVFLConfinableOperand.swift in Sources */,
 				9CE2E4A8224C6C3000382E11 /* CTVFLLayoutAnchorSelectable.swift in Sources */,
 				9CE2E47B224C556000382E11 /* CTVFLConstantConvertible.swift in Sources */,
 				9CE2E494224C5FCE00382E11 /* CTVFLConstantOperand.swift in Sources */,
@@ -795,6 +801,7 @@
 				9CE2E421224B867000382E11 /* NSLayoutConstraint+CTVFL.m in Sources */,
 				9CE2E491224C5FBF00382E11 /* CTVFLLayoutableOperand.swift in Sources */,
 				9CE2E4A1224C606700382E11 /* _CTVFLBinarySyntax.swift in Sources */,
+				9CE2E4DD224CD20C00382E11 /* CTVFLConfinableOperand.swift in Sources */,
 				9CE2E4A9224C6C3000382E11 /* CTVFLLayoutAnchorSelectable.swift in Sources */,
 				9CE2E47C224C556000382E11 /* CTVFLConstantConvertible.swift in Sources */,
 				9CE2E495224C5FCE00382E11 /* CTVFLConstantOperand.swift in Sources */,
@@ -856,6 +863,7 @@
 				9CE2E422224B867000382E11 /* NSLayoutConstraint+CTVFL.m in Sources */,
 				9CE2E492224C5FBF00382E11 /* CTVFLLayoutableOperand.swift in Sources */,
 				9CE2E4A2224C606700382E11 /* _CTVFLBinarySyntax.swift in Sources */,
+				9CE2E4DE224CD20C00382E11 /* CTVFLConfinableOperand.swift in Sources */,
 				9CE2E4AA224C6C3000382E11 /* CTVFLLayoutAnchorSelectable.swift in Sources */,
 				9CE2E47D224C556000382E11 /* CTVFLConstantConvertible.swift in Sources */,
 				9CE2E496224C5FCE00382E11 /* CTVFLConstantOperand.swift in Sources */,

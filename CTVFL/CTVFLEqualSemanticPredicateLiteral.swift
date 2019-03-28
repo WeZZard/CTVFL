@@ -16,7 +16,7 @@ extension CTVFLEqualSemanticPredicateLiteral where Self: BinaryInteger {
     }
     
     public func generateOpcodes(
-        forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation,
+        forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
         withStorage storage: inout ContiguousArray<CTVFLOpcode>
@@ -37,7 +37,7 @@ extension CTVFLEqualSemanticPredicateLiteral where Self: BinaryFloatingPoint {
     }
     
     public func generateOpcodes(
-        forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation,
+        forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
         withStorage storage: inout ContiguousArray<CTVFLOpcode>

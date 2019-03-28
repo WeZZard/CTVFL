@@ -47,12 +47,12 @@ public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLConstantOperand, Eq
         return .constant(self)
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         return generateOpcodes(forOrientation: orientation, forObject: .position, withOptions: options, withStorage: &storage)
     }
     
     public func generateOpcodes(
-        forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation,
+        forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
         withStorage storage: inout ContiguousArray<CTVFLOpcode>
@@ -69,7 +69,7 @@ public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLConstantOperand, Eq
     }
     
     internal func _layoutAttribute(
-        forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation,
+        forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject
         ) -> CTVFLLayoutAttribute?
     {

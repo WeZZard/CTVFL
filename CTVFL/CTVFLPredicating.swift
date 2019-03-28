@@ -20,7 +20,7 @@ public protocol CTVFLPredicating {
     func byUpdatingPriority(_ priority: CTVFLPriority) -> CTVFLGenericPredicate
     
     func generateOpcodes(
-        forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation,
+        forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
         withStorage storage: inout ContiguousArray<CTVFLOpcode>

@@ -8,8 +8,8 @@
 #import "CTVFLLayoutAnchorSelectable.h"
 #import "CTVFLLayoutAnchor.h"
 
-static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectableSide, CTVFLLayoutAnchorSelectableOrientation, NSLayoutFormatOptions);
-static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide, CTVFLLayoutAnchorSelectableOrientation, NSLayoutFormatOptions);
+static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectableSide, CTVFLOrientation, NSLayoutFormatOptions);
+static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide, CTVFLOrientation, NSLayoutFormatOptions);
 
 static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
 
@@ -21,7 +21,7 @@ static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
 }
 
 - (CTVFLLayoutAttribute)_ctvfl_attributeForBeingConstrainedAtSide:(CTVFLLayoutAnchorSelectableSide)side
-                                                   forOrientation:(CTVFLLayoutAnchorSelectableOrientation)orientation
+                                                   forOrientation:(CTVFLOrientation)orientation
                                                       withOptions:(NSLayoutFormatOptions)options
 {
     return _ViewGetAttribute(side, orientation, options);
@@ -40,7 +40,7 @@ static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
 }
 
 - (CTVFLLayoutAttribute)_ctvfl_attributeForBeingConstrainedAtSide:(CTVFLLayoutAnchorSelectableSide)side
-                                                   forOrientation:(CTVFLLayoutAnchorSelectableOrientation)orientation
+                                                   forOrientation:(CTVFLOrientation)orientation
                                                       withOptions:(NSLayoutFormatOptions)options
 {
     return _LayoutGuideGetAttribute(side, orientation, options);
@@ -61,7 +61,7 @@ static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
 }
 
 - (CTVFLLayoutAttribute)_ctvfl_attributeForBeingConstrainedAtSide:(CTVFLLayoutAnchorSelectableSide)side
-                                                   forOrientation:(CTVFLLayoutAnchorSelectableOrientation)orientation
+                                                   forOrientation:(CTVFLOrientation)orientation
                                                       withOptions:(NSLayoutFormatOptions)options
 {
     return _ViewGetAttribute(side, orientation, options);
@@ -80,7 +80,7 @@ static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
 }
 
 - (CTVFLLayoutAttribute)_ctvfl_attributeForBeingConstrainedAtSide:(CTVFLLayoutAnchorSelectableSide)side
-                                                   forOrientation:(CTVFLLayoutAnchorSelectableOrientation)orientation
+                                                   forOrientation:(CTVFLOrientation)orientation
                                                       withOptions:(NSLayoutFormatOptions)options
 {
     return _LayoutGuideGetAttribute(side, orientation, options);
@@ -93,9 +93,9 @@ static id<CTVFLLayoutAnchor> _GetLayoutAnchor(id, CTVFLLayoutAttribute);
 @end
 #endif
 
-static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectableSide side, CTVFLLayoutAnchorSelectableOrientation orientation, NSLayoutFormatOptions options) {
+static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectableSide side, CTVFLOrientation orientation, NSLayoutFormatOptions options) {
     switch (orientation) {
-        case CTVFLLayoutAnchorSelectableOrientationVertical:
+        case CTVFLOrientationVertical:
             switch (side) {
                 case CTVFLLayoutAnchorSelectableSideLhs:
 #if TARGET_OS_IOS || TARGET_OS_TV
@@ -116,7 +116,7 @@ static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectable
 #endif
                     return CTVFLLayoutAttributeBottom;
             }
-        case CTVFLLayoutAnchorSelectableOrientationHorizontal:
+        case CTVFLOrientationHorizontal:
             switch (side) {
                 case CTVFLLayoutAnchorSelectableSideLhs:
                     if (options & NSLayoutFormatDirectionMask) {
@@ -142,9 +142,9 @@ static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectable
     }
 }
 
-static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide side, CTVFLLayoutAnchorSelectableOrientation orientation, NSLayoutFormatOptions options) {
+static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide side, CTVFLOrientation orientation, NSLayoutFormatOptions options) {
     switch (orientation) {
-        case CTVFLLayoutAnchorSelectableOrientationVertical:
+        case CTVFLOrientationVertical:
             switch (side) {
                 case CTVFLLayoutAnchorSelectableSideLhs:
 #if TARGET_OS_IOS || TARGET_OS_TV
@@ -165,7 +165,7 @@ static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide si
 #endif
                     return CTVFLLayoutAttributeTop;
             }
-        case CTVFLLayoutAnchorSelectableOrientationHorizontal:
+        case CTVFLOrientationHorizontal:
             switch (side) {
                 case CTVFLLayoutAnchorSelectableSideLhs:
                     if (options & NSLayoutFormatDirectionMask) {

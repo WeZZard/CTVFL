@@ -26,6 +26,8 @@ public protocol CTVFLSyntaxOperableForm {}
 
 public struct CTVFLSyntaxOperableFormLayoutable: CTVFLSyntaxOperableForm {}
 
+public struct CTVFLSyntaxOperableFormConfinable: CTVFLSyntaxOperableForm {}
+
 public struct CTVFLSyntaxOperableFormConstant: CTVFLSyntaxOperableForm {}
 
 // MARK: CTVFLSyntaxLayoutBoundary

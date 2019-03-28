@@ -27,7 +27,7 @@ public enum CTVFLGenericPredicate: CTVFLPredicating, Equatable {
     }
     
     public func generateOpcodes(
-        forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation,
+        forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
         withStorage storage: inout ContiguousArray<CTVFLOpcode>
