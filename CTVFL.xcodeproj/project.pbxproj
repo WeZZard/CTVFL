@@ -151,6 +151,9 @@
 		9CE2E4C4224CA0AC00382E11 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4C3224CA0AC00382E11 /* Benchmark.swift */; };
 		9CE2E4C5224CA0AC00382E11 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4C3224CA0AC00382E11 /* Benchmark.swift */; };
 		9CE2E4C6224CA0AC00382E11 /* Benchmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4C3224CA0AC00382E11 /* Benchmark.swift */; };
+		9CE2E4C8224CA5E700382E11 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4C7224CA5E700382E11 /* Misc.swift */; };
+		9CE2E4C9224CA5E700382E11 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4C7224CA5E700382E11 /* Misc.swift */; };
+		9CE2E4CA224CA5E700382E11 /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4C7224CA5E700382E11 /* Misc.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -268,6 +271,7 @@
 		9CE2E4BB224C95FF00382E11 /* CTVFLLayoutAnchor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTVFLLayoutAnchor.h; sourceTree = "<group>"; };
 		9CE2E4BC224C95FF00382E11 /* CTVFLLayoutAnchor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTVFLLayoutAnchor.m; sourceTree = "<group>"; };
 		9CE2E4C3224CA0AC00382E11 /* Benchmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Benchmark.swift; sourceTree = "<group>"; };
+		9CE2E4C7224CA5E700382E11 /* Misc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Misc.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -347,6 +351,7 @@
 			children = (
 				9CB77A8E1F7154CE0052448F /* Info.plist */,
 				9CB77AD61F7179A20052448F /* withVFLTests.swift */,
+				9CE2E4C7224CA5E700382E11 /* Misc.swift */,
 				9CE2E472224BE41A00382E11 /* constrainToReplaceGroupUsingClosureTests.swift */,
 				9C65040A1F72C297006881E5 /* CTVFLVariableTests.swift */,
 				9C6504061F72C28D006881E5 /* CTVFLConstantTests.swift */,
@@ -724,6 +729,7 @@
 				9C65040B1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */,
 				9C6503FB1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift in Sources */,
 				9C6503EF1F72C13B006881E5 /* _CTVFLTransactionTests.swift in Sources */,
+				9CE2E4C8224CA5E700382E11 /* Misc.swift in Sources */,
 				9C6503E71F72C0DC006881E5 /* CTVFLNSLayoutConstrainedTests.swift in Sources */,
 				9C6504031F72C280006881E5 /* CTVFLPredicatableTests.swift in Sources */,
 			);
@@ -780,6 +786,7 @@
 				9C65040C1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */,
 				9C6503FC1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift in Sources */,
 				9C6503F01F72C13B006881E5 /* _CTVFLTransactionTests.swift in Sources */,
+				9CE2E4C9224CA5E700382E11 /* Misc.swift in Sources */,
 				9C6503E81F72C0DC006881E5 /* CTVFLNSLayoutConstrainedTests.swift in Sources */,
 				9C6504041F72C280006881E5 /* CTVFLPredicatableTests.swift in Sources */,
 			);
@@ -836,6 +843,7 @@
 				9C65040D1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */,
 				9C6503FD1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift in Sources */,
 				9C6503F11F72C13B006881E5 /* _CTVFLTransactionTests.swift in Sources */,
+				9CE2E4CA224CA5E700382E11 /* Misc.swift in Sources */,
 				9C6503E91F72C0DC006881E5 /* CTVFLNSLayoutConstrainedTests.swift in Sources */,
 				9C6504051F72C280006881E5 /* CTVFLPredicatableTests.swift in Sources */,
 			);

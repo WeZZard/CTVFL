@@ -7,41 +7,7 @@
 
 import XCTest
 
-#if os(iOS) || os(tvOS)
-    import UIKit
-#elseif os(macOS)
-    import AppKit
-#endif
-
 import CTVFL
-
-extension NSLayoutAttribute: CustomStringConvertible {
-    public var description: String {
-        switch self {
-        case .bottom: return "Bottom"
-        case .bottomMargin: return "BottomMargin"
-        case .centerX: return "CenterX"
-        case .centerXWithinMargins: return "CenterXWithMargins"
-        case .centerY: return "CenterY"
-        case .centerYWithinMargins: return "CenterYWithMargins"
-        case .firstBaseline: return "FirstBaseline"
-        case .height: return "Height"
-        case .lastBaseline: return "LastBaseline"
-        case .leading: return "Leading"
-        case .leadingMargin: return "LeadingMargin"
-        case .left: return "Left"
-        case .leftMargin: return "LeftMargin"
-        case .notAnAttribute: return "NotAnAttribute"
-        case .right: return "Right"
-        case .rightMargin: return "RightMargin"
-        case .top: return "Top"
-        case .topMargin: return "TopMargin"
-        case .trailing: return "Trailing"
-        case .trailingMargin: return "TrailingMargin"
-        case .width: return "Width"
-        }
-    }
-}
 
 class withVFLTests: XCTestCase {
     var rootView: CTVFLView!
