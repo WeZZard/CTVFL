@@ -99,7 +99,7 @@ static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectable
             switch (side) {
                 case CTVFLLayoutAnchorSelectableSideLhs:
 #if TARGET_OS_IOS || TARGET_OS_TV
-                    if (@available(iOS 11.0, *)) {
+                    if (@available(iOS 11.0, tvOS 11.0, *)) {
                         if (options & NSLayoutFormatSpacingBaselineToBaseline) {
                             return CTVFLLayoutAttributeFirstBaseline;
                         }
@@ -108,7 +108,7 @@ static CTVFLLayoutAttribute _LayoutGuideGetAttribute(CTVFLLayoutAnchorSelectable
                     return CTVFLLayoutAttributeTop;
                 case CTVFLLayoutAnchorSelectableSideRhs:
 #if TARGET_OS_IOS || TARGET_OS_TV
-                    if (@available(iOS 11.0, *)) {
+                    if (@available(iOS 11.0, tvOS 11.0, *)) {
                         if (options & NSLayoutFormatSpacingBaselineToBaseline) {
                             return CTVFLLayoutAttributeLastBaseline;
                         }
@@ -148,7 +148,7 @@ static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide si
             switch (side) {
                 case CTVFLLayoutAnchorSelectableSideLhs:
 #if TARGET_OS_IOS || TARGET_OS_TV
-                    if (@available(iOS 11.0, *)) {
+                    if (@available(iOS 11.0, tvOS 11.0, *)) {
                         if (options & NSLayoutFormatSpacingBaselineToBaseline) {
                             return CTVFLLayoutAttributeLastBaseline;
                         }
@@ -157,7 +157,7 @@ static CTVFLLayoutAttribute _ViewGetAttribute(CTVFLLayoutAnchorSelectableSide si
                     return CTVFLLayoutAttributeBottom;
                 case CTVFLLayoutAnchorSelectableSideRhs:
 #if TARGET_OS_IOS || TARGET_OS_TV
-                    if (@available(iOS 11.0, *)) {
+                    if (@available(iOS 11.0, tvOS 11.0, *)) {
                         if (options & NSLayoutFormatSpacingBaselineToBaseline) {
                             return CTVFLLayoutAttributeFirstBaseline;
                         }
