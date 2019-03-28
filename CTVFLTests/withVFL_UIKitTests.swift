@@ -29,26 +29,46 @@ class withVFL_UIKitTests: XCTestCase {
         rootView.addSubview(view3)
     }
     
-    func testCanCompile_withViewAndLayoutGuide() {
-        if #available(iOS 11.0, *) {
+    func testCanCompile_withLayoutGuideAndViewWithSystemSpacing() {
+        if #available(iOS 11.0, tvOS 11.0, *) {
             let h = withVFL(H: rootView.safeAreaLayoutGuide - view1)
             let v = withVFL(V: rootView.safeAreaLayoutGuide - view1)
             
             XCTAssertEqual(h.count, 1)
-            XCTAssert(h[0].firstItem === rootView.safeAreaLayoutGuide)
-            XCTAssertEqual(h[0].firstAttribute, .leading)
-            XCTAssert(h[0].secondItem === view1)
-            XCTAssertEqual(h[0].secondAttribute, .leading)
+            XCTAssertEqual(h[0].firstAnchor, rootView.safeAreaLayoutGuide.leadingAnchor)
+            XCTAssertEqual(h[0].secondAnchor, view1.leadingAnchor)
             XCTAssertEqual(h[0].relation, .equal)
             XCTAssertEqual(h[0].constant, 8)
             XCTAssertEqual(h[0].multiplier, 1)
             XCTAssertEqual(h[0].priority, .required)
             
             XCTAssertEqual(v.count, 1)
-            XCTAssert(v[0].firstItem === rootView.safeAreaLayoutGuide)
-            XCTAssertEqual(v[0].firstAttribute, .top)
-            XCTAssert(v[0].secondItem === view1)
-            XCTAssertEqual(v[0].secondAttribute, .top)
+            XCTAssertEqual(v[0].firstAnchor, rootView.safeAreaLayoutGuide.topAnchor)
+            XCTAssertEqual(v[0].secondAnchor, view1.topAnchor)
+            XCTAssertEqual(v[0].relation, .equal)
+            XCTAssertEqual(v[0].constant, 8)
+            XCTAssertEqual(v[0].multiplier, 1)
+            XCTAssertEqual(v[0].priority, .required)
+        }
+    }
+    
+    
+    func testCanCompile_withViewAndLayoutGuideWithSystemSpacing() {
+        if #available(iOS 11.0, tvOS 11.0, *) {
+            let h = withVFL(H: view1 - rootView.safeAreaLayoutGuide)
+            let v = withVFL(V: view1 - rootView.safeAreaLayoutGuide)
+            
+            XCTAssertEqual(h.count, 1)
+            XCTAssertEqual(h[0].firstAnchor, view1.trailingAnchor)
+            XCTAssertEqual(h[0].secondAnchor, rootView.safeAreaLayoutGuide.trailingAnchor)
+            XCTAssertEqual(h[0].relation, .equal)
+            XCTAssertEqual(h[0].constant, 8)
+            XCTAssertEqual(h[0].multiplier, 1)
+            XCTAssertEqual(h[0].priority, .required)
+            
+            XCTAssertEqual(v.count, 1)
+            XCTAssertEqual(v[0].firstAnchor, view1.bottomAnchor)
+            XCTAssertEqual(v[0].secondAnchor, rootView.safeAreaLayoutGuide.bottomAnchor)
             XCTAssertEqual(v[0].relation, .equal)
             XCTAssertEqual(v[0].constant, 8)
             XCTAssertEqual(v[0].multiplier, 1)
