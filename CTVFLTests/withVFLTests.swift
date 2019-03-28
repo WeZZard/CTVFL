@@ -62,6 +62,7 @@ class withVFLTests: XCTestCase {
         rootView.addSubview(view3)
     }
     
+    /*
     func testCanCompile_withViewAndLayoutGuide() {
         let h = withVFL(H: view1.safeAreaLayoutGuide - view1)
         let v = withVFL(V: view1.safeAreaLayoutGuide - view1)
@@ -85,7 +86,7 @@ class withVFLTests: XCTestCase {
         XCTAssertEqual(v[0].constant, 8)
         XCTAssertEqual(v[0].multiplier, 1)
         XCTAssertEqual(v[0].priority, .required)
-    }
+    }*/
     
     func testCanCompile_predicatedView_ofEqualSemantic() {
         let h = withVFL(H: view1.where(200))

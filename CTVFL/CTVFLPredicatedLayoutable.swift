@@ -29,7 +29,7 @@ public class CTVFLPredicatedLayoutable: CTVFLSyntaxEvaluatable,
     }
     
     public func generateOpcodes(
-        forOrientation orientation: CTVFLNSLayoutConstrainedOrientation,
+        forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation,
         withOptions options: CTVFLOptions,
         withStorage storage: inout ContiguousArray<CTVFLOpcode>
         )
@@ -45,7 +45,7 @@ public class CTVFLPredicatedLayoutable: CTVFLSyntaxEvaluatable,
         storage.append(.loadLhsItem)
     }
     
-    public func attributeForBeingConstrained(at side: CTVFLNSLayoutConstrainedSide, forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: NSLayoutFormatOptions) -> NSLayoutAttribute {
+    public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
         return _layoutable.attributeForBeingConstrained(at: side, forOrientation: orientation, withOptions: options)
     }
 }

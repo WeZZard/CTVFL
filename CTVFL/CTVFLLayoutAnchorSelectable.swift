@@ -1,11 +1,11 @@
 //
-//  CTVFLNSLayoutConstrained.swift
+//  CTVFLLayoutAnchorSelectable.swift
 //  CTVFL
 //
 //  Created on 2019/3/28.
 //
 
-extension Sequence where Element: CTVFLNSLayoutConstrained {
+extension Sequence where Element: CTVFLLayoutAnchorSelectable {
     internal var _commonAncestor: CTVFLView? {
         var countForID = [ObjectIdentifier : Int]()
         

@@ -8,5 +8,5 @@
 public protocol CTVFLLayoutableOperand: CTVFLOperand where
     OperableForm == CTVFLSyntaxOperableFormLayoutable
 {
-    func attributeForBeingConstrained(at side: CTVFLNSLayoutConstrainedSide, forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: NSLayoutFormatOptions) -> NSLayoutAttribute
+    func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute
 }

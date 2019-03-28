@@ -15,8 +15,6 @@ public typealias CTVFLPriority = UILayoutPriority
 
 public typealias CTVFLOptions = NSLayoutFormatOptions
 
-public typealias CTVFLLayoutAttribute = NSLayoutAttribute
-
 public typealias CTVFLLayoutRelation = NSLayoutRelation
 
 @available(iOSApplicationExtension 9.0, tvOSApplicationExtension 9.0, *)
@@ -29,8 +27,6 @@ public typealias CTVFLView = NSView
 public typealias CTVFLPriority = NSLayoutConstraint.Priority
 
 public typealias CTVFLOptions = NSLayoutConstraint.FormatOptions
-
-public typealias CTVFLLayoutAttribute = NSLayoutConstraint.Attribute
 
 public typealias CTVFLLayoutRelation = NSLayoutConstraint.Relation
 

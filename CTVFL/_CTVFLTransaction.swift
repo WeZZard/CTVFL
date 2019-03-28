@@ -104,11 +104,11 @@ internal class _CTVFLTransaction {
 
 internal struct _NSLayoutConstraintItemsKey: Hashable {
     
-    let items: [CTVFLNSLayoutConstrained]
+    let items: [CTVFLLayoutAnchorSelectable]
     
     let hashValue: Int
     
-    init(items: [CTVFLNSLayoutConstrained]) {
+    init(items: [CTVFLLayoutAnchorSelectable]) {
         var hasher = Hasher()
         for each in items {
             hasher.combine(ObjectIdentifier(each).hashValue)

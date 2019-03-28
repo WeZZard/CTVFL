@@ -7,7 +7,7 @@
 
 // MARK: - CTVFLOpcodeGenerating
 public protocol CTVFLOpcodeGenerating {
-    func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>)
+    func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>)
 }
 
 // MARK: - CTVFLOpcode
@@ -45,7 +45,7 @@ public enum CTVFLItem {
         }
     }
     
-    internal func _getItem(with another: CTVFLItem?) -> CTVFLNSLayoutConstrained? {
+    internal func _getAnchorSelector(with another: CTVFLItem?) -> CTVFLLayoutAnchorSelectable? {
         switch (self, another) {
         case let (.layoutable(layoutable), _):
             return layoutable._item

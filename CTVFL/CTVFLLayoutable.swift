@@ -13,7 +13,7 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLLayoutableOperan
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
-    public typealias RawValue = CTVFLNSLayoutConstrained
+    public typealias RawValue = CTVFLLayoutAnchorSelectable
     
     public var rawValue: RawValue
     
@@ -25,7 +25,7 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLLayoutableOperan
         rawValue = view
     }
     
-    internal var _item: CTVFLNSLayoutConstrained { return rawValue }
+    internal var _item: CTVFLLayoutAnchorSelectable { return rawValue }
     
     // MARK: Hashable
     public var hashValue: Int {
@@ -36,12 +36,12 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLLayoutableOperan
         return lhs.rawValue === rhs.rawValue
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(1)
         storage.append(.moveItem(.layoutable(self)))
     }
     
-    public func attributeForBeingConstrained(at side: CTVFLNSLayoutConstrainedSide, forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: NSLayoutFormatOptions) -> NSLayoutAttribute {
+    public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
         return rawValue._ctvfl_attributeForBeingConstrained(at: side, for: orientation, with: options)
     }
 }

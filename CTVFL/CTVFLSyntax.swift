@@ -30,7 +30,7 @@ public struct CTVFLLayoutableToLayoutableSpaceSyntax<Lhs: CTVFLLayoutableOperand
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(2)
         storage.append(.push)
         storage.append(.moveAttribute(lhs.attributeForBeingConstrained(at: .lhs, forOrientation: orientation, withOptions: options)))
@@ -64,7 +64,7 @@ public struct CTVFLConstantToLayoutableSpaceSyntax<Lhs: CTVFLConstantOperand, Rh
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
         rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
         storage._ensureTailElements(2)
@@ -92,7 +92,7 @@ public struct CTVFLLayoutableToConstantSpaceSyntax<Lhs: CTVFLLayoutableOperand, 
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(2)
         storage.append(.push)
         storage.append(.moveAttribute(lhs.attributeForBeingConstrained(at: .lhs, forOrientation: orientation, withOptions: options)))
@@ -120,7 +120,7 @@ public struct CTVFLAdjacentSyntax<Lhs: CTVFLLayoutableOperand, Rhs: CTVFLLayouta
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(2)
         storage.append(.push)
         storage.append(.moveAttribute(lhs.attributeForBeingConstrained(at: .lhs, forOrientation: orientation, withOptions: options)))
@@ -151,7 +151,7 @@ public struct CTVFLSpacedLeadingLayoutableSyntax<O: CTVFLLayoutableOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(7)
         storage.append(.push)
         storage.append(.moveConstant(CTVFLConstant(rawValue: 8)))
@@ -182,7 +182,7 @@ public struct CTVFLSpacedTrailingLayoutableSyntax<O: CTVFLLayoutableOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(4)
         storage.append(.push)
         storage.append(.moveConstant(CTVFLConstant(rawValue: 8)))
@@ -213,7 +213,7 @@ public struct CTVFLLeadingLayoutableSyntax<O: CTVFLLayoutableOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(6)
         storage.append(.push)
         storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
@@ -244,7 +244,7 @@ public struct CTVFLTrailingLayoutableSyntax<O: CTVFLLayoutableOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(3)
         storage.append(.push)
         storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
@@ -275,7 +275,7 @@ public struct CTVFLLeadingConstantSyntax<O: CTVFLConstantOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(3)
         storage.append(.push)
         storage.append(.moveItem(.container))
@@ -300,7 +300,7 @@ public struct CTVFLTrailingConstantSyntax<O: CTVFLConstantOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
         storage._ensureTailElements(3)
         storage.append(.moveItem(.container))

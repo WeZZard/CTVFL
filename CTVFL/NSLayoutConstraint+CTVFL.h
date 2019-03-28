@@ -15,7 +15,7 @@
 #import <UIKit/UIKit.h>
 #endif
 
-#import <CTVFL/CTVFLNSLayoutConstrained.h>
+#import <CTVFL/CTVFLLayoutAnchorSelectable.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,24 +24,24 @@ NS_ASSUME_NONNULL_BEGIN
  */
 __attribute__((visibility("hidden")))
 @interface NSLayoutConstraint (CTVFL)
-@property (nonatomic, strong, readonly, nullable) id<CTVFLNSLayoutConstrained> _ctvfl_firstItem NS_REFINED_FOR_SWIFT;
-@property (nonatomic, strong, readonly, nullable) id<CTVFLNSLayoutConstrained> _ctvfl_secondItem NS_REFINED_FOR_SWIFT;
+@property (nonatomic, strong, readonly, nullable) id<CTVFLLayoutAnchorSelectable> _ctvfl_firstItem NS_REFINED_FOR_SWIFT;
+@property (nonatomic, strong, readonly, nullable) id<CTVFLLayoutAnchorSelectable> _ctvfl_secondItem NS_REFINED_FOR_SWIFT;
 
 #if TARGET_OS_OSX
-+ (instancetype)_ctvfl_constraintWithItem:(id<CTVFLNSLayoutConstrained>)view1
++ (instancetype)_ctvfl_constraintWithItem:(id<CTVFLLayoutAnchorSelectable>)view1
                                 attribute:(NSLayoutAttribute)attr1
                                 relatedBy:(NSLayoutRelation)relation
-                                   toItem:(nullable id<CTVFLNSLayoutConstrained>)view2
+                                   toItem:(nullable id<CTVFLLayoutAnchorSelectable>)view2
                                 attribute:(NSLayoutAttribute)attr2
                                multiplier:(CGFloat)multiplier
                                  constant:(CGFloat)c NS_REFINED_FOR_SWIFT;
 #endif
 
 #if TARGET_OS_IOS || TARGET_OS_TV
-+ (instancetype)_ctvfl_constraintWithItem:(id<CTVFLNSLayoutConstrained>)view1
++ (instancetype)_ctvfl_constraintWithItem:(id<CTVFLLayoutAnchorSelectable>)view1
                                 attribute:(NSLayoutAttribute)attr1
                                 relatedBy:(NSLayoutRelation)relation
-                                   toItem:(nullable id<CTVFLNSLayoutConstrained>)view2
+                                   toItem:(nullable id<CTVFLLayoutAnchorSelectable>)view2
                                 attribute:(NSLayoutAttribute)attr2
                                multiplier:(CGFloat)multiplier
                                  constant:(CGFloat)c NS_REFINED_FOR_SWIFT;
