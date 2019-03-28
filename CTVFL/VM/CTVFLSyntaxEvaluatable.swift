@@ -11,16 +11,16 @@ public protocol CTVFLSyntaxEvaluatable: CTVFLOpcodeGenerating {
 }
 
 internal struct _CTVFLSyntaxEvaluationStackLevel {
-    var firstItem: CTVFLItem? = nil
+    var firstItem: CTVFLOpcode.Item? = nil
     var firstAttribute: CTVFLLayoutAttribute? = nil
-    var secondItem: CTVFLItem? = nil
+    var secondItem: CTVFLOpcode.Item? = nil
     var secondAttribute: CTVFLLayoutAttribute? = nil
     var relation: CTVFLLayoutRelation? = nil
     var constant: CTVFLConstant? = nil
     var usesSystemSpace: Bool = false
     var priority: CTVFLPriority = .required
     var evaluationSite: CTVFLOpcode.EvaluationSite = .firstItem
-    var retVal: CTVFLItem? = nil
+    var retVal: CTVFLOpcode.Item? = nil
 }
 
 extension CTVFLSyntaxEvaluatable {

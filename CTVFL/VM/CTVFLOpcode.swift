@@ -9,7 +9,7 @@
 public enum CTVFLOpcode {
     case push
     case pop
-    case moveItem(CTVFLItem)
+    case moveItem(Item)
     case moveAttribute(CTVFLLayoutAttribute)
     case moveRelation(CTVFLLayoutRelation)
     case moveConstant(CTVFLConstant)
@@ -27,6 +27,25 @@ public enum CTVFLOpcode {
     public enum EvaluationSite {
         case firstItem
         case secondItem
+    }
+    
+    public enum Item {
+        case container
+        case confinable(CTVFLConfinable)
+        case layoutable(CTVFLLayoutable)
+        
+        internal func _getAnchorSelector(with another: Item?) -> CTVFLLayoutAnchorSelectable? {
+            switch (self, another) {
+            case let (.layoutable(layoutable), _):
+                return layoutable._asAnchorSelector
+            case let (.confinable(confinable), _):
+                return confinable._asAnchorSelector
+            case let (.container, .some(.layoutable(layoutable))):
+                return (layoutable._asAnchorSelector as? CTVFLView)?.superview
+            default:
+                return nil
+            }
+        }
     }
 }
 
