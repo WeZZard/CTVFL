@@ -8,11 +8,21 @@
 #import "NSLayoutConstraint+CTVFL.h"
 
 @implementation NSLayoutConstraint (CTVFL)
+- (id<CTVFLNSLayoutConstrained>)_ctvfl_firstItem
+{
+    return [self firstItem];
+}
+
+- (id<CTVFLNSLayoutConstrained>)_ctvfl_secondItem
+{
+    return [self secondItem];
+}
+
 #if TARGET_OS_OSX
-+ (instancetype)_ctvfl_constraintWithItem:(NSView *)view1
++ (instancetype)_ctvfl_constraintWithItem:(id<CTVFLNSLayoutConstrained>)view1
                                 attribute:(NSLayoutAttribute)attr1
                                 relatedBy:(NSLayoutRelation)relation
-                                   toItem:(NSView *)view2
+                                   toItem:(id<CTVFLNSLayoutConstrained>)view2
                                 attribute:(NSLayoutAttribute)attr2
                                multiplier:(CGFloat)multiplier
                                  constant:(CGFloat)c
@@ -22,10 +32,10 @@
 #endif
 
 #if TARGET_OS_IOS || TARGET_OS_TV
-+ (instancetype)_ctvfl_constraintWithItem:(UIView *)view1
++ (instancetype)_ctvfl_constraintWithItem:(id<CTVFLNSLayoutConstrained>)view1
                                 attribute:(NSLayoutAttribute)attr1
                                 relatedBy:(NSLayoutRelation)relation
-                                   toItem:(UIView *)view2
+                                   toItem:(id<CTVFLNSLayoutConstrained>)view2
                                 attribute:(NSLayoutAttribute)attr2
                                multiplier:(CGFloat)multiplier
                                  constant:(CGFloat)c

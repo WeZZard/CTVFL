@@ -29,7 +29,7 @@ public func constrain(
 
 // MARK: - Building Inline VFL Block
 @discardableResult
-public func withVFL<T: CTVFLPopulatableOperand>(
+public func withVFL<T: CTVFLOperand & CTVFLSyntaxEvaluatable>(
     V description: @autoclosure ()-> T,
     options: CTVFLOptions = []
     ) -> [CTVFLConstraint] where
@@ -47,7 +47,7 @@ public func withVFL<T: CTVFLPopulatableOperand>(
 }
 
 @discardableResult
-public func withVFL<T: CTVFLPopulatableOperand>(
+public func withVFL<T: CTVFLOperand & CTVFLSyntaxEvaluatable>(
     H description: @autoclosure ()-> T,
     options: CTVFLOptions = []
     ) -> [CTVFLConstraint] where

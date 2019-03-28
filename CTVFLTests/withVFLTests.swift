@@ -15,6 +15,34 @@ import XCTest
 
 import CTVFL
 
+extension NSLayoutAttribute: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .bottom: return "Bottom"
+        case .bottomMargin: return "BottomMargin"
+        case .centerX: return "CenterX"
+        case .centerXWithinMargins: return "CenterXWithMargins"
+        case .centerY: return "CenterY"
+        case .centerYWithinMargins: return "CenterYWithMargins"
+        case .firstBaseline: return "FirstBaseline"
+        case .height: return "Height"
+        case .lastBaseline: return "LastBaseline"
+        case .leading: return "Leading"
+        case .leadingMargin: return "LeadingMargin"
+        case .left: return "Left"
+        case .leftMargin: return "LeftMargin"
+        case .notAnAttribute: return "NotAnAttribute"
+        case .right: return "Right"
+        case .rightMargin: return "RightMargin"
+        case .top: return "Top"
+        case .topMargin: return "TopMargin"
+        case .trailing: return "Trailing"
+        case .trailingMargin: return "TrailingMargin"
+        case .width: return "Width"
+        }
+    }
+}
+
 class withVFLTests: XCTestCase {
     var rootView: CTVFLView!
     var view1: CTVFLView!
@@ -32,6 +60,31 @@ class withVFLTests: XCTestCase {
         rootView.addSubview(view1)
         rootView.addSubview(view2)
         rootView.addSubview(view3)
+    }
+    
+    func testCanCompile_withViewAndLayoutGuide() {
+        let h = withVFL(H: view1.safeAreaLayoutGuide - view1)
+        let v = withVFL(V: view1.safeAreaLayoutGuide - view1)
+        
+        XCTAssertEqual(h.count, 1)
+        XCTAssert(h[0].firstItem === view1.safeAreaLayoutGuide)
+        XCTAssertEqual(h[0].firstAttribute, .leading)
+        XCTAssert(h[0].secondItem === view1)
+        XCTAssertEqual(h[0].secondAttribute, .leading)
+        XCTAssertEqual(h[0].relation, .equal)
+        XCTAssertEqual(h[0].constant, 8)
+        XCTAssertEqual(h[0].multiplier, 1)
+        XCTAssertEqual(h[0].priority, .required)
+        
+        XCTAssertEqual(v.count, 1)
+        XCTAssert(v[0].firstItem === view1.safeAreaLayoutGuide)
+        XCTAssertEqual(v[0].firstAttribute, .top)
+        XCTAssert(v[0].secondItem === view1)
+        XCTAssertEqual(v[0].secondAttribute, .top)
+        XCTAssertEqual(v[0].relation, .equal)
+        XCTAssertEqual(v[0].constant, 8)
+        XCTAssertEqual(v[0].multiplier, 1)
+        XCTAssertEqual(v[0].priority, .required)
     }
     
     func testCanCompile_predicatedView_ofEqualSemantic() {

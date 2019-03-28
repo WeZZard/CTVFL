@@ -8,8 +8,8 @@
 public struct CTVFLLayoutablePredicate: CTVFLPredicating, Equatable {
     public typealias LeadingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
     public typealias TrailingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
-    public typealias SyntaxEnd = CTVFLSyntaxEndWithConstant
-    public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
+    public typealias SyntaxOperableForm = CTVFLSyntaxOperableFormConstant
+    public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
     internal var _layoutRelation: CTVFLLayoutRelation {
         switch _relation {
@@ -49,7 +49,7 @@ public struct CTVFLLayoutablePredicate: CTVFLPredicating, Equatable {
     }
     
     public func generateOpcodes(
-        forOrientation orientation: CTVFLConstraintOrientation,
+        forOrientation orientation: CTVFLNSLayoutConstrainedOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
         withStorage storage: inout ContiguousArray<CTVFLOpcode>
@@ -74,7 +74,7 @@ public struct CTVFLLayoutablePredicate: CTVFLPredicating, Equatable {
     }
     
     internal func _layoutAttribute(
-        forOrientation orientation: CTVFLConstraintOrientation,
+        forOrientation orientation: CTVFLNSLayoutConstrainedOrientation,
         forObject object: CTVFLPredicatedObject
         ) -> CTVFLLayoutAttribute?
     {

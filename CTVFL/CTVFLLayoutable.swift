@@ -5,13 +5,15 @@
 //  Created by WeZZard on 9/20/17.
 //
 
-public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLOperand {
+public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLLayoutableOperand {
     public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
     public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias SyntaxEnd = CTVFLSyntaxEndWithLayoutable
-    public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
+    public typealias OperableForm = CTVFLSyntaxOperableFormLayoutable
+    // TODO: Extract from RawValue
+    public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
+    public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
-    public typealias RawValue = AnyObject
+    public typealias RawValue = CTVFLNSLayoutConstrained
     
     public var rawValue: RawValue
     
@@ -23,7 +25,7 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLOperand {
         rawValue = view
     }
     
-    internal var _item: AnyObject { return rawValue }
+    internal var _item: CTVFLNSLayoutConstrained { return rawValue }
     
     // MARK: Hashable
     public var hashValue: Int {
@@ -34,20 +36,12 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLOperand {
         return lhs.rawValue === rhs.rawValue
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(1)
         storage.append(.moveItem(.layoutable(self)))
     }
-}
-
-// MARK: - CTVFLLayoutableConvertible
-public protocol CTVFLLayoutableConvertible {
-    static func _makeLayoutable(_ value: Self) -> CTVFLLayoutable
-}
-
-extension CTVFLView: CTVFLLayoutableConvertible {
-    @inline(__always)
-    public static func _makeLayoutable(_ value: CTVFLView) -> CTVFLLayoutable {
-        return .init(rawValue: value)
+    
+    public func attributeForBeingConstrained(at side: CTVFLNSLayoutConstrainedSide, forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: NSLayoutFormatOptions) -> NSLayoutAttribute {
+        return rawValue._ctvfl_attributeForBeingConstrained(at: side, for: orientation, with: options)
     }
 }

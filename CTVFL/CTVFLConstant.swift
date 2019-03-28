@@ -9,12 +9,13 @@ import CoreGraphics
 
 public struct CTVFLConstant: Equatable, RawRepresentable,
     CustomStringConvertible,
-    CTVFLOperand
+    CTVFLConstantOperand
 {
     public typealias LeadingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
     public typealias TrailingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
-    public typealias SyntaxEnd = CTVFLSyntaxEndWithConstant
-    public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
+    public typealias OperableForm = CTVFLSyntaxOperableFormConstant
+    public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
+    public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
     public typealias RawValue = Float
     
@@ -28,43 +29,10 @@ public struct CTVFLConstant: Equatable, RawRepresentable,
         return rawValue.description
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(3)
         storage.append(.moveConstant(self))
         storage.append(.moveRelation(.equal))
         storage.append(.movePriority(.required))
-    }
-}
-
-// MARK: - CTVFLConstantConvertible
-public protocol CTVFLConstantConvertible {
-    static func _makeConstant(_ value: Self) -> CTVFLConstant
-}
-
-extension Int: CTVFLConstantConvertible {
-    @inline(__always)
-    public static func _makeConstant(_ value: Int) -> CTVFLConstant {
-        return .init(rawValue: .init(value))
-    }
-}
-
-extension Float: CTVFLConstantConvertible {
-    @inline(__always)
-    public static func _makeConstant(_ value: Float) -> CTVFLConstant {
-        return .init(rawValue: value)
-    }
-}
-
-extension Double: CTVFLConstantConvertible {
-    @inline(__always)
-    public static func _makeConstant(_ value: Double) -> CTVFLConstant {
-        return .init(rawValue: .init(value))
-    }
-}
-
-extension CGFloat: CTVFLConstantConvertible {
-    @inline(__always)
-    public static func _makeConstant(_ value: CGFloat) -> CTVFLConstant {
-        return .init(rawValue: .init(value))
     }
 }

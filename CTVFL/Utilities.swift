@@ -18,6 +18,9 @@ public typealias CTVFLOptions = NSLayoutFormatOptions
 public typealias CTVFLLayoutAttribute = NSLayoutAttribute
 
 public typealias CTVFLLayoutRelation = NSLayoutRelation
+
+@available(iOSApplicationExtension 9.0, tvOSApplicationExtension 9.0, *)
+public typealias CTVFLLayoutGuide = UILayoutGuide
 #else
 import AppKit
 
@@ -30,49 +33,12 @@ public typealias CTVFLOptions = NSLayoutConstraint.FormatOptions
 public typealias CTVFLLayoutAttribute = NSLayoutConstraint.Attribute
 
 public typealias CTVFLLayoutRelation = NSLayoutConstraint.Relation
+
+@available(macOSApplicationExtension 10.11, *)
+public typealias CTVFLLayoutGuide = NSLayoutGuide
 #endif
 
 public typealias CTVFLConstraint = NSLayoutConstraint
-
-// MARK: Sequence of View
-extension Sequence where Element: CTVFLView {
-    internal var _commonAncestor: CTVFLView? {
-        var countForID = [ObjectIdentifier : Int]()
-        
-        let baseViews = ContiguousArray<CTVFLView>(self.map({$0}))
-        
-        let inputViewCount = baseViews.count
-        
-        var ancestorViews = baseViews
-        
-        while !ancestorViews.isEmpty {
-            let nextAncestor = ancestorViews.removeFirst()
-            
-            let ancestorID = ObjectIdentifier(nextAncestor)
-            
-            if var count = countForID[ancestorID] {
-                count += 1
-                if count < inputViewCount {
-                    countForID[ancestorID] = count
-                } else {
-                    return nextAncestor
-                }
-            } else {
-                if 1 < inputViewCount {
-                    countForID[ancestorID] = 1
-                } else {
-                    return nextAncestor.superview
-                }
-            }
-            
-            if let nextAncestor = nextAncestor.superview {
-                ancestorViews.append(nextAncestor)
-            }
-        }
-        
-        return nil
-    }
-}
 
 // MARK: Assertions & Predictions
 internal func _assert(

@@ -7,7 +7,7 @@
 
 internal class _CTVFLConstraintHandler {
     // Set to unowned to avoid a retain cycle on the associated view.
-    internal unowned var view: CTVFLView
+    internal unowned let view: CTVFLView
     
     internal let constraint: CTVFLConstraint
     

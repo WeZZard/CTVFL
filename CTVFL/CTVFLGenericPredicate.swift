@@ -9,8 +9,8 @@
 public enum CTVFLGenericPredicate: CTVFLPredicating, Equatable {
     public typealias LeadingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
     public typealias TrailingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
-    public typealias SyntaxEnd = CTVFLSyntaxEndWithConstant
-    public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
+    public typealias SyntaxOperableForm = CTVFLSyntaxOperableFormConstant
+    public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
     case constant(CTVFLConstantPredicate)
     case layoutable(CTVFLLayoutablePredicate)
@@ -27,7 +27,7 @@ public enum CTVFLGenericPredicate: CTVFLPredicating, Equatable {
     }
     
     public func generateOpcodes(
-        forOrientation orientation: CTVFLConstraintOrientation,
+        forOrientation orientation: CTVFLNSLayoutConstrainedOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
         withStorage storage: inout ContiguousArray<CTVFLOpcode>

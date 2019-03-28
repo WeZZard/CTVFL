@@ -5,11 +5,15 @@
 //  Created by WeZZard on 9/20/17.
 //
 
-public class CTVFLPredicatedLayoutable: CTVFLPopulatableOperand {
+public class CTVFLPredicatedLayoutable: CTVFLSyntaxEvaluatable,
+    CTVFLLayoutableOperand
+{
     public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
     public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias SyntaxEnd = CTVFLSyntaxEndWithLayoutable
-    public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
+    public typealias OperableForm = CTVFLSyntaxOperableFormLayoutable
+    // TODO: Extract from layoutable
+    public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
+    public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
     internal let _layoutable: CTVFLLayoutable
     
@@ -25,18 +29,23 @@ public class CTVFLPredicatedLayoutable: CTVFLPopulatableOperand {
     }
     
     public func generateOpcodes(
-        forOrientation orientation: CTVFLConstraintOrientation,
+        forOrientation orientation: CTVFLNSLayoutConstrainedOrientation,
         withOptions options: CTVFLOptions,
         withStorage storage: inout ContiguousArray<CTVFLOpcode>
         )
     {
-        storage._ensureTailElements(3 * _predicates.count + 1)
         for eachPredicate in _predicates {
+            storage._ensureTailElements(2)
             storage.append(.push)
             storage.append(.moveItem(.layoutable(_layoutable)))
             eachPredicate.generateOpcodes(forOrientation: orientation, forObject: .dimension, withOptions: options, withStorage: &storage)
+            storage._ensureTailElements(1)
             storage.append(.pop)
         }
         storage.append(.loadLhsItem)
+    }
+    
+    public func attributeForBeingConstrained(at side: CTVFLNSLayoutConstrainedSide, forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: NSLayoutFormatOptions) -> NSLayoutAttribute {
+        return _layoutable.attributeForBeingConstrained(at: side, forOrientation: orientation, withOptions: options)
     }
 }

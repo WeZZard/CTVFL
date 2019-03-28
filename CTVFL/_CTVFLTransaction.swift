@@ -5,7 +5,6 @@
 //  Created on 2019/3/26.
 //
 
-
 internal class _CTVFLTransaction {
     // MARK: Managing Constraint Handlers
     internal var handlers: ContiguousArray<_CTVFLConstraintHandler> {
@@ -17,29 +16,32 @@ internal class _CTVFLTransaction {
     internal func pushConstraints<C>(_ constraints: C) where
         C: Sequence, C.Element == CTVFLConstraint
     {
-        var cachedCommonAncestors = [[CTVFLView] : CTVFLView]()
+        var cachedCommonAncestryViews = [_NSLayoutConstraintItemsKey : CTVFLView]()
         
         for eachConstraint in constraints {
-            if let firstView = eachConstraint.firstItem as? CTVFLView {
-                
-                if let secondView = eachConstraint.secondItem as? CTVFLView {
+            if let firstItem = eachConstraint.___ctvfl_firstItem {
+                if let secondItem = eachConstraint.___ctvfl_secondItem {
+                    let firstView = firstItem as? CTVFLView
+                    let secondView = secondItem as? CTVFLView
                     
-                    let views = [firstView, secondView]
+                    let views = [firstView, secondView].compactMap({$0})
                     
-                    if let commonAncestor = cachedCommonAncestors[views]
+                    let itemsKey = _NSLayoutConstraintItemsKey(items: views)
+                    
+                    if let commonAncestryView = cachedCommonAncestryViews[_NSLayoutConstraintItemsKey(items: views)]
                         ?? views._commonAncestor
                     {
-                        if commonAncestor !== firstView {
-                            firstView.translatesAutoresizingMaskIntoConstraints = false
+                        if commonAncestryView !== firstView {
+                            firstView?.translatesAutoresizingMaskIntoConstraints = false
                         }
                         
-                        if commonAncestor !== secondView {
-                            secondView.translatesAutoresizingMaskIntoConstraints = false
+                        if commonAncestryView !== secondView {
+                            secondView?.translatesAutoresizingMaskIntoConstraints = false
                         }
                         
-                        cachedCommonAncestors[views] = commonAncestor
+                        cachedCommonAncestryViews[itemsKey] = commonAncestryView
                         let handler = _CTVFLConstraintHandler(
-                            view: commonAncestor,
+                            view: commonAncestryView,
                             constraint: eachConstraint
                         )
                         _handlers_.append(handler)
@@ -52,13 +54,23 @@ internal class _CTVFLTransaction {
                         )
                     }
                 } else {
-                    firstView.translatesAutoresizingMaskIntoConstraints = false
+                    let firstViewOrNil = firstItem as? CTVFLView
                     
-                    let handler = _CTVFLConstraintHandler(
-                        view: firstView,
-                        constraint: eachConstraint
-                    )
-                    _handlers_.append(handler)
+                    if let targetView = firstViewOrNil {
+                        targetView.translatesAutoresizingMaskIntoConstraints = false
+                        
+                        let handler = _CTVFLConstraintHandler(
+                            view: targetView,
+                            constraint: eachConstraint
+                        )
+                        _handlers_.append(handler)
+                    } else {
+                        debugPrint(
+                            """
+                            No super view found for constraint: \(eachConstraint).
+                            """
+                        )
+                    }
                 }
             } else {
                 debugPrint("Invalid constraint: \(eachConstraint).")
@@ -87,5 +99,30 @@ internal class _CTVFLTransaction {
     
     internal init() {
         _handlers_ = []
+    }
+}
+
+internal struct _NSLayoutConstraintItemsKey: Hashable {
+    
+    let items: [CTVFLNSLayoutConstrained]
+    
+    let hashValue: Int
+    
+    init(items: [CTVFLNSLayoutConstrained]) {
+        var hasher = Hasher()
+        for each in items {
+            hasher.combine(ObjectIdentifier(each).hashValue)
+        }
+        hashValue = hasher.finalize()
+        self.items = items
+    }
+    
+    static func == (lhs: _NSLayoutConstraintItemsKey, rhs: _NSLayoutConstraintItemsKey) -> Bool {
+        if lhs.hashValue == rhs.hashValue {
+            if lhs.items.count == rhs.items.count {
+                return lhs.items.elementsEqual(rhs.items, by: ===)
+            }
+        }
+        return false
     }
 }

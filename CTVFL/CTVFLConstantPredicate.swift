@@ -7,11 +7,12 @@
 
 import CoreGraphics
 
-public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLOperand, Equatable {
+public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLConstantOperand, Equatable {
     public typealias LeadingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
     public typealias TrailingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
-    public typealias SyntaxEnd = CTVFLSyntaxEndWithConstant
-    public typealias SyntaxTermination = CTVFLSyntaxIsNotTerminated
+    public typealias OperableForm = CTVFLSyntaxOperableFormConstant
+    public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
+    public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
     internal let _constant: CTVFLConstant
     
@@ -46,12 +47,12 @@ public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLOperand, Equatable 
         return .constant(self)
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLConstraintOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
+    public func generateOpcodes(forOrientation orientation: CTVFLNSLayoutConstrainedOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         return generateOpcodes(forOrientation: orientation, forObject: .position, withOptions: options, withStorage: &storage)
     }
     
     public func generateOpcodes(
-        forOrientation orientation: CTVFLConstraintOrientation,
+        forOrientation orientation: CTVFLNSLayoutConstrainedOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
         withStorage storage: inout ContiguousArray<CTVFLOpcode>
@@ -68,7 +69,7 @@ public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLOperand, Equatable 
     }
     
     internal func _layoutAttribute(
-        forOrientation orientation: CTVFLConstraintOrientation,
+        forOrientation orientation: CTVFLNSLayoutConstrainedOrientation,
         forObject object: CTVFLPredicatedObject
         ) -> CTVFLLayoutAttribute?
     {
