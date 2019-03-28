@@ -12,6 +12,6 @@ public protocol CTVFLConfinableConvertible {
 extension CTVFLLayoutGuide: CTVFLConfinableConvertible {
     @inline(__always)
     public static func _makeConfinable(_ value: CTVFLLayoutGuide) -> CTVFLConfinable {
-        return .init(rawValue: value)
+        return .init(value)
     }
 }

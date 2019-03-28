@@ -12,6 +12,6 @@ public protocol CTVFLLayoutableConvertible {
 extension CTVFLView: CTVFLLayoutableConvertible {
     @inline(__always)
     public static func _makeLayoutable(_ value: CTVFLView) -> CTVFLLayoutable {
-        return .init(rawValue: value)
+        return .init(value)
     }
 }

@@ -5,34 +5,33 @@
 //  Created by WeZZard on 9/20/17.
 //
 
-public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLLayoutableOperand {
+/// An instance of `CTVFLLayoutable` does not hold a strong reference to
+/// its internal view.
+///
+public struct CTVFLLayoutable: Hashable, CTVFLLayoutableOperand {
     public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
     public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
     public typealias OperableForm = CTVFLSyntaxOperableFormLayoutable
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
-    public typealias RawValue = CTVFLLayoutAnchorSelectable
+    internal unowned(unsafe) var _view: CTVFLLayoutAnchorSelectable
     
-    public var rawValue: RawValue
-    
-    public init(rawValue: RawValue) {
-        self.rawValue = rawValue
+    internal init(_ view: CTVFLView) {
+        _view = view
     }
     
-    public init(_ view: CTVFLView) {
-        rawValue = view
+    internal var _asAnchorSelector: CTVFLLayoutAnchorSelectable {
+        return _view
     }
-    
-    internal var _asAnchorSelector: CTVFLLayoutAnchorSelectable { return rawValue }
     
     // MARK: Hashable
     public func hash(into hasher: inout Hasher) {
-        ObjectIdentifier(rawValue).hash(into: &hasher)
+        ObjectIdentifier(_view).hash(into: &hasher)
     }
     
     public static func == (lhs: CTVFLLayoutable, rhs: CTVFLLayoutable) -> Bool {
-        return lhs.rawValue === rhs.rawValue
+        return lhs._view === rhs._view
     }
     
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
@@ -41,6 +40,6 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLLayoutableOperan
     }
     
     public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
-        return rawValue._ctvfl_attributeForBeingEvaluated(at: site, for: orientation, with: options)
+        return _view._ctvfl_attributeForBeingEvaluated(at: site, for: orientation, with: options)
     }
 }

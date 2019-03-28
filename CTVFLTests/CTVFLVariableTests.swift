@@ -17,7 +17,7 @@ class CTVFLLayoutableTests: XCTestCase {
     override func setUp() {
         super.setUp()
         view = CTVFLView()
-        layoutable = CTVFLLayoutable(rawValue: view)
+        layoutable = CTVFLLayoutable(view)
     }
     
     override func tearDown() {
@@ -30,10 +30,12 @@ class CTVFLLayoutableTests: XCTestCase {
     }
     
     func testEqualOperator() {
-        let layoutableWithSameView = CTVFLLayoutable(rawValue: view)
+        let layoutableWithSameView = CTVFLLayoutable(view)
         XCTAssertEqual(layoutable, layoutableWithSameView)
         
-        let layoutableWithAnotherView = CTVFLLayoutable(rawValue: CTVFLView())
+        let anotherView = CTVFLView()
+        
+        let layoutableWithAnotherView = CTVFLLayoutable(anotherView)
         XCTAssertNotEqual(layoutable, layoutableWithAnotherView)
     }
     
@@ -52,6 +54,6 @@ class CTVFLLayoutableTests: XCTestCase {
         let layoutable = CTVFLView._makeLayoutable(view)
         
         XCTAssert(layoutable._asAnchorSelector === view)
-        XCTAssert(layoutable.rawValue === view)
+        XCTAssert(layoutable._view === view)
     }
 }
