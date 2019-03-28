@@ -12,81 +12,81 @@ import AppKit
 #endif
 
 // MARK: Layoutable-to-Layoutable Spacing
-public func - <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpaceSyntax<CTVFLLayoutable, CTVFLLayoutable> {
-    return CTVFLLayoutableToLayoutableSpaceSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeLayoutable(rhs))
+public func - <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSystemSpacingSyntax<CTVFLLayoutable, CTVFLLayoutable> {
+    return CTVFLLayoutableToLayoutableSystemSpacingSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeLayoutable(rhs))
 }
 
-public func - <Lhs, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpaceSyntax<Lhs, CTVFLLayoutable> {
-    return CTVFLLayoutableToLayoutableSpaceSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
+public func - <Lhs, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSystemSpacingSyntax<Lhs, CTVFLLayoutable> {
+    return CTVFLLayoutableToLayoutableSystemSpacingSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
 }
 
-public func - <Lhs: CTVFLLayoutableConvertible, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpaceSyntax<CTVFLLayoutable, Rhs> {
-    return CTVFLLayoutableToLayoutableSpaceSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
+public func - <Lhs: CTVFLLayoutableConvertible, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSystemSpacingSyntax<CTVFLLayoutable, Rhs> {
+    return CTVFLLayoutableToLayoutableSystemSpacingSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
 }
 
-public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpaceSyntax<Lhs, Rhs> {
-    return CTVFLLayoutableToLayoutableSpaceSyntax(lhs: lhs, rhs: rhs)
+public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSystemSpacingSyntax<Lhs, Rhs> {
+    return CTVFLLayoutableToLayoutableSystemSpacingSyntax(lhs: lhs, rhs: rhs)
 }
 
 // MARK: Constant-to-Layoutable Spacing
-public func - <Lhs, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLConstantToLayoutableSpaceSyntax<Lhs, CTVFLLayoutable> {
-    return CTVFLConstantToLayoutableSpaceSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
+public func - <Lhs, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLConstantToLayoutableSystemSpacingSyntax<Lhs, CTVFLLayoutable> {
+    return CTVFLConstantToLayoutableSystemSpacingSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
 }
 
-public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLConstantToLayoutableSpaceSyntax<Lhs, Rhs> {
-    return CTVFLConstantToLayoutableSpaceSyntax(lhs: lhs, rhs: rhs)
+public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLConstantToLayoutableSystemSpacingSyntax<Lhs, Rhs> {
+    return CTVFLConstantToLayoutableSystemSpacingSyntax(lhs: lhs, rhs: rhs)
 }
 
 // MARK: Layoutable-to-Constant Spacing
-public func - <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLConstantConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSpaceSyntax<CTVFLLayoutable, CTVFLConstant> {
-    return CTVFLLayoutableToConstantSpaceSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeConstant(rhs))
+public func - <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLConstantConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSystemSpacingSyntax<CTVFLLayoutable, CTVFLConstant> {
+    return CTVFLLayoutableToConstantSystemSpacingSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeConstant(rhs))
 }
 
-public func - <Lhs, Rhs: CTVFLConstantConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSpaceSyntax<Lhs, CTVFLConstant> {
-    return CTVFLLayoutableToConstantSpaceSyntax(lhs: lhs, rhs: Rhs._makeConstant(rhs))
+public func - <Lhs, Rhs: CTVFLConstantConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSystemSpacingSyntax<Lhs, CTVFLConstant> {
+    return CTVFLLayoutableToConstantSystemSpacingSyntax(lhs: lhs, rhs: Rhs._makeConstant(rhs))
 }
 
-public func - <Lhs: CTVFLLayoutableConvertible, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSpaceSyntax<CTVFLLayoutable, Rhs> {
-    return CTVFLLayoutableToConstantSpaceSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
+public func - <Lhs: CTVFLLayoutableConvertible, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSystemSpacingSyntax<CTVFLLayoutable, Rhs> {
+    return CTVFLLayoutableToConstantSystemSpacingSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
 }
 
-public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSpaceSyntax<Lhs, Rhs> {
-    return CTVFLLayoutableToConstantSpaceSyntax(lhs: lhs, rhs: rhs)
+public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSystemSpacingSyntax<Lhs, Rhs> {
+    return CTVFLLayoutableToConstantSystemSpacingSyntax(lhs: lhs, rhs: rhs)
 }
 
 // MARK: Adjacent
-public func | <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLAdjacentSyntax<Lhs, Rhs> {
-    return CTVFLAdjacentSyntax(lhs: lhs, rhs: rhs)
+public func | <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs, Rhs> {
+    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: lhs, rhs: rhs)
 }
 
-public func | <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLAdjacentSyntax<CTVFLLayoutable, CTVFLLayoutable> {
-    return CTVFLAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeLayoutable(rhs))
+public func | <Lhs: CTVFLLayoutableConvertible, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<CTVFLLayoutable, CTVFLLayoutable> {
+    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeLayoutable(rhs))
 }
 
-public func | <Lhs, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLAdjacentSyntax<Lhs, CTVFLLayoutable> {
-    return CTVFLAdjacentSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
+public func | <Lhs, Rhs: CTVFLLayoutableConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs, CTVFLLayoutable> {
+    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
 }
 
-public func | <Lhs: CTVFLLayoutableConvertible, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLAdjacentSyntax<CTVFLLayoutable, Rhs> {
-    return CTVFLAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
+public func | <Lhs: CTVFLLayoutableConvertible, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<CTVFLLayoutable, Rhs> {
+    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
 }
 
 // MARK: Spaced Leading
-public prefix func |- <Operand: CTVFLLayoutableConvertible>(operand: Operand) -> CTVFLSpacedLeadingLayoutableSyntax<CTVFLLayoutable> {
-    return CTVFLSpacedLeadingLayoutableSyntax(operand: Operand._makeLayoutable(operand))
+public prefix func |- <Operand: CTVFLLayoutableConvertible>(operand: Operand) -> CTVFLLeadingLayoutableWithSystemSpacingSyntax<CTVFLLayoutable> {
+    return CTVFLLeadingLayoutableWithSystemSpacingSyntax(operand: Operand._makeLayoutable(operand))
 }
 
-public prefix func |- <Operand>(operand: Operand) -> CTVFLSpacedLeadingLayoutableSyntax<Operand> {
-    return CTVFLSpacedLeadingLayoutableSyntax(operand: operand)
+public prefix func |- <Operand>(operand: Operand) -> CTVFLLeadingLayoutableWithSystemSpacingSyntax<Operand> {
+    return CTVFLLeadingLayoutableWithSystemSpacingSyntax(operand: operand)
 }
 
 // MARK: Spaced Trailing
-public postfix func -| <Operand: CTVFLLayoutableConvertible>(operand: Operand) -> CTVFLSpacedTrailingLayoutableSyntax<CTVFLLayoutable> {
-    return CTVFLSpacedTrailingLayoutableSyntax(operand: Operand._makeLayoutable(operand))
+public postfix func -| <Operand: CTVFLLayoutableConvertible>(operand: Operand) -> CTVFLTrailingLayoutableWithSystemSpacingSyntax<CTVFLLayoutable> {
+    return CTVFLTrailingLayoutableWithSystemSpacingSyntax(operand: Operand._makeLayoutable(operand))
 }
 
-public postfix func -| <Operand>(operand: Operand) -> CTVFLSpacedTrailingLayoutableSyntax<Operand> {
-    return CTVFLSpacedTrailingLayoutableSyntax(operand: operand)
+public postfix func -| <Operand>(operand: Operand) -> CTVFLTrailingLayoutableWithSystemSpacingSyntax<Operand> {
+    return CTVFLTrailingLayoutableWithSystemSpacingSyntax(operand: operand)
 }
 
 // MARK: Leading Space

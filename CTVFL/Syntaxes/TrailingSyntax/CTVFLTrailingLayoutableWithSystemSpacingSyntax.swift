@@ -1,5 +1,5 @@
 //
-//  CTVFLSpacedTrailingLayoutableSyntax.swift
+//  CTVFLTrailingLayoutableWithSystemSpacingSyntax.swift
 //  CTVFL
 //
 //  Created on 2019/3/28.
@@ -8,7 +8,7 @@
 
 /// `view-|`
 ///
-public struct CTVFLSpacedTrailingLayoutableSyntax<O: CTVFLLayoutableOperand>:
+public struct CTVFLTrailingLayoutableWithSystemSpacingSyntax<O: CTVFLLayoutableOperand>:
     CTVFLSyntaxEvaluatable, CTVFLLayoutableOperand, _CTVFLTrailingSyntax where
     O.TailAssociativity == CTVFLSyntaxAssociativityIsOpen
 {

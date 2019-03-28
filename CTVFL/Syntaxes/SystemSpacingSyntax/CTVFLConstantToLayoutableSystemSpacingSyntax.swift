@@ -1,14 +1,14 @@
 //
-//  CTVFLLayoutableToLayoutableSpaceSyntax.swift
+//  CTVFLConstantToLayoutableSystemSpacingSyntax.swift
 //  CTVFL
 //
 //  Created on 2019/3/28.
 //
 
 
-/// `view - view`
+/// `n - view`
 ///
-public struct CTVFLLayoutableToLayoutableSpaceSyntax<Lhs: CTVFLLayoutableOperand, Rhs: CTVFLLayoutableOperand>:
+public struct CTVFLConstantToLayoutableSystemSpacingSyntax<Lhs: CTVFLConstantOperand, Rhs: CTVFLLayoutableOperand>:
     CTVFLSyntaxEvaluatable, CTVFLLayoutableOperand, _CTVFLBinarySyntax where
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
@@ -26,17 +26,12 @@ public struct CTVFLLayoutableToLayoutableSpaceSyntax<Lhs: CTVFLLayoutableOperand
     public let rhs: Rhs
     
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        storage._ensureTailElements(2)
-        storage.append(.push)
-        storage.append(.moveAttribute(lhs.attributeForBeingConstrained(at: .lhs, forOrientation: orientation, withOptions: options)))
         lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
         storage._ensureTailElements(1)
         storage.append(.moveEvaluationSite(.secondItem))
         rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(6)
+        storage._ensureTailElements(4)
         storage.append(.moveAttribute(rhs.attributeForBeingConstrained(at: .rhs, forOrientation: orientation, withOptions: options)))
-        storage.append(.moveRelation(.equal))
-        storage.append(.moveUsesSystemSpace(true))
         storage.append(.moveReturnValue(.secondItem))
         storage.append(.makeConstraint)
         storage.append(.pop)

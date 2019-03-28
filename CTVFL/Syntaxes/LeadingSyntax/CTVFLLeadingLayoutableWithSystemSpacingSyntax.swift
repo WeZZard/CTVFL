@@ -1,5 +1,5 @@
 //
-//  CTVFLSpacedLeadingLayoutableSyntax.swift
+//  CTVFLLeadingLayoutableWithSystemSpacingSyntax.swift
 //  CTVFL
 //
 //  Created on 2019/3/28.
@@ -8,7 +8,7 @@
 
 /// `|-view`
 ///
-public struct CTVFLSpacedLeadingLayoutableSyntax<O: CTVFLLayoutableOperand>:
+public struct CTVFLLeadingLayoutableWithSystemSpacingSyntax<O: CTVFLLayoutableOperand>:
     CTVFLSyntaxEvaluatable, CTVFLLayoutableOperand, _CTVFLLeadingSyntax where
     O.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
