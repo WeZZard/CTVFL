@@ -42,8 +42,8 @@ class CTVFLLayoutableTests: XCTestCase {
         XCTAssert(layoutable == anotherLayoutable)
     }
     
-    func test_item() {
-        XCTAssert(layoutable._item === view)
+    func test_asAnchorSelector() {
+        XCTAssert(layoutable._asAnchorSelector === view)
     }
     
     func testView_makeLayoutable() {
@@ -51,7 +51,7 @@ class CTVFLLayoutableTests: XCTestCase {
         
         let layoutable = CTVFLView._makeLayoutable(view)
         
-        XCTAssert(layoutable._item === view)
+        XCTAssert(layoutable._asAnchorSelector === view)
         XCTAssert(layoutable.rawValue === view)
     }
 }

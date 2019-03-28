@@ -1,11 +1,11 @@
 //
-//  CTVFLLayoutable.swift
+//  CTVFLConfinable.swift
 //  CTVFL
 //
-//  Created by WeZZard on 9/20/17.
+//  Created on 2019/3/28.
 //
 
-public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLLayoutableOperand {
+public struct CTVFLConfinable: RawRepresentable, Hashable, CTVFLLayoutableOperand {
     public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
     public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
     public typealias OperableForm = CTVFLSyntaxOperableFormLayoutable
@@ -31,13 +31,13 @@ public struct CTVFLLayoutable: RawRepresentable, Hashable, CTVFLLayoutableOperan
         return ObjectIdentifier(rawValue).hashValue
     }
     
-    public static func == (lhs: CTVFLLayoutable, rhs: CTVFLLayoutable) -> Bool {
+    public static func == (lhs: CTVFLConfinable, rhs: CTVFLConfinable) -> Bool {
         return lhs.rawValue === rhs.rawValue
     }
     
     public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(1)
-        storage.append(.moveItem(.layoutable(self)))
+        storage.append(.moveItem(.confinable(self)))
     }
     
     public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {

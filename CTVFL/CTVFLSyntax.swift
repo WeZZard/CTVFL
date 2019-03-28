@@ -35,13 +35,16 @@ public struct CTVFLLayoutableToLayoutableSpaceSyntax<Lhs: CTVFLLayoutableOperand
         storage.append(.push)
         storage.append(.moveAttribute(lhs.attributeForBeingConstrained(at: .lhs, forOrientation: orientation, withOptions: options)))
         lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(1)
+        storage.append(.moveEvaluationSite(.secondItem))
         rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(5)
+        storage._ensureTailElements(6)
         storage.append(.moveAttribute(rhs.attributeForBeingConstrained(at: .rhs, forOrientation: orientation, withOptions: options)))
         storage.append(.moveRelation(.equal))
-        storage.append(.moveConstant(CTVFLConstant(rawValue: 8)))
+        storage.append(.moveUsesSystemSpace(true))
+        storage.append(.moveReturnValue(.secondItem))
+        storage.append(.makeConstraint)
         storage.append(.pop)
-        storage.append(.loadRhsItem)
     }
 }
 
@@ -66,9 +69,13 @@ public struct CTVFLConstantToLayoutableSpaceSyntax<Lhs: CTVFLConstantOperand, Rh
     
     public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(1)
+        storage.append(.moveEvaluationSite(.secondItem))
         rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(2)
+        storage._ensureTailElements(4)
         storage.append(.moveAttribute(rhs.attributeForBeingConstrained(at: .rhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveReturnValue(.secondItem))
+        storage.append(.makeConstraint)
         storage.append(.pop)
     }
 }
@@ -97,6 +104,8 @@ public struct CTVFLLayoutableToConstantSpaceSyntax<Lhs: CTVFLLayoutableOperand, 
         storage.append(.push)
         storage.append(.moveAttribute(lhs.attributeForBeingConstrained(at: .lhs, forOrientation: orientation, withOptions: options)))
         lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(1)
+        storage.append(.moveEvaluationSite(.secondItem))
         rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
     }
 }
@@ -125,13 +134,16 @@ public struct CTVFLAdjacentSyntax<Lhs: CTVFLLayoutableOperand, Rhs: CTVFLLayouta
         storage.append(.push)
         storage.append(.moveAttribute(lhs.attributeForBeingConstrained(at: .lhs, forOrientation: orientation, withOptions: options)))
         lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+        storage._ensureTailElements(1)
+        storage.append(.moveEvaluationSite(.secondItem))
         rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(5)
+        storage._ensureTailElements(6)
         storage.append(.moveAttribute(rhs.attributeForBeingConstrained(at: .rhs, forOrientation: orientation, withOptions: options)))
         storage.append(.moveRelation(.equal))
         storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
+        storage.append(.moveReturnValue(.secondItem))
+        storage.append(.makeConstraint)
         storage.append(.pop)
-        storage.append(.loadRhsItem)
     }
 }
 
@@ -154,15 +166,17 @@ public struct CTVFLSpacedLeadingLayoutableSyntax<O: CTVFLLayoutableOperand>:
     public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(7)
         storage.append(.push)
-        storage.append(.moveConstant(CTVFLConstant(rawValue: 8)))
+        storage.append(.moveUsesSystemSpace(true))
         storage.append(.moveRelation(.equal))
         storage.append(.moveItem(.container))
         storage.append(.moveAttribute(attributeForContainer(at: .lhs, forOrientation: orientation, withOptions: options)))
         storage.append(.moveAttribute(operand.attributeForBeingConstrained(at: .rhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveEvaluationSite(.secondItem))
         operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(2)
+        storage._ensureTailElements(3)
+        storage.append(.moveReturnValue(.secondItem))
+        storage.append(.makeConstraint)
         storage.append(.pop)
-        storage.append(.loadRhsItem)
     }
 }
 
@@ -185,15 +199,16 @@ public struct CTVFLSpacedTrailingLayoutableSyntax<O: CTVFLLayoutableOperand>:
     public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         storage._ensureTailElements(4)
         storage.append(.push)
-        storage.append(.moveConstant(CTVFLConstant(rawValue: 8)))
+        storage.append(.moveUsesSystemSpace(true))
         storage.append(.moveRelation(.equal))
         storage.append(.moveAttribute(operand.attributeForBeingConstrained(at: .lhs, forOrientation: orientation, withOptions: options)))
         operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(4)
+        storage._ensureTailElements(5)
         storage.append(.moveItem(.container))
         storage.append(.moveAttribute(attributeForContainer(at: .rhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveReturnValue(.firstItem))
+        storage.append(.makeConstraint)
         storage.append(.pop)
-        storage.append(.loadLhsItem)
     }
 }
 
@@ -214,17 +229,19 @@ public struct CTVFLLeadingLayoutableSyntax<O: CTVFLLayoutableOperand>:
     public let operand: Operand
     
     public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        storage._ensureTailElements(6)
+        storage._ensureTailElements(7)
         storage.append(.push)
         storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
         storage.append(.moveRelation(.equal))
         storage.append(.moveItem(.container))
         storage.append(.moveAttribute(attributeForContainer(at: .lhs, forOrientation: orientation, withOptions: options)))
         storage.append(.moveAttribute(operand.attributeForBeingConstrained(at: .rhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveEvaluationSite(.secondItem))
         operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(2)
+        storage._ensureTailElements(3)
+        storage.append(.moveReturnValue(.secondItem))
+        storage.append(.makeConstraint)
         storage.append(.pop)
-        storage.append(.loadRhsItem)
     }
 }
 
@@ -250,12 +267,13 @@ public struct CTVFLTrailingLayoutableSyntax<O: CTVFLLayoutableOperand>:
         storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
         storage.append(.moveRelation(.equal))
         operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(5)
+        storage._ensureTailElements(6)
         storage.append(.moveAttribute(operand.attributeForBeingConstrained(at: .lhs, forOrientation: orientation, withOptions: options)))
         storage.append(.moveItem(.container))
         storage.append(.moveAttribute(attributeForContainer(at: .rhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveReturnValue(.firstItem))
+        storage.append(.makeConstraint)
         storage.append(.pop)
-        storage.append(.loadLhsItem)
     }
 }
 
@@ -302,9 +320,11 @@ public struct CTVFLTrailingConstantSyntax<O: CTVFLConstantOperand>:
     
     public func generateOpcodes(forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
         operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(3)
+        storage._ensureTailElements(5)
         storage.append(.moveItem(.container))
         storage.append(.moveAttribute(attributeForContainer(at: .rhs, forOrientation: orientation, withOptions: options)))
+        storage.append(.moveReturnValue(.firstItem))
+        storage.append(.makeConstraint)
         storage.append(.pop)
     }
 }

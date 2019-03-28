@@ -36,6 +36,25 @@ public typealias CTVFLLayoutGuide = NSLayoutGuide
 
 public typealias CTVFLConstraint = NSLayoutConstraint
 
+extension CTVFLLayoutAttribute: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .bottom: return "Bottom"
+        case .centerX: return "CenterX"
+        case .centerY: return "CenterY"
+        case .firstBaseline: return "FirstBaseline"
+        case .height: return "Height"
+        case .lastBaseline: return "LastBaseline"
+        case .leading: return "Leading"
+        case .left: return "Left"
+        case .right: return "Right"
+        case .top: return "Top"
+        case .trailing: return "Trailing"
+        case .width: return "Width"
+        }
+    }
+}
+
 // MARK: Assertions & Predictions
 internal func _assert(
     _ expression: @autoclosure () -> Bool,

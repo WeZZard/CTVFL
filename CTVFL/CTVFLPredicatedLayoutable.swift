@@ -11,7 +11,6 @@ public class CTVFLPredicatedLayoutable: CTVFLSyntaxEvaluatable,
     public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
     public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
     public typealias OperableForm = CTVFLSyntaxOperableFormLayoutable
-    // TODO: Extract from layoutable
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
@@ -39,10 +38,11 @@ public class CTVFLPredicatedLayoutable: CTVFLSyntaxEvaluatable,
             storage.append(.push)
             storage.append(.moveItem(.layoutable(_layoutable)))
             eachPredicate.generateOpcodes(forOrientation: orientation, forObject: .dimension, withOptions: options, withStorage: &storage)
-            storage._ensureTailElements(1)
+            storage._ensureTailElements(3)
+            storage.append(.moveReturnValue(.firstItem))
+            storage.append(.makeConstraint)
             storage.append(.pop)
         }
-        storage.append(.loadLhsItem)
     }
     
     public func attributeForBeingConstrained(at side: CTVFLLayoutAnchorSelectableSide, forOrientation orientation: CTVFLLayoutAnchorSelectableOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {

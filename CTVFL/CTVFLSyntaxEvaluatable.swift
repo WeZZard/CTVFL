@@ -13,35 +13,35 @@ public protocol CTVFLSyntaxEvaluatable: CTVFLOpcodeGenerating {
 extension CTVFLSyntaxEvaluatable {
     public func makeConstraints(orientation: CTVFLLayoutAnchorSelectableOrientation, options: CTVFLOptions) -> [CTVFLConstraint] {
         typealias Level = (
-            item1: CTVFLItem?,
-            attribute1: CTVFLLayoutAttribute?,
-            item2: CTVFLItem?,
-            attribute2: CTVFLLayoutAttribute?,
+            firstItem: CTVFLItem?,
+            firstAttribute: CTVFLLayoutAttribute?,
+            secondItem: CTVFLItem?,
+            secondAttribute: CTVFLLayoutAttribute?,
             relation: CTVFLLayoutRelation?,
             constant: CTVFLConstant?,
-            priority: CTVFLPriority
+            usesSystemSpace: Bool,
+            priority: CTVFLPriority,
+            evaluationSite: CTVFLOpcode.EvaluationSite,
+            retVal: CTVFLItem?
         )
         
         let emptyLevel: Level = (
-            item1: nil,
-            attribute1: nil,
-            item2: nil,
-            attribute2: nil,
+            firstItem: nil,
+            firstAttribute: nil,
+            secondItem: nil,
+            secondAttribute: nil,
             relation: nil,
             constant: nil,
-            priority: .required
+            usesSystemSpace: false,
+            priority: .required,
+            evaluationSite: .firstItem,
+            retVal: nil
         )
         
         var stack: ContiguousArray<Level> = [emptyLevel]
         stack.reserveCapacity(10)
         
-        typealias CTVFLConstraintRecord = (
-            constraint: CTVFLConstraint,
-            lhs: CTVFLLayoutAnchorSelectable?,
-            rhs: CTVFLLayoutAnchorSelectable?
-        )
-        
-        var constraints = ContiguousArray<CTVFLConstraintRecord>()
+        var constraints = ContiguousArray<CTVFLConstraint>()
         constraints.reserveCapacity(10)
         
         var itemsToBeAligned = ContiguousArray<CTVFLLayoutAnchorSelectable>()
@@ -51,7 +51,7 @@ extension CTVFLSyntaxEvaluatable {
         
         var opcodes = ContiguousArray<CTVFLOpcode>()
         
-        self.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &opcodes)
+        generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &opcodes)
         
         for index in 0..<opcodes.endIndex {
             let eachOpcode = opcodes[index]
@@ -62,55 +62,28 @@ extension CTVFLSyntaxEvaluatable {
                 stack.append(emptyLevel)
             case .pop:
                 let topLevel = stack.popLast()!
-                let (
-                    item1,
-                    attribute1,
-                    item2,
-                    attribute2,
-                    relation,
-                    constant,
-                    priority
-                ) = topLevel
-                
-                let firstSelector = item1?._getAnchorSelector(with: item2)
-                
-                let secondSelector = item2?._getAnchorSelector(with: item1)
-                
-                switch (firstSelector, attribute1, secondSelector, attribute2, relation, constant) {
-                case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), .some(c)):
-                    let anchor1 = sel1._ctvfl_anchor(for: attr1)
-                    let anchor2 = sel2._ctvfl_anchor(for: attr2)
-                    let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2, constant: CGFloat(c.rawValue))
-                    constraint.priority = priority
-                    constraints.append((constraint, sel1, sel2))
-                case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), .none):
-                    let anchor1 = sel1._ctvfl_anchor(for: attr1)
-                    let anchor2 = sel2._ctvfl_anchor(for: attr2)
-                    let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2)
-                    constraint.priority = priority
-                    constraints.append((constraint, sel1, sel2))
-                case let (.some(sel), .some(attr), .none, .none, .some(rel), .some(c)):
-                    let anchor = sel._ctvfl_anchor(for: attr)
-                    let constraint = anchor._ctvfl_constraint(with: rel, toConstant: CGFloat(c.rawValue))
-                    constraint.priority = priority
-                    constraints.append((constraint, sel, nil))
-                default:
-                    debugPrint("Invalid input: Item1 = \(item1.map({"\($0)"}) ?? "nil"); Attribute1 = \(attribute1.map({"\($0)"}) ?? "nil"); Item2 = \(item2.map({"\($0)"}) ?? "nil"); Attribute2 = \(attribute2.map({"\($0)"}) ?? "nil"); Relation = \(relation.map({"\($0)"}) ?? "nil"); Constant = \(constant.map({"\($0)"}) ?? "nil")");
+                let retVal = topLevel.retVal
+                let previousLevel = stack.endIndex - 1
+                switch stack[previousLevel].evaluationSite {
+                case .firstItem:
+                    stack[previousLevel].firstItem = retVal
+                case .secondItem:
+                    stack[previousLevel].secondItem = retVal
                 }
                 
             case let .moveItem(item):
                 if needsAlign {
                     switch item {
                     case let .layoutable(layoutable):
-                        itemsToBeAligned.append(layoutable._item)
+                        itemsToBeAligned.append(layoutable._asAnchorSelector)
                     default: break
                     }
                 }
                 
-                if stack[currentLevel].item1 == nil {
-                    stack[currentLevel].item1 = item
-                } else if stack[currentLevel].item2 == nil {
-                    stack[currentLevel].item2 = item
+                if stack[currentLevel].firstItem == nil {
+                    stack[currentLevel].firstItem = item
+                } else if stack[currentLevel].secondItem == nil {
+                    stack[currentLevel].secondItem = item
                 } else {
                     NSException(
                         name: .internalInconsistencyException,
@@ -119,10 +92,10 @@ extension CTVFLSyntaxEvaluatable {
                         ).raise()
                 }
             case let .moveAttribute(attr):
-                if stack[currentLevel].attribute1 == nil {
-                    stack[currentLevel].attribute1 = attr
-                } else if stack[currentLevel].attribute2 == nil {
-                    stack[currentLevel].attribute2 = attr
+                if stack[currentLevel].firstAttribute == nil {
+                    stack[currentLevel].firstAttribute = attr
+                } else if stack[currentLevel].secondAttribute == nil {
+                    stack[currentLevel].secondAttribute = attr
                 } else {
                     NSException(
                         name: .internalInconsistencyException,
@@ -134,50 +107,96 @@ extension CTVFLSyntaxEvaluatable {
                 stack[currentLevel].relation = rel
             case let .moveConstant(value):
                 stack[currentLevel].constant = value
+            case let .moveUsesSystemSpace(flag):
+                stack[currentLevel].usesSystemSpace = flag
             case let .movePriority(value):
                 stack[currentLevel].priority = value
-            case .loadLhsItem:
-                let item: CTVFLItem = .layoutable(CTVFLLayoutable(rawValue: constraints.last!.lhs!))
-                if stack[currentLevel].item1 == nil {
-                    stack[currentLevel].item1 = item
-                } else if stack[currentLevel].item2 == nil {
-                    stack[currentLevel].item2 = item
-                } else {
-                    NSException(
-                        name: .internalInconsistencyException,
-                        reason: "Items overflow.",
-                        userInfo: nil
-                        ).raise()
+            case let .moveReturnValue(retVal):
+                switch retVal {
+                case .firstItem:
+                    stack[currentLevel].retVal = stack[currentLevel].firstItem
+                case .secondItem:
+                    stack[currentLevel].retVal = stack[currentLevel].secondItem
                 }
-            case .loadRhsItem:
-                let item: CTVFLItem = .layoutable(CTVFLLayoutable(rawValue: constraints.last!.rhs!))
-                if stack[currentLevel].item1 == nil {
-                    stack[currentLevel].item1 = item
-                } else if stack[currentLevel].item2 == nil {
-                    stack[currentLevel].item2 = item
-                } else {
-                    NSException(
-                        name: .internalInconsistencyException,
-                        reason: "Items overflow.",
-                        userInfo: nil
-                        ).raise()
+            case let .moveEvaluationSite(evaluationSite):
+                stack[currentLevel].evaluationSite = evaluationSite
+            case .makeConstraint:
+                let topLevel = stack[currentLevel]
+                
+                let (
+                    firstItem,
+                    firstAttribute,
+                    secondItem,
+                    secondAttribute,
+                    relation,
+                    constant,
+                    usesSystemSpace,
+                    priority,
+                    _,
+                    _
+                ) = topLevel
+                
+                let firstSelector = firstItem?._getAnchorSelector(with: secondItem)
+                
+                let secondSelector = secondItem?._getAnchorSelector(with: firstItem)
+                
+                switch (firstSelector, firstAttribute, secondSelector, secondAttribute, relation, constant, usesSystemSpace) {
+                case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), .none, true):
+                    let anchor1 = sel1._ctvfl_anchor(for: attr1)
+                    let anchor2 = sel2._ctvfl_anchor(for: attr2)
+                    
+                    #if os(macOS)
+                    let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2, constant: 8)
+                    constraint.priority = priority
+                    constraints.append(constraint)
+                    #endif
+                    
+                    #if os(iOS) || os(tvOS)
+                    if #available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *) {
+                        let constraint = anchor1._ctvfl_constraintUsingSystemSpacing(with: rel, to: anchor2)
+                        constraint.priority = priority
+                        constraints.append((constraint, sel1, sel2))
+                    } else {
+                        let anchor1 = sel1._ctvfl_anchor(for: attr1)
+                        let anchor2 = sel2._ctvfl_anchor(for: attr2)
+                        let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2, constant: 8)
+                        constraint.priority = priority
+                        constraints.append((constraint, sel1, sel2))
+                    }
+                    #endif
+                case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), .none, false):
+                    let anchor1 = sel1._ctvfl_anchor(for: attr1)
+                    let anchor2 = sel2._ctvfl_anchor(for: attr2)
+                    let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2)
+                    constraint.priority = priority
+                    constraints.append(constraint)
+                case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), .some(c), false):
+                    let anchor1 = sel1._ctvfl_anchor(for: attr1)
+                    let anchor2 = sel2._ctvfl_anchor(for: attr2)
+                    let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2, constant: CGFloat(c.rawValue))
+                    constraint.priority = priority
+                    constraints.append(constraint)
+                case let (.some(sel), .some(attr), .none, .none, .some(rel), .some(c), false):
+                    let anchor = sel._ctvfl_anchor(for: attr)
+                    let constraint = anchor._ctvfl_constraint(with: rel, toConstant: CGFloat(c.rawValue))
+                    constraint.priority = priority
+                    constraints.append(constraint)
+                default:
+                    debugPrint("Invalid input: First Item = \(firstItem.map({"\($0)"}) ?? "nil"); First Attribute = \(firstAttribute.map({"\($0)"}) ?? "nil"); Second Item = \(secondItem.map({"\($0)"}) ?? "nil"); Second Attribute = \(secondAttribute.map({"\($0)"}) ?? "nil"); Relation = \(relation.map({"\($0)"}) ?? "nil"); Constant = \(constant.map({"\($0)"}) ?? "nil")");
                 }
-                break
             }
         }
-        
-        var alignmentConstraints = ContiguousArray<CTVFLConstraint>()
         
         if needsAlign && itemsToBeAligned.endIndex > 1 {
             let attributes = _attributes(forOptions: options)
             
             for index in 0..<(itemsToBeAligned.endIndex - 1) {
-                let item1 = itemsToBeAligned[index]
-                let item2 = itemsToBeAligned[index + 1]
+                let firstItem = itemsToBeAligned[index]
+                let secondItem = itemsToBeAligned[index + 1]
                 
                 for eachAttribute in attributes {
-                    let anchor1 = item1._ctvfl_anchor(for: eachAttribute)
-                    let anchor2 = item2._ctvfl_anchor(for: eachAttribute)
+                    let anchor1 = firstItem._ctvfl_anchor(for: eachAttribute)
+                    let anchor2 = secondItem._ctvfl_anchor(for: eachAttribute)
                     
                     let constraint = anchor1._ctvfl_constraint(
                         with: .equal,
@@ -185,12 +204,12 @@ extension CTVFLSyntaxEvaluatable {
                         constant: 0
                     )
                     
-                    alignmentConstraints.append(constraint)
+                    constraints.append(constraint)
                 }
             }
         }
         
-        return constraints.map({$0.constraint}) + alignmentConstraints
+        return constraints.map({$0})
     }
     
     internal func _attributes(forOptions options: CTVFLOptions) -> [CTVFLLayoutAttribute] {
