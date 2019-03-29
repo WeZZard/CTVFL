@@ -32,23 +32,28 @@ class CTVFLTransactionTests: XCTestCase {
     }
     
     func testBeginAndCommit_wontCrash_withConcurrentQueue() {
+        let expectation = XCTestExpectation(description: "Add constraints to CTVFLTransaction.")
+        
+        let constraint = NSLayoutConstraint(item: self.rootView as Any, attribute: .leading, relatedBy: .equal, toItem: self.view1 as Any, attribute: .leading, multiplier: 1, constant: 0)
+        
         for _ in 0..<10000 {
             queue.async {
-                CTVFLTransaction.begin()
-                
-                var constraints = [NSLayoutConstraint]()
-                
-                for _ in 0..<10000 {
-                    let constraint = NSLayoutConstraint(item: self.rootView as Any, attribute: .leading, relatedBy: .equal, toItem: self.view1 as Any, attribute: .leading, multiplier: 1, constant: 0)
-                    CTVFLTransaction.addConstraint(constraint);
+                autoreleasepool {
+                    CTVFLTransaction.begin()
                     
-                    constraints.append(constraint)
+                    for _ in 0..<10000 {
+                        CTVFLTransaction.addConstraint(constraint, enforces: true);
+                    }
+                    
+                    CTVFLTransaction.commit()
                 }
-                
-                XCTAssertEqual(constraints, CTVFLTransaction.constraints)
-                
-                CTVFLTransaction.commit()
             }
         }
+        
+        queue.async(flags: .barrier) {
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 180)
     }
 }

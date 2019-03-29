@@ -10,12 +10,16 @@
 #import "CTVFLTransaction.h"
 #import "CTVFLTransaction+Internal.h"
 
+#import <pthread/pthread.h>
+
 FOUNDATION_EXTERN {
     static void _CTVFLTransactionRunLoopObserverHandler(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info);
+    static void _CTVFLTransactionCleanupTLS(void * arg);
 }
 
-thread_local std::unique_ptr<CTVFL::Transaction> _threadLocalTransaction = std::make_unique<CTVFL::Transaction>();
-thread_local BOOL _hasTransactionBegan = NO;
+pthread_key_t _CTVFLTransactionKey = 0;
+
+CFRunLoopObserverRef _mainThreadRunLoopObserver = NULL;
 
 #pragma mark -
 
@@ -94,11 +98,10 @@ thread_local BOOL _hasTransactionBegan = NO;
 namespace CTVFL {
 #pragma mark Transaction
     Transaction::Transaction(void):
-        _levels_(std::make_unique<std::list<Level>>()),
-        _sharedEvaluationContext_(nil),
-        _runLoopObserver_(NULL)
+    _levels_(std::list<Level>()),
+    _sharedEvaluationContext_(nil),
+    _runLoopObserver_(NULL)
     {
-        
         if (![NSThread isMainThread]) {
             auto currentRunLoop = CFRunLoopGetCurrent();
             CFOptionFlags activities = kCFRunLoopBeforeWaiting | kCFRunLoopExit;
@@ -108,6 +111,8 @@ namespace CTVFL {
     }
     
     Transaction::~Transaction(void) {
+        _levels_.clear();
+        _sharedEvaluationContext_ = nil;
         if (_runLoopObserver_) {
             CFRunLoopObserverInvalidate(_runLoopObserver_);
             auto currentRunLoop = CFRunLoopGetCurrent();
@@ -124,24 +129,30 @@ namespace CTVFL {
     }
     
     void Transaction::push(void) {
-        _levels_ -> emplace_back(!_levels_ -> empty());
+        _levels_.emplace_back(!_levels_.empty());
     }
     
     void Transaction::pop(void) {
-        NSCAssert(!_levels_ -> empty(), @"Popping from an empty transaction stack.");
-        _levels_ -> pop_back();
+        NSCAssert(!_levels_.empty(), @"Popping from an empty transaction stack.");
+        _levels_.pop_back();
     }
     
     Transaction& Transaction::threadLocal(void) {
-        return *_threadLocalTransaction.get();
+        if (Transaction * transaction = static_cast<Transaction *>(pthread_getspecific(_CTVFLTransactionKey))) {
+            return * transaction;
+        } else {
+            CTVFL::Transaction * newTransaction = new CTVFL::Transaction();
+            pthread_setspecific(_CTVFLTransactionKey, newTransaction);
+            return * newTransaction;
+        }
     }
     
     Transaction::Level& Transaction::topLevel(void) {
-        return _levels_ -> back();
+        return _levels_.back();
     }
     
     size_t Transaction::levelsCount(void) {
-        return _levels_ -> size();
+        return _levels_.size();
     }
     
     CTVFLEvaluationContext * Transaction::sharedEvaluationContext() {
@@ -155,14 +166,16 @@ namespace CTVFL {
     
 #pragma mark Transaction::Level
     Transaction::Level::Level(bool collectsConstraints):
-        _collectsConstraints(collectsConstraints),
-        _constraints_(std::make_unique<std::list<NSLayoutConstraint *>>()),
-        _transaction_(nil)
+    _collectsConstraints(collectsConstraints),
+    _constraints_(std::list<NSLayoutConstraint *>()),
+    _transaction_(nil)
     { }
     
     Transaction::Level::~Level(void)
     {
-        [_threadLocalTransaction -> sharedEvaluationContext() evict];
+        [threadLocal().sharedEvaluationContext() evict];
+        _constraints_.clear();
+        _transaction_ = nil;
     }
     
     CTVFLTransaction * Transaction::Level::transaction(void) {
@@ -174,20 +187,20 @@ namespace CTVFL {
     
     void Transaction::Level::addConstraint(NSLayoutConstraint * constraint, bool enforces) {
         if (_collectsConstraints || enforces) {
-            _constraints_ -> push_back(constraint);
+            _constraints_.push_back(constraint);
         }
     }
     
     void Transaction::Level::addConstraints(NSArray<NSLayoutConstraint *> * constraints, bool enforces) {
         if (_collectsConstraints || enforces) {
             [constraints enumerateObjectsUsingBlock:^(NSLayoutConstraint * constraint, NSUInteger idx, BOOL * _Nonnull stop) {
-                _constraints_ -> push_back(constraint);
+                _constraints_.push_back(constraint);
             }];
         }
     }
     
     std::list<NSLayoutConstraint *>& Transaction::Level::constraints(void) {
-        return *_constraints_.get();
+        return _constraints_;
     }
 }
 
@@ -195,7 +208,7 @@ namespace CTVFL {
 
 void _CTVFLTransactionRunLoopObserverHandler(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
     if (activity & kCFRunLoopBeforeWaiting) {
-        if (_hasTransactionBegan) {
+        if (CTVFL::Transaction::threadLocal().levelsCount() > 0) {
             [CTVFLTransaction commit];
             if (CTVFL::Transaction::threadLocal().levelsCount() > 0) {
 #if DEBUG
@@ -209,16 +222,20 @@ void _CTVFLTransactionRunLoopObserverHandler(CFRunLoopObserverRef observer, CFRu
     }
     if (activity & kCFRunLoopExit) {
         [CTVFLTransaction begin];
-        if (!_hasTransactionBegan) {
-            _hasTransactionBegan = YES;
-        }
     }
 }
 
-CFRunLoopObserverRef _mainThreadRunLoopObserver = NULL;
+void _CTVFLTransactionCleanupTLS(void * arg) {
+    CTVFL::Transaction * transaction = static_cast<CTVFL::Transaction *>(pthread_getspecific(_CTVFLTransactionKey));
+    delete transaction;
+}
 
 __attribute__((constructor))
-extern "C" void _InitCTVFLTransactionForMainThread(void) {
+void _InitCTVFLTransaction(void) {
+    // TLS
+    pthread_key_create(&_CTVFLTransactionKey, &_CTVFLTransactionCleanupTLS);
+    
+    // Main thread Run Loop
     auto currentRunLoop = CFRunLoopGetMain();
     CFOptionFlags activities = kCFRunLoopBeforeWaiting | kCFRunLoopExit;
     _mainThreadRunLoopObserver = CFRunLoopObserverCreate(kCFAllocatorDefault, activities, YES, 2147483647, &_CTVFLTransactionRunLoopObserverHandler, NULL);
@@ -226,8 +243,12 @@ extern "C" void _InitCTVFLTransactionForMainThread(void) {
 }
 
 __attribute__((destructor))
-extern "C" void _DeinitCTVFLTransactionForMainThread(void) {
+void _DeinitCTVFLTransaction(void) {
+    // Main thread Run Loop
     CFRunLoopObserverInvalidate(_mainThreadRunLoopObserver);
     auto currentRunLoop = CFRunLoopGetCurrent();
     CFRunLoopRemoveObserver(currentRunLoop, _mainThreadRunLoopObserver, kCFRunLoopCommonModes);
+    
+    // TLS
+    pthread_key_delete(_CTVFLTransactionKey);
 }
