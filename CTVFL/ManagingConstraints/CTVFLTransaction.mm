@@ -8,6 +8,7 @@
 #import <CTVFL/CTVFL-Swift.h>
 
 #import "CTVFLTransaction.h"
+#import "CTVFLTransaction+Implicit.h"
 #import "CTVFLTransaction+Internal.h"
 
 #import <pthread/pthread.h>
@@ -26,11 +27,28 @@ CFRunLoopObserverRef _mainThreadRunLoopObserver = NULL;
 @interface CTVFLTransaction() {
     CTVFL::Transaction::Level * _level;
 }
-
 @property (nonatomic, class, readonly) CTVFLTransaction * threadLocal;
 
 - (instancetype)initWithLevel:(CTVFL::Transaction::Level *)level;
+@end
 
+
+@implementation CTVFLTransaction(Implicit)
++ (BOOL)_isImplicit
+{
+    CTVFL::Transaction::lock();
+    BOOL isImplicit = CTVFL::Transaction::threadLocal().levelsCount() == 1;
+    CTVFL::Transaction::unlock();
+    return isImplicit;
+}
+
++ (BOOL)_hasNoTransactionsRunning
+{
+    CTVFL::Transaction::lock();
+    BOOL _hasNoTransactionsRunning = CTVFL::Transaction::threadLocal().levelsCount() == 0;
+    CTVFL::Transaction::unlock();
+    return _hasNoTransactionsRunning;
+}
 @end
 
 @implementation CTVFLTransaction
@@ -45,7 +63,10 @@ CFRunLoopObserverRef _mainThreadRunLoopObserver = NULL;
 
 + (CTVFLTransaction *)threadLocal
 {
-    return CTVFL::Transaction::threadLocal().topLevel().transaction();
+    CTVFL::Transaction::lock();
+    CTVFLTransaction * transaction = CTVFL::Transaction::threadLocal().topLevel().transaction();
+    CTVFL::Transaction::unlock();
+    return transaction;
 }
 
 + (void)begin
@@ -124,7 +145,7 @@ namespace CTVFL {
         pthread_mutex_init(&_lock_, &mutexattr);
         if (![NSThread isMainThread]) {
             auto currentRunLoop = CFRunLoopGetCurrent();
-            CFOptionFlags activities = kCFRunLoopBeforeWaiting | kCFRunLoopExit;
+            CFOptionFlags activities = kCFRunLoopAfterWaiting | kCFRunLoopExit;
             _runLoopObserver_ = CFRunLoopObserverCreate(kCFAllocatorDefault, activities, YES, 2147483647, &_CTVFLTransactionRunLoopObserverHandler, NULL);
             CFRunLoopAddObserver(currentRunLoop, _runLoopObserver_, kCFRunLoopCommonModes);
         }
@@ -248,7 +269,7 @@ namespace CTVFL {
 #pragma mark -
 
 void _CTVFLTransactionRunLoopObserverHandler(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
-    if (activity & kCFRunLoopBeforeWaiting) {
+    if (activity & kCFRunLoopAfterWaiting) {
         if (CTVFL::Transaction::threadLocal().levelsCount() > 0) {
             [CTVFLTransaction commit];
             if (CTVFL::Transaction::threadLocal().levelsCount() > 0) {
@@ -261,6 +282,7 @@ void _CTVFLTransactionRunLoopObserverHandler(CFRunLoopObserverRef observer, CFRu
             }
         }
     }
+    
     if (activity & kCFRunLoopExit) {
         [CTVFLTransaction begin];
     }
@@ -278,7 +300,7 @@ void _InitCTVFLTransaction(void) {
     
     // Main thread Run Loop
     auto currentRunLoop = CFRunLoopGetMain();
-    CFOptionFlags activities = kCFRunLoopBeforeWaiting | kCFRunLoopExit;
+    CFOptionFlags activities = kCFRunLoopAfterWaiting | kCFRunLoopExit;
     _mainThreadRunLoopObserver = CFRunLoopObserverCreate(kCFAllocatorDefault, activities, YES, 2147483647, &_CTVFLTransactionRunLoopObserverHandler, NULL);
     CFRunLoopAddObserver(currentRunLoop, _mainThreadRunLoopObserver, kCFRunLoopCommonModes);
 }

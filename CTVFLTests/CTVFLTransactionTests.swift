@@ -31,6 +31,10 @@ class CTVFLTransactionTests: XCTestCase {
         rootView.addSubview(view3)
     }
     
+    func testImplicitTransaction() {
+        NSLog("Fuck");
+    }
+    
     func testBeginAndCommit_wontCrash_withConcurrentQueue() {
         let expectation = XCTestExpectation(description: "Add constraints to CTVFLTransaction.")
         

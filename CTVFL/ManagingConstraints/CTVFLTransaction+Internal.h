@@ -2,7 +2,7 @@
 //  CTVFLTransaction+Internal.h
 //  CTVFL
 //
-//  Created by Yu-Long Li on 2019/3/29.
+//  Created by WeZZaard on 2019/3/29.
 //
 
 #ifndef CTVFLTransaction_Internal_h

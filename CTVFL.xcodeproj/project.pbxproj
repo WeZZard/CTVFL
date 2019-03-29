@@ -49,6 +49,12 @@
 		9C65040B1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C65040A1F72C297006881E5 /* CTVFLVariableTests.swift */; };
 		9C65040C1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C65040A1F72C297006881E5 /* CTVFLVariableTests.swift */; };
 		9C65040D1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C65040A1F72C297006881E5 /* CTVFLVariableTests.swift */; };
+		9C80D054224E49FB00CFCF9E /* CTVFLTransaction+Implicit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C316E4A224D3690009E0660 /* CTVFLTransaction+Implicit.h */; };
+		9C80D055224E49FB00CFCF9E /* CTVFLTransaction+Implicit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C316E4A224D3690009E0660 /* CTVFLTransaction+Implicit.h */; };
+		9C80D056224E49FC00CFCF9E /* CTVFLTransaction+Implicit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C316E4A224D3690009E0660 /* CTVFLTransaction+Implicit.h */; };
+		9C80D057224E4A0200CFCF9E /* CTVFLTransaction+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CDCE80F224E49100059F3B5 /* CTVFLTransaction+Internal.h */; };
+		9C80D058224E4A0200CFCF9E /* CTVFLTransaction+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CDCE80F224E49100059F3B5 /* CTVFLTransaction+Internal.h */; };
+		9C80D059224E4A0300CFCF9E /* CTVFLTransaction+Internal.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CDCE80F224E49100059F3B5 /* CTVFLTransaction+Internal.h */; };
 		9C80D96922491C6400D19009 /* Constrain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB77A961F7155260052448F /* Constrain.swift */; };
 		9C80D96A22491C6400D19009 /* CTVFLLayoutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB77ADA1F71F13C0052448F /* CTVFLLayoutable.swift */; };
 		9C80D96B22491C6400D19009 /* CTVFLConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDE8EFE1F72B514009C3268 /* CTVFLConstant.swift */; };
@@ -95,6 +101,9 @@
 		9CB77AD91F7179A20052448F /* withVFLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB77AD61F7179A20052448F /* withVFLTests.swift */; };
 		9CB77ADB1F71F13C0052448F /* CTVFLLayoutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB77ADA1F71F13C0052448F /* CTVFLLayoutable.swift */; };
 		9CB77ADC1F71F13C0052448F /* CTVFLLayoutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB77ADA1F71F13C0052448F /* CTVFLLayoutable.swift */; };
+		9CDCE80C224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDCE80B224E48CE0059F3B5 /* CTVFLTransactionTests.m */; };
+		9CDCE80D224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDCE80B224E48CE0059F3B5 /* CTVFLTransactionTests.m */; };
+		9CDCE80E224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDCE80B224E48CE0059F3B5 /* CTVFLTransactionTests.m */; };
 		9CDE8EFF1F72B514009C3268 /* CTVFLConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDE8EFE1F72B514009C3268 /* CTVFLConstant.swift */; };
 		9CDE8F001F72B514009C3268 /* CTVFLConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDE8EFE1F72B514009C3268 /* CTVFLConstant.swift */; };
 		9CE2E424224B868B00382E11 /* CTVFL.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CE2E423224B868800382E11 /* CTVFL.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -296,7 +305,7 @@
 		9C316E3E224D2E15009E0660 /* CTVFLTransaction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTVFLTransaction.h; sourceTree = "<group>"; };
 		9C316E3F224D2E15009E0660 /* CTVFLTransaction.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CTVFLTransaction.mm; sourceTree = "<group>"; };
 		9C316E46224D339B009E0660 /* CTVFLTransactionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLTransactionTests.swift; sourceTree = "<group>"; };
-		9C316E4A224D3690009E0660 /* CTVFLTransaction+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CTVFLTransaction+Internal.h"; sourceTree = "<group>"; };
+		9C316E4A224D3690009E0660 /* CTVFLTransaction+Implicit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CTVFLTransaction+Implicit.h"; sourceTree = "<group>"; };
 		9C316E4B224DDD9E009E0660 /* _CTVFLEvaluationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _CTVFLEvaluationStack.swift; sourceTree = "<group>"; };
 		9C6503E21F72BEC7006881E5 /* CTVFLPredicateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLPredicateTests.swift; sourceTree = "<group>"; };
 		9C6503E61F72C0DC006881E5 /* CTVFLNSLayoutConstrainedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLNSLayoutConstrainedTests.swift; sourceTree = "<group>"; };
@@ -330,6 +339,8 @@
 		9CB77ABE1F715ED90052448F /* CTVFLOperand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLOperand.swift; sourceTree = "<group>"; };
 		9CB77AD61F7179A20052448F /* withVFLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = withVFLTests.swift; sourceTree = "<group>"; };
 		9CB77ADA1F71F13C0052448F /* CTVFLLayoutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLLayoutable.swift; sourceTree = "<group>"; };
+		9CDCE80B224E48CE0059F3B5 /* CTVFLTransactionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTVFLTransactionTests.m; sourceTree = "<group>"; };
+		9CDCE80F224E49100059F3B5 /* CTVFLTransaction+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CTVFLTransaction+Internal.h"; sourceTree = "<group>"; };
 		9CDE8EFE1F72B514009C3268 /* CTVFLConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLConstant.swift; sourceTree = "<group>"; };
 		9CE2E41B224B867000382E11 /* NSLayoutConstraint+CTVFL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+CTVFL.h"; sourceTree = "<group>"; };
 		9CE2E41C224B867000382E11 /* NSLayoutConstraint+CTVFL.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+CTVFL.m"; sourceTree = "<group>"; };
@@ -480,6 +491,7 @@
 				9C6503F61F72C201006881E5 /* _CTVFLConstraintHandlerTests.swift */,
 				9C6503E61F72C0DC006881E5 /* CTVFLNSLayoutConstrainedTests.swift */,
 				9C316E46224D339B009E0660 /* CTVFLTransactionTests.swift */,
+				9CDCE80B224E48CE0059F3B5 /* CTVFLTransactionTests.m */,
 				9CE2E4C3224CA0AC00382E11 /* PerformanceTests.swift */,
 			);
 			path = CTVFLTests;
@@ -561,7 +573,8 @@
 				9CB77A9E1F7155970052448F /* CTVFLConstraintGroup.swift */,
 				9CB77AAE1F7158B10052448F /* _CTVFLConstraintHandler.swift */,
 				9C316E3E224D2E15009E0660 /* CTVFLTransaction.h */,
-				9C316E4A224D3690009E0660 /* CTVFLTransaction+Internal.h */,
+				9C316E4A224D3690009E0660 /* CTVFLTransaction+Implicit.h */,
+				9CDCE80F224E49100059F3B5 /* CTVFLTransaction+Internal.h */,
 				9C316E3F224D2E15009E0660 /* CTVFLTransaction.mm */,
 			);
 			path = ManagingConstraints;
@@ -677,9 +690,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C80D054224E49FB00CFCF9E /* CTVFLTransaction+Implicit.h in Headers */,
 				9CE2E425224B868B00382E11 /* CTVFL.h in Headers */,
 				9C316E40224D2E15009E0660 /* CTVFLTransaction.h in Headers */,
 				9CE2E4BD224C95FF00382E11 /* CTVFLLayoutAnchor.h in Headers */,
+				9C80D058224E4A0200CFCF9E /* CTVFLTransaction+Internal.h in Headers */,
 				9CE2E510224CD6FB00382E11 /* NSLayoutConstraint+CTVFL.h in Headers */,
 				9CE2E484224C582F00382E11 /* CTVFLLayoutAnchorSelectable.h in Headers */,
 			);
@@ -689,9 +704,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C80D055224E49FB00CFCF9E /* CTVFLTransaction+Implicit.h in Headers */,
 				9CE2E424224B868B00382E11 /* CTVFL.h in Headers */,
 				9C316E41224D2E15009E0660 /* CTVFLTransaction.h in Headers */,
 				9CE2E4BE224C95FF00382E11 /* CTVFLLayoutAnchor.h in Headers */,
+				9C80D057224E4A0200CFCF9E /* CTVFLTransaction+Internal.h in Headers */,
 				9CE2E50E224CD6FA00382E11 /* NSLayoutConstraint+CTVFL.h in Headers */,
 				9CE2E485224C582F00382E11 /* CTVFLLayoutAnchorSelectable.h in Headers */,
 			);
@@ -701,9 +718,11 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C80D056224E49FC00CFCF9E /* CTVFLTransaction+Implicit.h in Headers */,
 				9CE2E426224B868C00382E11 /* CTVFL.h in Headers */,
 				9C316E42224D2E15009E0660 /* CTVFLTransaction.h in Headers */,
 				9CE2E4BF224C95FF00382E11 /* CTVFLLayoutAnchor.h in Headers */,
+				9C80D059224E4A0300CFCF9E /* CTVFLTransaction+Internal.h in Headers */,
 				9CE2E50C224CD6FA00382E11 /* NSLayoutConstraint+CTVFL.h in Headers */,
 				9CE2E486224C582F00382E11 /* CTVFLLayoutAnchorSelectable.h in Headers */,
 			);
@@ -849,7 +868,7 @@
 					};
 					9CB77A601F7154970052448F = {
 						CreatedOnToolsVersion = 9.0;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					9CB77A741F7154A50052448F = {
@@ -859,7 +878,7 @@
 					};
 					9CB77A7C1F7154A60052448F = {
 						CreatedOnToolsVersion = 9.0;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1006,6 +1025,7 @@
 				9C6504071F72C28D006881E5 /* CTVFLConstantTests.swift in Sources */,
 				9CE2E473224BE41A00382E11 /* ConstrainTests.swift in Sources */,
 				9C316E47224D339B009E0660 /* CTVFLTransactionTests.swift in Sources */,
+				9CDCE80C224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */,
 				9CE2E543224CEA6B00382E11 /* withVFL_UIKitTests.swift in Sources */,
 				9CE2E4C4224CA0AC00382E11 /* PerformanceTests.swift in Sources */,
 				9C65040B1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */,
@@ -1088,6 +1108,7 @@
 				9C6504081F72C28D006881E5 /* CTVFLConstantTests.swift in Sources */,
 				9CE2E474224BE41A00382E11 /* ConstrainTests.swift in Sources */,
 				9C316E48224D339B009E0660 /* CTVFLTransactionTests.swift in Sources */,
+				9CDCE80D224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */,
 				9CE2E541224CEA5B00382E11 /* withVFL_UIKitTests.swift in Sources */,
 				9CE2E4C5224CA0AC00382E11 /* PerformanceTests.swift in Sources */,
 				9C65040C1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */,
@@ -1166,6 +1187,7 @@
 			files = (
 				9C6503F91F72C201006881E5 /* _CTVFLConstraintHandlerTests.swift in Sources */,
 				9CB77AD91F7179A20052448F /* withVFLTests.swift in Sources */,
+				9CDCE80E224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */,
 				9C6504011F72C270006881E5 /* CTVFLPredicatedVariableTests.swift in Sources */,
 				9C6504091F72C28D006881E5 /* CTVFLConstantTests.swift in Sources */,
 				9CE2E475224BE41A00382E11 /* ConstrainTests.swift in Sources */,
@@ -1467,6 +1489,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1520,6 +1543,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1713,6 +1737,7 @@
 				SDKROOT = appletvos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Debug;
@@ -1766,6 +1791,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1959,6 +1985,7 @@
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -2012,6 +2039,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
