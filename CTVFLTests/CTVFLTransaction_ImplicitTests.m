@@ -1,5 +1,5 @@
 //
-//  CTVFLTransactionTests.m
+//  CTVFLTransaction_ImplicitTests.m
 //  CTVFL
 //
 //  Created on 2019/3/29.
@@ -9,11 +9,11 @@
 
 #import "CTVFLTransaction+Implicit.h"
 
-@interface CTVFLTransactionTests : XCTestCase
+@interface CTVFLTransaction_ImplicitTests : XCTestCase
 
 @end
 
-@implementation CTVFLTransactionTests
+@implementation CTVFLTransaction_ImplicitTests
 - (void)testImplicitTransactionIsRunning
 {
     XCTAssertTrue([CTVFLTransaction _isImplicit]);

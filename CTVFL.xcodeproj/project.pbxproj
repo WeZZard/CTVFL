@@ -101,9 +101,9 @@
 		9CB77AD91F7179A20052448F /* withVFLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB77AD61F7179A20052448F /* withVFLTests.swift */; };
 		9CB77ADB1F71F13C0052448F /* CTVFLLayoutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB77ADA1F71F13C0052448F /* CTVFLLayoutable.swift */; };
 		9CB77ADC1F71F13C0052448F /* CTVFLLayoutable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB77ADA1F71F13C0052448F /* CTVFLLayoutable.swift */; };
-		9CDCE80C224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDCE80B224E48CE0059F3B5 /* CTVFLTransactionTests.m */; };
-		9CDCE80D224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDCE80B224E48CE0059F3B5 /* CTVFLTransactionTests.m */; };
-		9CDCE80E224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDCE80B224E48CE0059F3B5 /* CTVFLTransactionTests.m */; };
+		9CDCE80C224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDCE80B224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m */; };
+		9CDCE80D224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDCE80B224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m */; };
+		9CDCE80E224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDCE80B224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m */; };
 		9CDE8EFF1F72B514009C3268 /* CTVFLConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDE8EFE1F72B514009C3268 /* CTVFLConstant.swift */; };
 		9CDE8F001F72B514009C3268 /* CTVFLConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDE8EFE1F72B514009C3268 /* CTVFLConstant.swift */; };
 		9CE2E424224B868B00382E11 /* CTVFL.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CE2E423224B868800382E11 /* CTVFL.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -339,7 +339,7 @@
 		9CB77ABE1F715ED90052448F /* CTVFLOperand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLOperand.swift; sourceTree = "<group>"; };
 		9CB77AD61F7179A20052448F /* withVFLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = withVFLTests.swift; sourceTree = "<group>"; };
 		9CB77ADA1F71F13C0052448F /* CTVFLLayoutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLLayoutable.swift; sourceTree = "<group>"; };
-		9CDCE80B224E48CE0059F3B5 /* CTVFLTransactionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTVFLTransactionTests.m; sourceTree = "<group>"; };
+		9CDCE80B224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTVFLTransaction_ImplicitTests.m; sourceTree = "<group>"; };
 		9CDCE80F224E49100059F3B5 /* CTVFLTransaction+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CTVFLTransaction+Internal.h"; sourceTree = "<group>"; };
 		9CDE8EFE1F72B514009C3268 /* CTVFLConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLConstant.swift; sourceTree = "<group>"; };
 		9CE2E41B224B867000382E11 /* NSLayoutConstraint+CTVFL.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+CTVFL.h"; sourceTree = "<group>"; };
@@ -491,7 +491,7 @@
 				9C6503F61F72C201006881E5 /* _CTVFLConstraintHandlerTests.swift */,
 				9C6503E61F72C0DC006881E5 /* CTVFLNSLayoutConstrainedTests.swift */,
 				9C316E46224D339B009E0660 /* CTVFLTransactionTests.swift */,
-				9CDCE80B224E48CE0059F3B5 /* CTVFLTransactionTests.m */,
+				9CDCE80B224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m */,
 				9CE2E4C3224CA0AC00382E11 /* PerformanceTests.swift */,
 			);
 			path = CTVFLTests;
@@ -1025,7 +1025,7 @@
 				9C6504071F72C28D006881E5 /* CTVFLConstantTests.swift in Sources */,
 				9CE2E473224BE41A00382E11 /* ConstrainTests.swift in Sources */,
 				9C316E47224D339B009E0660 /* CTVFLTransactionTests.swift in Sources */,
-				9CDCE80C224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */,
+				9CDCE80C224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m in Sources */,
 				9CE2E543224CEA6B00382E11 /* withVFL_UIKitTests.swift in Sources */,
 				9CE2E4C4224CA0AC00382E11 /* PerformanceTests.swift in Sources */,
 				9C65040B1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */,
@@ -1108,7 +1108,7 @@
 				9C6504081F72C28D006881E5 /* CTVFLConstantTests.swift in Sources */,
 				9CE2E474224BE41A00382E11 /* ConstrainTests.swift in Sources */,
 				9C316E48224D339B009E0660 /* CTVFLTransactionTests.swift in Sources */,
-				9CDCE80D224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */,
+				9CDCE80D224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m in Sources */,
 				9CE2E541224CEA5B00382E11 /* withVFL_UIKitTests.swift in Sources */,
 				9CE2E4C5224CA0AC00382E11 /* PerformanceTests.swift in Sources */,
 				9C65040C1F72C297006881E5 /* CTVFLVariableTests.swift in Sources */,
@@ -1187,7 +1187,7 @@
 			files = (
 				9C6503F91F72C201006881E5 /* _CTVFLConstraintHandlerTests.swift in Sources */,
 				9CB77AD91F7179A20052448F /* withVFLTests.swift in Sources */,
-				9CDCE80E224E48CE0059F3B5 /* CTVFLTransactionTests.m in Sources */,
+				9CDCE80E224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m in Sources */,
 				9C6504011F72C270006881E5 /* CTVFLPredicatedVariableTests.swift in Sources */,
 				9C6504091F72C28D006881E5 /* CTVFLConstantTests.swift in Sources */,
 				9CE2E475224BE41A00382E11 /* ConstrainTests.swift in Sources */,
