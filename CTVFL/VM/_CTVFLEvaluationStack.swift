@@ -7,54 +7,66 @@
 
 
 internal class _CTVFLEvaluationStack {
-    internal var _buffer: ManagedBuffer<_CTVFLEvaluationStackMetadata, _CTVFLEvaluationStackLevel>
+    internal typealias _Buffer = ManagedBuffer<_CTVFLEvaluationStackMetadata, _CTVFLEvaluationStackLevel>
+    internal var _buffer: Unmanaged<_Buffer>
     
     internal init() {
-        _buffer = .create(minimumCapacity: 10, makingHeaderWith: {
+        let buffer = _Buffer.create(minimumCapacity: 10, makingHeaderWith: {
             (buffer) -> _CTVFLEvaluationStackMetadata in
             return _CTVFLEvaluationStackMetadata(levelCount: 0)
         })
+        _buffer = Unmanaged.passRetained(buffer)
+    }
+    
+    deinit {
+        _buffer.release()
+    }
+    
+    internal var level: Int {
+        return _buffer.takeUnretainedValue().header.levelCount
     }
     
     internal func push() {
-        let currentLevelCount = _buffer.header.levelCount
-        let nextLevelIndex = _buffer.header.levelCount
-        if _buffer.capacity < nextLevelIndex {
-            let enlargedCapacity = Int(Float(_buffer.capacity) * 1.3)
+        let currentLevelCount = _buffer.takeUnretainedValue().header.levelCount
+        let nextLevelIndex = _buffer.takeUnretainedValue().header.levelCount
+        if _buffer.takeUnretainedValue().capacity < nextLevelIndex {
+            let enlargedCapacity = Int(Float(_buffer.takeUnretainedValue().capacity) * 1.3)
             let oldBuffer = _buffer
-            _buffer = .create(minimumCapacity: enlargedCapacity, makingHeaderWith: {
+            let newBuffer = _Buffer.create(minimumCapacity: enlargedCapacity, makingHeaderWith: {
                 (newBuffer) -> _CTVFLEvaluationStackMetadata in
                 newBuffer.withUnsafeMutablePointerToElements({$0}).moveAssign(
-                    from: oldBuffer.withUnsafeMutablePointerToElements({$0}),
-                    count: oldBuffer.capacity
+                    from: oldBuffer.takeUnretainedValue().withUnsafeMutablePointerToElements({$0}),
+                    count: oldBuffer.takeUnretainedValue().capacity
                 )
                 return _CTVFLEvaluationStackMetadata(levelCount: currentLevelCount)
             })
+            oldBuffer.release()
+            _buffer = .passRetained(newBuffer)
         }
-        _buffer.withUnsafeMutablePointerToElements({$0[nextLevelIndex] = .init()})
-        _buffer.header.levelCount += 1
+        _buffer.takeUnretainedValue().withUnsafeMutablePointerToElements({$0[nextLevelIndex] = .init()})
+        _buffer.takeUnretainedValue().header.levelCount += 1
     }
     
     internal func pop() -> _CTVFLEvaluationStackLevel {
-        let poppedLevelIndex = _buffer.header.levelCount - 1
-        let poppedLevel = _buffer.withUnsafeMutablePointerToElements({
+        let poppedLevelIndex = _buffer.takeUnretainedValue().header.levelCount - 1
+        let poppedLevel = _buffer.takeUnretainedValue().withUnsafeMutablePointerToElements({
             $0[poppedLevelIndex]
         })
-        _buffer.header.levelCount -= 1
+        _buffer.takeUnretainedValue().header.levelCount -= 1
         return poppedLevel
     }
     
     internal subscript(index: Int) -> _CTVFLEvaluationStackLevel {
         get {
-            if index < _buffer.header.levelCount {
-                return _buffer.withUnsafeMutablePointerToElements({$0[index]})
+            if index < level {
+                return _buffer.takeUnretainedValue().withUnsafeMutablePointerToElements({$0[index]})
             } else {
                 _indexExceedsStackBounds(index)
             }
         }
         set {
-            if index < _buffer.header.levelCount {
-                _buffer.withUnsafeMutablePointerToElements({
+            if index < level {
+                _buffer.takeUnretainedValue().withUnsafeMutablePointerToElements({
                     $0[index]=newValue
                 })
             } else {
@@ -63,10 +75,11 @@ internal class _CTVFLEvaluationStack {
         }
     }
     
+    @inline(__always)
     internal func _indexExceedsStackBounds(_ index: Int) -> Never {
         NSException(
             name: .invalidArgumentException,
-            reason: "Index(\(index)) exceeds the stack bounds(\(_buffer.header.levelCount))."
+            reason: "Index(\(index)) exceeds the stack bounds(\(level))."
         ).raise()
         exit(1)
     }

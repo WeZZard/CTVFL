@@ -7,15 +7,13 @@
 
 @objc
 public class CTVFLEvaluationContext: NSObject {
-    internal var _evaluationStack: ContiguousArray<_CTVFLEvaluationStackLevel>
+    internal var _evaluationStack: _CTVFLEvaluationStack
     
     internal var _constraints: ContiguousArray<CTVFLConstraint>
     
     internal var _itemsToBeAligned: ContiguousArray<CTVFLLayoutAnchorSelectable>
     
     internal var _opcodes: ContiguousArray<CTVFLOpcode>
-    
-    internal var _stackLevelCount: Int
     
     internal var _constriantsCount: Int
     
@@ -25,17 +23,18 @@ public class CTVFLEvaluationContext: NSObject {
     
     @objc
     public override init() {
-        _evaluationStack = [.init()]
-        _evaluationStack.reserveCapacity(10)
+        _evaluationStack = .init()
+        
         _constraints = []
         _constraints.reserveCapacity(10)
+        _constriantsCount = 0
+        
         _itemsToBeAligned = []
         _itemsToBeAligned.reserveCapacity(10)
+        _itemsToBeAlignedCount = 0
+        
         _opcodes = []
         _opcodes.reserveCapacity(100)
-        _stackLevelCount = 0
-        _constriantsCount = 0
-        _itemsToBeAlignedCount = 0
         _opcodesCount = 0
     }
     
@@ -49,25 +48,6 @@ public class CTVFLEvaluationContext: NSObject {
         _itemsToBeAlignedCount = 0
         _constraints.removeAll(keepingCapacity: true)
         _constriantsCount = 0
-    }
-    
-    internal func _pushStackLevel() {
-        let index = _stackLevelCount
-        if index == _evaluationStack.endIndex {
-            _evaluationStack.append(.init())
-        } else if index < _evaluationStack.endIndex {
-            _evaluationStack[index] = .init()
-        } else {
-            preconditionFailure()
-        }
-        _stackLevelCount += 1
-    }
-    
-    internal func _popStackLevel() -> _CTVFLEvaluationStackLevel {
-        precondition(_stackLevelCount > 0)
-        let topLevelIndex = _stackLevelCount - 1
-        _stackLevelCount -= 1
-        return _evaluationStack[topLevelIndex]
     }
     
     internal func _ensureOpcodesTailElements(_ addition: Int) {
@@ -115,7 +95,6 @@ public class CTVFLEvaluationContext: NSObject {
     
     @nonobjc
     internal func _prepareForReuse() {
-        _stackLevelCount = 0
         _constriantsCount = 0
         _itemsToBeAlignedCount = 0
         _opcodesCount = 0
@@ -138,20 +117,20 @@ public class CTVFLEvaluationContext: NSObject {
             withContext: self
         )
         
-        _pushStackLevel()
+        _evaluationStack.push()
         
         for index in 0..<_opcodesCount {
             let eachOpcode = _opcodes[index]
-            let currentLevel = _stackLevelCount - 1
+            let currentLevel = _evaluationStack.level - 1
             
             switch eachOpcode {
             case .push:
-                _pushStackLevel()
+                _evaluationStack.push()
             case .pop:
-                let topLevel = _popStackLevel()
+                let topLevel = _evaluationStack.pop()
                 let retVal = topLevel.retVal
                 
-                let previousLevel = _stackLevelCount - 1
+                let previousLevel = _evaluationStack.level - 1
                 switch _evaluationStack[previousLevel].evaluationSite {
                 case .firstItem:
                     _evaluationStack[previousLevel].firstItem = retVal
@@ -285,6 +264,8 @@ public class CTVFLEvaluationContext: NSObject {
                 }
             }
         }
+        
+        _ = _evaluationStack.pop()
         
         if needsAlign && _itemsToBeAlignedCount > 1 {
             let attributes = _attributes(forOptions: options)
