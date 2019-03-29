@@ -5,6 +5,8 @@
 //  Created on 2019/3/28.
 //
 
+import Foundation
+
 @objc
 public class CTVFLEvaluationContext: NSObject {
     internal var _evaluationStack: _CTVFLEvaluationStack
@@ -252,7 +254,7 @@ public class CTVFLEvaluationContext: NSObject {
                     #if os(macOS)
                     let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2, constant: 8)
                     constraint.priority = priority
-                    constraints.append(constraint)
+                    _appendConstraint(constraint)
                     #endif
                     
                     #if os(iOS) || os(tvOS)
