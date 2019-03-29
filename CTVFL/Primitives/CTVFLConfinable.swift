@@ -32,9 +32,9 @@ public struct CTVFLConfinable: Hashable, CTVFLConfinableOperand {
         return lhs._layoutGuide === rhs._layoutGuide
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        storage._ensureTailElements(1)
-        storage.append(.moveItem(.confinable(self)))
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+        context._ensureOpcodesTailElements(1)
+        context._appendOpcode(.moveItem(.confinable(self)))
     }
     
     public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {

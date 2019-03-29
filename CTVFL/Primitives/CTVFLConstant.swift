@@ -29,10 +29,10 @@ public struct CTVFLConstant: Equatable, RawRepresentable,
         return rawValue.description
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        storage._ensureTailElements(3)
-        storage.append(.moveConstant(self))
-        storage.append(.moveRelation(.equal))
-        storage.append(.movePriority(.required))
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+        context._ensureOpcodesTailElements(3)
+        context._appendOpcode(.moveConstant(self))
+        context._appendOpcode(.moveRelation(.equal))
+        context._appendOpcode(.movePriority(.required))
     }
 }

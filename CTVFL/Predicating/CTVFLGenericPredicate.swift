@@ -30,7 +30,7 @@ public enum CTVFLGenericPredicate: CTVFLPredicating, Equatable {
         forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
-        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        withContext context: CTVFLEvaluationContext
         )
     {
         switch self {
@@ -39,14 +39,14 @@ public enum CTVFLGenericPredicate: CTVFLPredicating, Equatable {
                 forOrientation: orientation,
                 forObject: object,
                 withOptions: options,
-                withStorage: &storage
+                withContext: context
             )
         case let .layoutable(layoutable):
             return layoutable.generateOpcodes(
                 forOrientation: orientation,
                 forObject: object,
                 withOptions: options,
-                withStorage: &storage
+                withContext: context
             )
         }
     }

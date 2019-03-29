@@ -47,25 +47,25 @@ public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLConstantOperand, Eq
         return .constant(self)
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        return generateOpcodes(forOrientation: orientation, forObject: .position, withOptions: options, withStorage: &storage)
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+        return generateOpcodes(forOrientation: orientation, forObject: .position, withOptions: options, withContext: context)
     }
     
     public func generateOpcodes(
         forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
-        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        withContext context: CTVFLEvaluationContext
         )
     {
         let layoutAttributeOrNil = _layoutAttribute(forOrientation: orientation, forObject: object)
-        storage._ensureTailElements(4)
+        context._ensureOpcodesTailElements(4)
         if let layoutAttribute = layoutAttributeOrNil {
-            storage.append(.moveAttribute(layoutAttribute))
+            context._appendOpcode(.moveAttribute(layoutAttribute))
         }
-        storage.append(.moveConstant(_constant))
-        storage.append(.moveRelation(_relation))
-        storage.append(.movePriority(_priority))
+        context._appendOpcode(.moveConstant(_constant))
+        context._appendOpcode(.moveRelation(_relation))
+        context._appendOpcode(.movePriority(_priority))
     }
     
     internal func _layoutAttribute(

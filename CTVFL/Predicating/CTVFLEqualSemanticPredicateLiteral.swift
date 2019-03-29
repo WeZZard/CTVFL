@@ -19,11 +19,11 @@ extension CTVFLEqualSemanticPredicateLiteral where Self: BinaryInteger {
         forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
-        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        withContext context: CTVFLEvaluationContext
         )
     {
         return toCTVFLGenericPredicate()
-            .generateOpcodes(forOrientation: orientation, forObject: object, withOptions: options, withStorage: &storage)
+            .generateOpcodes(forOrientation: orientation, forObject: object, withOptions: options, withContext: context)
     }
     
     public func toCTVFLGenericPredicate() -> CTVFLGenericPredicate {
@@ -40,11 +40,11 @@ extension CTVFLEqualSemanticPredicateLiteral where Self: BinaryFloatingPoint {
         forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
-        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        withContext context: CTVFLEvaluationContext
         )
     {
         return toCTVFLGenericPredicate()
-            .generateOpcodes(forOrientation: orientation, forObject: object, withOptions: options, withStorage: &storage)
+            .generateOpcodes(forOrientation: orientation, forObject: object, withOptions: options, withContext: context)
     }
     
     public func toCTVFLGenericPredicate() -> CTVFLGenericPredicate {

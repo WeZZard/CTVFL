@@ -48,12 +48,3 @@ public enum CTVFLOpcode {
         }
     }
 }
-
-extension ContiguousArray where Element == CTVFLOpcode {
-    internal mutating func _ensureTailElements(_ addition: Int) {
-        let targetCapacity = Swift.max(100, count + addition)
-        if capacity < targetCapacity {
-            reserveCapacity(targetCapacity)
-        }
-    }
-}

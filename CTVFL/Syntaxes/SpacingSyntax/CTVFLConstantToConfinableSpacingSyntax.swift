@@ -9,7 +9,7 @@
 /// `n - layoutGuide`
 ///
 public struct CTVFLConstantToConfinableSpacingSyntax<Lhs: CTVFLConstantOperand, Rhs: CTVFLConfinableOperand>:
-    CTVFLEvaluatableSyntax, CTVFLConfinableOperand, _CTVFLBinarySyntax where
+    CTVFLConstraintsPopulatableSyntax, CTVFLConfinableOperand, _CTVFLBinarySyntax where
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
@@ -25,16 +25,16 @@ public struct CTVFLConstantToConfinableSpacingSyntax<Lhs: CTVFLConstantOperand, 
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(1)
-        storage.append(.moveEvaluationSite(.secondItem))
-        rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(4)
-        storage.append(.moveAttribute(rhs.attributeForBeingEvaluated(at: .rhs, forOrientation: orientation, withOptions: options)))
-        storage.append(.moveReturnValue(.secondItem))
-        storage.append(.makeConstraint)
-        storage.append(.pop)
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+        lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
+        context._ensureOpcodesTailElements(1)
+        context._appendOpcode(.moveEvaluationSite(.secondItem))
+        rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
+        context._ensureOpcodesTailElements(4)
+        context._appendOpcode(.moveAttribute(rhs.attributeForBeingEvaluated(at: .rhs, forOrientation: orientation, withOptions: options)))
+        context._appendOpcode(.moveReturnValue(.secondItem))
+        context._appendOpcode(.makeConstraint)
+        context._appendOpcode(.pop)
     }
 }
 

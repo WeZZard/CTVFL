@@ -23,7 +23,7 @@ public protocol CTVFLPredicating {
         forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
-        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        withContext context: CTVFLEvaluationContext
     )
     
     func toCTVFLGenericPredicate() -> CTVFLGenericPredicate

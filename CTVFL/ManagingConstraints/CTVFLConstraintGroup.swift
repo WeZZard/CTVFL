@@ -12,6 +12,14 @@ public class CTVFLConstraintGroup {
     
     private var _handlers_: ContiguousArray<_CTVFLConstraintHandler>
     
+    public init<C: Sequence>(constraints: C) where
+        C.Element == CTVFLConstraint
+    {
+        _handlers_ = _CTVFLConstraintHandler.makeHandlers(
+            constraints: constraints
+        )
+    }
+    
     /// The active state of the contained constraints.
     @available(macOS, introduced: 10.10)
     @available(macOSApplicationExtension, introduced: 10.10)

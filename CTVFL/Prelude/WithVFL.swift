@@ -7,37 +7,33 @@
 
 
 @discardableResult
-public func withVFL<T: CTVFLOperand & CTVFLEvaluatableSyntax>(
-    V description: @autoclosure ()-> T,
+public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
+    V syntax: @autoclosure ()-> S,
     options: CTVFLOptions = []
     ) -> [CTVFLConstraint] where
-    T.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
-    T.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary
+    S.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
+    S.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary
 {
-    let constraints = description().makeConstraints(
+    let constraints = syntax().makeConstraints(
         orientation: .vertical,
         options: options
     )
-    if let transaction = _CTVFLTransaction.shared {
-        transaction.pushConstraints(constraints)
-    }
+    CTVFLTransaction.addConstraints(constraints)
     return constraints
 }
 
 @discardableResult
-public func withVFL<T: CTVFLOperand & CTVFLEvaluatableSyntax>(
-    H description: @autoclosure ()-> T,
+public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
+    H syntax: @autoclosure ()-> S,
     options: CTVFLOptions = []
     ) -> [CTVFLConstraint] where
-    T.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
-    T.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary
+    S.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
+    S.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary
 {
-    let constraints = description().makeConstraints(
+    let constraints = syntax().makeConstraints(
         orientation: .horizontal,
         options: options
     )
-    if let transaction = _CTVFLTransaction.shared {
-        transaction.pushConstraints(constraints)
-    }
+    CTVFLTransaction.addConstraints(constraints)
     return constraints
 }

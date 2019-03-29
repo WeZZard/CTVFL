@@ -22,12 +22,12 @@ public struct CTVFLLeadingConstantSyntax<O: CTVFLConstantOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        storage._ensureTailElements(3)
-        storage.append(.push)
-        storage.append(.moveItem(.container))
-        storage.append(.moveAttribute(attributeForContainer(at: .lhs, forOrientation: orientation, withOptions: options)))
-        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+        context._ensureOpcodesTailElements(3)
+        context._appendOpcode(.push)
+        context._appendOpcode(.moveItem(.container))
+        context._appendOpcode(.moveAttribute(attributeForContainer(at: .lhs, forOrientation: orientation, withOptions: options)))
+        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
     }
 }
 

@@ -53,21 +53,21 @@ public struct CTVFLLayoutablePredicate: CTVFLPredicating, Equatable {
         forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
         withOptions options: CTVFLOptions,
-        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        withContext context: CTVFLEvaluationContext
         )
     {
         let layoutAttributeOrNil = _layoutAttribute(forOrientation: orientation, forObject: object)
         
-        storage._ensureTailElements(5)
+        context._ensureOpcodesTailElements(5)
         if let layoutAttribute = layoutAttributeOrNil {
-            storage.append(.moveAttribute(layoutAttribute))
+            context._appendOpcode(.moveAttribute(layoutAttribute))
         }
-        storage.append(.moveItem(.layoutable(_layoutable)))
+        context._appendOpcode(.moveItem(.layoutable(_layoutable)))
         if let layoutAttribute = layoutAttributeOrNil {
-            storage.append(.moveAttribute(layoutAttribute))
+            context._appendOpcode(.moveAttribute(layoutAttribute))
         }
-        storage.append(.moveRelation(_layoutRelation))
-        storage.append(.movePriority(_priority))
+        context._appendOpcode(.moveRelation(_layoutRelation))
+        context._appendOpcode(.movePriority(_priority))
     }
     
     public func toCTVFLGenericPredicate() -> CTVFLGenericPredicate {

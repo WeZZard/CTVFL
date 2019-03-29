@@ -22,14 +22,14 @@ public struct CTVFLTrailingConstantSyntax<O: CTVFLConstantOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(5)
-        storage.append(.moveItem(.container))
-        storage.append(.moveAttribute(attributeForContainer(at: .rhs, forOrientation: orientation, withOptions: options)))
-        storage.append(.moveReturnValue(.firstItem))
-        storage.append(.makeConstraint)
-        storage.append(.pop)
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
+        context._ensureOpcodesTailElements(5)
+        context._appendOpcode(.moveItem(.container))
+        context._appendOpcode(.moveAttribute(attributeForContainer(at: .rhs, forOrientation: orientation, withOptions: options)))
+        context._appendOpcode(.moveReturnValue(.firstItem))
+        context._appendOpcode(.makeConstraint)
+        context._appendOpcode(.pop)
     }
 }
 

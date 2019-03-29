@@ -5,7 +5,7 @@
 //  Created by WeZZard on 9/20/17.
 //
 
-public class CTVFLPredicatedLayoutable: CTVFLEvaluatableSyntax,
+public class CTVFLPredicatedLayoutable: CTVFLConstraintsPopulatableSyntax,
     CTVFLLayoutableOperand
 {
     public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
@@ -30,18 +30,18 @@ public class CTVFLPredicatedLayoutable: CTVFLEvaluatableSyntax,
     public func generateOpcodes(
         forOrientation orientation: CTVFLOrientation,
         withOptions options: CTVFLOptions,
-        withStorage storage: inout ContiguousArray<CTVFLOpcode>
+        withContext context: CTVFLEvaluationContext
         )
     {
         for eachPredicate in _predicates {
-            storage._ensureTailElements(2)
-            storage.append(.push)
-            storage.append(.moveItem(.layoutable(_layoutable)))
-            eachPredicate.generateOpcodes(forOrientation: orientation, forObject: .dimension, withOptions: options, withStorage: &storage)
-            storage._ensureTailElements(3)
-            storage.append(.moveReturnValue(.firstItem))
-            storage.append(.makeConstraint)
-            storage.append(.pop)
+            context._ensureOpcodesTailElements(2)
+            context._appendOpcode(.push)
+            context._appendOpcode(.moveItem(.layoutable(_layoutable)))
+            eachPredicate.generateOpcodes(forOrientation: orientation, forObject: .dimension, withOptions: options, withContext: context)
+            context._ensureOpcodesTailElements(3)
+            context._appendOpcode(.moveReturnValue(.firstItem))
+            context._appendOpcode(.makeConstraint)
+            context._appendOpcode(.pop)
         }
     }
     

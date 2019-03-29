@@ -9,7 +9,7 @@
 /// `view - n`
 ///
 public struct CTVFLLayoutableToConstantSpacingSyntax<Lhs: CTVFLLayoutableOperand, Rhs: CTVFLConstantOperand>:
-    CTVFLEvaluatableSyntax, CTVFLConstantOperand, _CTVFLBinarySyntax where
+    CTVFLConstraintsPopulatableSyntax, CTVFLConstantOperand, _CTVFLBinarySyntax where
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
@@ -25,14 +25,14 @@ public struct CTVFLLayoutableToConstantSpacingSyntax<Lhs: CTVFLLayoutableOperand
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        storage._ensureTailElements(2)
-        storage.append(.push)
-        storage.append(.moveAttribute(lhs.attributeForBeingEvaluated(at: .lhs, forOrientation: orientation, withOptions: options)))
-        lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(1)
-        storage.append(.moveEvaluationSite(.secondItem))
-        rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+        context._ensureOpcodesTailElements(2)
+        context._appendOpcode(.push)
+        context._appendOpcode(.moveAttribute(lhs.attributeForBeingEvaluated(at: .lhs, forOrientation: orientation, withOptions: options)))
+        lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
+        context._ensureOpcodesTailElements(1)
+        context._appendOpcode(.moveEvaluationSite(.secondItem))
+        rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
     }
 }
 

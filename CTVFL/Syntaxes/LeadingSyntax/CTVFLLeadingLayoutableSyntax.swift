@@ -9,7 +9,7 @@
 /// `|view`
 ///
 public struct CTVFLLeadingLayoutableSyntax<O: CTVFLLayoutableOperand>:
-    CTVFLEvaluatableSyntax, CTVFLLayoutableOperand, _CTVFLLeadingSyntax where
+    CTVFLConstraintsPopulatableSyntax, CTVFLLayoutableOperand, _CTVFLLeadingSyntax where
     O.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
     public typealias Operand = O
@@ -22,20 +22,20 @@ public struct CTVFLLeadingLayoutableSyntax<O: CTVFLLayoutableOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        storage._ensureTailElements(7)
-        storage.append(.push)
-        storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
-        storage.append(.moveRelation(.equal))
-        storage.append(.moveItem(.container))
-        storage.append(.moveAttribute(attributeForContainer(at: .lhs, forOrientation: orientation, withOptions: options)))
-        storage.append(.moveAttribute(operand.attributeForBeingEvaluated(at: .rhs, forOrientation: orientation, withOptions: options)))
-        storage.append(.moveEvaluationSite(.secondItem))
-        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(3)
-        storage.append(.moveReturnValue(.secondItem))
-        storage.append(.makeConstraint)
-        storage.append(.pop)
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+        context._ensureOpcodesTailElements(7)
+        context._appendOpcode(.push)
+        context._appendOpcode(.moveConstant(CTVFLConstant(rawValue: 0)))
+        context._appendOpcode(.moveRelation(.equal))
+        context._appendOpcode(.moveItem(.container))
+        context._appendOpcode(.moveAttribute(attributeForContainer(at: .lhs, forOrientation: orientation, withOptions: options)))
+        context._appendOpcode(.moveAttribute(operand.attributeForBeingEvaluated(at: .rhs, forOrientation: orientation, withOptions: options)))
+        context._appendOpcode(.moveEvaluationSite(.secondItem))
+        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
+        context._ensureOpcodesTailElements(3)
+        context._appendOpcode(.moveReturnValue(.secondItem))
+        context._appendOpcode(.makeConstraint)
+        context._appendOpcode(.pop)
     }
 }
 

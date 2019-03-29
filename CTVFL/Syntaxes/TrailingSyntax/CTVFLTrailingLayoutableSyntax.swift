@@ -9,7 +9,7 @@
 /// `view|`
 ///
 public struct CTVFLTrailingLayoutableSyntax<O: CTVFLLayoutableOperand>:
-    CTVFLEvaluatableSyntax, CTVFLLayoutableOperand, _CTVFLTrailingSyntax where
+    CTVFLConstraintsPopulatableSyntax, CTVFLLayoutableOperand, _CTVFLTrailingSyntax where
     O.TailAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
     public typealias Operand = O
@@ -22,19 +22,19 @@ public struct CTVFLTrailingLayoutableSyntax<O: CTVFLLayoutableOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        storage._ensureTailElements(3)
-        storage.append(.push)
-        storage.append(.moveConstant(CTVFLConstant(rawValue: 0)))
-        storage.append(.moveRelation(.equal))
-        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withStorage: &storage)
-        storage._ensureTailElements(6)
-        storage.append(.moveAttribute(operand.attributeForBeingEvaluated(at: .lhs, forOrientation: orientation, withOptions: options)))
-        storage.append(.moveItem(.container))
-        storage.append(.moveAttribute(attributeForContainer(at: .rhs, forOrientation: orientation, withOptions: options)))
-        storage.append(.moveReturnValue(.firstItem))
-        storage.append(.makeConstraint)
-        storage.append(.pop)
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+        context._ensureOpcodesTailElements(3)
+        context._appendOpcode(.push)
+        context._appendOpcode(.moveConstant(CTVFLConstant(rawValue: 0)))
+        context._appendOpcode(.moveRelation(.equal))
+        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
+        context._ensureOpcodesTailElements(6)
+        context._appendOpcode(.moveAttribute(operand.attributeForBeingEvaluated(at: .lhs, forOrientation: orientation, withOptions: options)))
+        context._appendOpcode(.moveItem(.container))
+        context._appendOpcode(.moveAttribute(attributeForContainer(at: .rhs, forOrientation: orientation, withOptions: options)))
+        context._appendOpcode(.moveReturnValue(.firstItem))
+        context._appendOpcode(.makeConstraint)
+        context._appendOpcode(.pop)
     }
 }
 

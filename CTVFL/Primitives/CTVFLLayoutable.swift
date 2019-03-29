@@ -34,9 +34,9 @@ public struct CTVFLLayoutable: Hashable, CTVFLLayoutableOperand {
         return lhs._view === rhs._view
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withStorage storage: inout ContiguousArray<CTVFLOpcode>) {
-        storage._ensureTailElements(1)
-        storage.append(.moveItem(.layoutable(self)))
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+        context._ensureOpcodesTailElements(1)
+        context._appendOpcode(.moveItem(.layoutable(self)))
     }
     
     public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
