@@ -23,4 +23,22 @@
 {
     XCTAssertFalse([CTVFLTransaction _hasNoTransactionsRunning]);
 }
+
+- (void)testBegin_entersANonImplicitTransaction
+{
+    XCTAssertTrue([CTVFLTransaction _isImplicit]);
+    [CTVFLTransaction begin];
+    XCTAssertFalse([CTVFLTransaction _isImplicit]);
+    [CTVFLTransaction commit];
+    XCTAssertTrue([CTVFLTransaction _isImplicit]);
+}
+
+- (void)testCommit_escapesFromANonImplicitTransaction
+{
+    XCTAssertTrue([CTVFLTransaction _isImplicit]);
+    [CTVFLTransaction begin];
+    XCTAssertFalse([CTVFLTransaction _isImplicit]);
+    [CTVFLTransaction commit];
+    XCTAssertTrue([CTVFLTransaction _isImplicit]);
+}
 @end

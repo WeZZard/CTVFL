@@ -19,16 +19,13 @@ namespace CTVFL {
     class Transaction;
     
     class Transaction {
-    public:
+    private:
         class Level {
         private:
-            CTVFLTransaction * _transaction_;
             std::unique_ptr<std::list<NSLayoutConstraint *>> _constraints_;
             bool _collectsConstraints;
             
         public:
-            CTVFLTransaction * transaction(void);
-            
             Level(bool collectsConstraints);
             
             ~Level(void);
@@ -44,7 +41,6 @@ namespace CTVFL {
         CFRunLoopObserverRef _runLoopObserver_;
         std::unique_ptr<std::list<Level>> _levels_;
         CTVFLEvaluationContext * _sharedEvaluationContext_;
-        pthread_mutex_t _lock_;
         
     public:
         Transaction(void);
@@ -55,27 +51,39 @@ namespace CTVFL {
         
         static Transaction& threadLocal(void);
         
-        static void begin(void);
+        static Level& topLevel(void);
+        
+        static size_t levelsCount(void);
+        
+        static void begin(bool ensuresImplicit);
         
         static void commit(void);
         
-        static void lock(void);
+        static void addConstraint(NSLayoutConstraint * constraint, bool enforces, bool ensuresImplicit);
         
-        static void unlock(void);
+        static void addConstraints(NSArray<NSLayoutConstraint *> * constraints, bool enforces, bool ensuresImplicit);
         
-        Level& topLevel(void);
+        static std::list<NSLayoutConstraint *>& constraints(void);
         
-        size_t levelsCount(void);
+        static CTVFLEvaluationContext * sharedEvaluationContext(void);
         
-        void push(void);
+        static void ensureImplicit(void);
+    private:
+        Level& _topLevel(void);
         
-        void pop(void);
+        size_t _levelsCount(void);
+        
+        void _push(void);
+        
+        void _pop(void);
         
         void _lock(void);
         
         void _unlock(void);
         
-        CTVFLEvaluationContext * sharedEvaluationContext(void);
+        void _ensureImplicit(void);
+        
+        CTVFLEvaluationContext * _sharedEvaluationContext(void);
     };
 }
 
