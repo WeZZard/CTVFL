@@ -121,7 +121,6 @@ public class CTVFLEvaluationContext: NSObject {
         
         for index in 0..<_opcodesCount {
             let eachOpcode = _opcodes[index]
-            let currentLevel = _evaluationStack.level - 1
             
             switch eachOpcode {
             case .push:
@@ -130,12 +129,17 @@ public class CTVFLEvaluationContext: NSObject {
                 let topLevel = _evaluationStack.pop()
                 let retVal = topLevel.retVal
                 
-                let previousLevel = _evaluationStack.level - 1
-                switch _evaluationStack[previousLevel].evaluationSite {
+                let previousLevel = _evaluationStack.peek()
+                
+                switch previousLevel.evaluationSite {
                 case .firstItem:
-                    _evaluationStack[previousLevel].firstItem = retVal
+                    _evaluationStack.modifyTopLevel { (level) in
+                        level.firstItem = retVal
+                    }
                 case .secondItem:
-                    _evaluationStack[previousLevel].secondItem = retVal
+                    _evaluationStack.modifyTopLevel { (level) in
+                        level.secondItem = retVal
+                    }
                 }
                 
             case let .moveItem(item):
@@ -147,10 +151,16 @@ public class CTVFLEvaluationContext: NSObject {
                     }
                 }
                 
-                if _evaluationStack[currentLevel].firstItem == nil {
-                    _evaluationStack[currentLevel].firstItem = item
-                } else if _evaluationStack[currentLevel].secondItem == nil {
-                    _evaluationStack[currentLevel].secondItem = item
+                let topLevel = _evaluationStack.peek()
+                
+                if topLevel.firstItem == nil {
+                    _evaluationStack.modifyTopLevel { (level) in
+                        level.firstItem = item
+                    }
+                } else if topLevel.secondItem == nil {
+                    _evaluationStack.modifyTopLevel { (level) in
+                        level.secondItem = item
+                    }
                 } else {
                     NSException(
                         name: .internalInconsistencyException,
@@ -159,10 +169,16 @@ public class CTVFLEvaluationContext: NSObject {
                     ).raise()
                 }
             case let .moveAttribute(attr):
-                if _evaluationStack[currentLevel].firstAttribute == nil {
-                    _evaluationStack[currentLevel].firstAttribute = attr
-                } else if _evaluationStack[currentLevel].secondAttribute == nil {
-                    _evaluationStack[currentLevel].secondAttribute = attr
+                let topLevel = _evaluationStack.peek()
+                
+                if topLevel.firstAttribute == nil {
+                    _evaluationStack.modifyTopLevel { (level) in
+                        level.firstAttribute = attr
+                    }
+                } else if topLevel.secondAttribute == nil {
+                    _evaluationStack.modifyTopLevel { (level) in
+                        level.secondAttribute = attr
+                    }
                 } else {
                     NSException(
                         name: .internalInconsistencyException,
@@ -171,24 +187,38 @@ public class CTVFLEvaluationContext: NSObject {
                     ).raise()
                 }
             case let .moveRelation(rel):
-                _evaluationStack[currentLevel].relation = rel
+                _evaluationStack.modifyTopLevel { (topLevel) in
+                    topLevel.relation = rel
+                }
             case let .moveConstant(value):
-                _evaluationStack[currentLevel].constant = value
+                _evaluationStack.modifyTopLevel { (topLevel) in
+                    topLevel.constant = value
+                }
             case let .moveUsesSystemSpace(flag):
-                _evaluationStack[currentLevel].usesSystemSpace = flag
+                _evaluationStack.modifyTopLevel { (topLevel) in
+                    topLevel.usesSystemSpace = flag
+                }
             case let .movePriority(value):
-                _evaluationStack[currentLevel].priority = value
+                _evaluationStack.modifyTopLevel { (topLevel) in
+                    topLevel.priority = value
+                }
             case let .moveReturnValue(retVal):
                 switch retVal {
                 case .firstItem:
-                    _evaluationStack[currentLevel].retVal = _evaluationStack[currentLevel].firstItem
+                    _evaluationStack.modifyTopLevel { (topLevel) in
+                        topLevel.retVal = topLevel.firstItem
+                    }
                 case .secondItem:
-                    _evaluationStack[currentLevel].retVal = _evaluationStack[currentLevel].secondItem
+                    _evaluationStack.modifyTopLevel { (topLevel) in
+                        topLevel.retVal = topLevel.secondItem
+                    }
                 }
             case let .moveEvaluationSite(evaluationSite):
-                _evaluationStack[currentLevel].evaluationSite = evaluationSite
+                _evaluationStack.modifyTopLevel { (topLevel) in
+                    topLevel.evaluationSite = evaluationSite
+                }
             case .makeConstraint:
-                let topLevel = _evaluationStack[currentLevel]
+                let topLevel = _evaluationStack.peek()
                 
                 let (
                     firstItem,

@@ -7,72 +7,59 @@
 
 
 internal class _CTVFLEvaluationStack {
-    internal typealias _Buffer = ManagedBuffer<_CTVFLEvaluationStackMetadata, _CTVFLEvaluationStackLevel>
-    internal var _buffer: Unmanaged<_Buffer>
+    internal typealias _Buffer = UnsafeMutablePointer<_CTVFLEvaluationStackLevel>
+    internal var _buffer: _Buffer
+    
+    internal var _count: Int
+    
+    internal var _capacity: Int
     
     internal init() {
-        let buffer = _Buffer.create(minimumCapacity: 10, makingHeaderWith: {
-            (buffer) -> _CTVFLEvaluationStackMetadata in
-            return _CTVFLEvaluationStackMetadata(levelCount: 0)
-        })
-        _buffer = Unmanaged.passRetained(buffer)
+        let buffer = _Buffer.allocate(capacity: 10)
+        buffer.initialize(repeating: .init(), count: 10)
+        _buffer = buffer
+        _count = 0
+        _capacity = 10
     }
     
     deinit {
-        _buffer.release()
+        _buffer.deallocate()
     }
     
     internal var level: Int {
-        return _buffer.takeUnretainedValue().header.levelCount
+        return _count
     }
     
     internal func push() {
-        let currentLevelCount = _buffer.takeUnretainedValue().header.levelCount
-        let nextLevelIndex = _buffer.takeUnretainedValue().header.levelCount
-        if _buffer.takeUnretainedValue().capacity < nextLevelIndex {
-            let enlargedCapacity = Int(Float(_buffer.takeUnretainedValue().capacity) * 1.3)
+        let nextLevelIndex = _count
+        if _capacity < nextLevelIndex {
+            let enlargedCapacity = Int(Float(_capacity) * 1.3)
             let oldBuffer = _buffer
-            let newBuffer = _Buffer.create(minimumCapacity: enlargedCapacity, makingHeaderWith: {
-                (newBuffer) -> _CTVFLEvaluationStackMetadata in
-                newBuffer.withUnsafeMutablePointerToElements({$0}).moveAssign(
-                    from: oldBuffer.takeUnretainedValue().withUnsafeMutablePointerToElements({$0}),
-                    count: oldBuffer.takeUnretainedValue().capacity
-                )
-                return _CTVFLEvaluationStackMetadata(levelCount: currentLevelCount)
-            })
-            oldBuffer.release()
-            _buffer = .passRetained(newBuffer)
+            let newBuffer = _Buffer.allocate(capacity: enlargedCapacity)
+            newBuffer.initialize(repeating: .init(), count: enlargedCapacity)
+            newBuffer.moveAssign(from: oldBuffer, count: _capacity)
+            oldBuffer.deallocate()
+            _buffer = newBuffer
+            _capacity = enlargedCapacity
         }
-        _buffer.takeUnretainedValue().withUnsafeMutablePointerToElements({$0[nextLevelIndex] = .init()})
-        _buffer.takeUnretainedValue().header.levelCount += 1
+        _buffer[nextLevelIndex] = _CTVFLEvaluationStackLevel()
+        _count += 1
     }
     
     internal func pop() -> _CTVFLEvaluationStackLevel {
-        let poppedLevelIndex = _buffer.takeUnretainedValue().header.levelCount - 1
-        let poppedLevel = _buffer.takeUnretainedValue().withUnsafeMutablePointerToElements({
-            $0[poppedLevelIndex]
-        })
-        _buffer.takeUnretainedValue().header.levelCount -= 1
+        let poppedLevelIndex = _count - 1
+        let poppedLevel = _buffer[poppedLevelIndex]
+        _count -= 1
         return poppedLevel
     }
     
-    internal subscript(index: Int) -> _CTVFLEvaluationStackLevel {
-        get {
-            if index < level {
-                return _buffer.takeUnretainedValue().withUnsafeMutablePointerToElements({$0[index]})
-            } else {
-                _indexExceedsStackBounds(index)
-            }
-        }
-        set {
-            if index < level {
-                _buffer.takeUnretainedValue().withUnsafeMutablePointerToElements({
-                    $0[index]=newValue
-                })
-            } else {
-                _indexExceedsStackBounds(index)
-            }
-        }
+    internal func peek() -> _CTVFLEvaluationStackLevel {
+        let topLevelIndex = _count - 1
+        return _buffer[topLevelIndex]
+    }
+    
+    internal func modifyTopLevel(with closure: (inout _CTVFLEvaluationStackLevel) -> Void) {
+        closure(&_buffer[_count - 1])
     }
     
     @inline(__always)
@@ -83,10 +70,6 @@ internal class _CTVFLEvaluationStack {
         ).raise()
         exit(1)
     }
-}
-
-internal struct _CTVFLEvaluationStackMetadata {
-    internal var levelCount: Int
 }
 
 internal struct _CTVFLEvaluationStackLevel {
