@@ -98,7 +98,7 @@ CFRunLoopObserverRef _mainThreadRunLoopObserver = NULL;
 namespace CTVFL {
 #pragma mark Transaction
     Transaction::Transaction(void):
-    _levels_(std::list<Level>()),
+    _levels_(std::make_unique<std::list<Level>>()),
     _sharedEvaluationContext_(nil),
     _runLoopObserver_(NULL)
     {
@@ -111,7 +111,8 @@ namespace CTVFL {
     }
     
     Transaction::~Transaction(void) {
-        _levels_.clear();
+        _levels_ -> clear();
+        _levels_.reset();
         _sharedEvaluationContext_ = nil;
         if (_runLoopObserver_) {
             CFRunLoopObserverInvalidate(_runLoopObserver_);
@@ -129,12 +130,12 @@ namespace CTVFL {
     }
     
     void Transaction::push(void) {
-        _levels_.emplace_back(!_levels_.empty());
+        _levels_ -> emplace_back(!_levels_ -> empty());
     }
     
     void Transaction::pop(void) {
-        NSCAssert(!_levels_.empty(), @"Popping from an empty transaction stack.");
-        _levels_.pop_back();
+        NSCAssert(!_levels_ -> empty(), @"Popping from an empty transaction stack.");
+        _levels_ -> pop_back();
     }
     
     Transaction& Transaction::threadLocal(void) {
@@ -148,11 +149,11 @@ namespace CTVFL {
     }
     
     Transaction::Level& Transaction::topLevel(void) {
-        return _levels_.back();
+        return _levels_ -> back();
     }
     
     size_t Transaction::levelsCount(void) {
-        return _levels_.size();
+        return _levels_ -> size();
     }
     
     CTVFLEvaluationContext * Transaction::sharedEvaluationContext() {
@@ -167,14 +168,15 @@ namespace CTVFL {
 #pragma mark Transaction::Level
     Transaction::Level::Level(bool collectsConstraints):
     _collectsConstraints(collectsConstraints),
-    _constraints_(std::list<NSLayoutConstraint *>()),
+    _constraints_(std::make_unique<std::list<NSLayoutConstraint *>>()),
     _transaction_(nil)
     { }
     
     Transaction::Level::~Level(void)
     {
         [threadLocal().sharedEvaluationContext() evict];
-        _constraints_.clear();
+        _constraints_ -> clear();
+        _constraints_.reset();
         _transaction_ = nil;
     }
     
@@ -187,20 +189,20 @@ namespace CTVFL {
     
     void Transaction::Level::addConstraint(NSLayoutConstraint * constraint, bool enforces) {
         if (_collectsConstraints || enforces) {
-            _constraints_.push_back(constraint);
+            _constraints_ -> push_back(constraint);
         }
     }
     
     void Transaction::Level::addConstraints(NSArray<NSLayoutConstraint *> * constraints, bool enforces) {
         if (_collectsConstraints || enforces) {
             [constraints enumerateObjectsUsingBlock:^(NSLayoutConstraint * constraint, NSUInteger idx, BOOL * _Nonnull stop) {
-                _constraints_.push_back(constraint);
+                _constraints_ -> push_back(constraint);
             }];
         }
     }
     
     std::list<NSLayoutConstraint *>& Transaction::Level::constraints(void) {
-        return _constraints_;
+        return * _constraints_;
     }
 }
 

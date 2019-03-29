@@ -21,7 +21,7 @@ namespace CTVFL {
         class Level {
         private:
             CTVFLTransaction * _transaction_;
-            std::list<NSLayoutConstraint *> _constraints_;
+            std::unique_ptr<std::list<NSLayoutConstraint *>> _constraints_;
             bool _collectsConstraints;
             
         public:
@@ -40,7 +40,7 @@ namespace CTVFL {
         
     private:
         CFRunLoopObserverRef _runLoopObserver_;
-        std::list<Level> _levels_;
+        std::unique_ptr<std::list<Level>> _levels_;
         CTVFLEvaluationContext * _sharedEvaluationContext_;
         
     public:
