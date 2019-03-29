@@ -50,46 +50,63 @@ CFRunLoopObserverRef _mainThreadRunLoopObserver = NULL;
 
 + (void)begin
 {
+    CTVFL::Transaction::lock();
     CTVFL::Transaction::begin();
+    CTVFL::Transaction::unlock();
 }
 
 + (void)commit
 {
+    CTVFL::Transaction::lock();
     CTVFL::Transaction::commit();
+    CTVFL::Transaction::unlock();
 }
 
 + (NSArray<NSLayoutConstraint *> *)constraints
 {
     auto constraints = [[NSMutableArray alloc] init];
+    CTVFL::Transaction::lock();
     for (auto &constraint: [self threadLocal] -> _level -> constraints()) {
         [constraints addObject: constraint];
     }
+    CTVFL::Transaction::unlock();
     return [constraints copy];
 }
 
 + (void)addConstraint:(NSLayoutConstraint *)constraint
 {
+    CTVFL::Transaction::lock();
     CTVFL::Transaction::threadLocal().topLevel().addConstraint(constraint, false);
+    CTVFL::Transaction::unlock();
 }
 
 + (void)addConstraint:(NSLayoutConstraint *)constraint enforces:(BOOL)enforces
 {
+    CTVFL::Transaction::lock();
     CTVFL::Transaction::threadLocal().topLevel().addConstraint(constraint, enforces);
+    CTVFL::Transaction::unlock();
 }
 
 + (void)addConstraints:(NSArray<NSLayoutConstraint *> *)constraints
 {
+    CTVFL::Transaction::lock();
     CTVFL::Transaction::threadLocal().topLevel().addConstraints(constraints, false);
+    CTVFL::Transaction::unlock();
 }
 
 + (void)addConstraints:(NSArray<NSLayoutConstraint *> *)constraints enforces:(BOOL)enforces
 {
+    CTVFL::Transaction::lock();
     CTVFL::Transaction::threadLocal().topLevel().addConstraints(constraints, enforces);
+    CTVFL::Transaction::unlock();
 }
 
 + (CTVFLEvaluationContext *)sharedEvaluationContext
 {
-    return CTVFL::Transaction::threadLocal().sharedEvaluationContext();
+    CTVFL::Transaction::lock();
+    CTVFLEvaluationContext * sharedEvaluationContext = CTVFL::Transaction::threadLocal().sharedEvaluationContext();
+    CTVFL::Transaction::unlock();
+    return sharedEvaluationContext;
 }
 @end
 
@@ -102,6 +119,9 @@ namespace CTVFL {
     _sharedEvaluationContext_(nil),
     _runLoopObserver_(NULL)
     {
+        pthread_mutexattr_t mutexattr;
+        pthread_mutexattr_init(&mutexattr);
+        pthread_mutex_init(&_lock_, &mutexattr);
         if (![NSThread isMainThread]) {
             auto currentRunLoop = CFRunLoopGetCurrent();
             CFOptionFlags activities = kCFRunLoopBeforeWaiting | kCFRunLoopExit;
@@ -111,6 +131,7 @@ namespace CTVFL {
     }
     
     Transaction::~Transaction(void) {
+        pthread_mutex_destroy(&_lock_);
         _levels_ -> clear();
         _levels_.reset();
         _sharedEvaluationContext_ = nil;
@@ -129,6 +150,14 @@ namespace CTVFL {
         threadLocal().pop();
     }
     
+    void Transaction::lock(void) {
+        threadLocal()._lock();
+    }
+    
+    void Transaction::unlock(void) {
+        threadLocal()._unlock();
+    }
+    
     void Transaction::push(void) {
         _levels_ -> emplace_back(!_levels_ -> empty());
     }
@@ -136,6 +165,16 @@ namespace CTVFL {
     void Transaction::pop(void) {
         NSCAssert(!_levels_ -> empty(), @"Popping from an empty transaction stack.");
         _levels_ -> pop_back();
+    }
+    
+    void Transaction::_lock(void) {
+        while (!pthread_mutex_trylock(&_lock_)) {
+            ;
+        }
+    }
+    
+    void Transaction::_unlock(void) {
+        pthread_mutex_unlock(&_lock_);
     }
     
     Transaction& Transaction::threadLocal(void) {

@@ -1,5 +1,5 @@
 //
-//  constrainToReplaceGroupUsingClosureTests.swift
+//  ConstrainTests.swift
 //  CTVFL
 //
 //  Created on 2019/3/28.
@@ -15,7 +15,7 @@ import AppKit
 
 import CTVFL
 
-class constrainToReplaceGroupUsingClosureTests: XCTestCase {
+class ConstrainTests: XCTestCase {
     var rootView: CTVFLView!
     var view1: CTVFLView!
     var view2: CTVFLView!
@@ -32,6 +32,19 @@ class constrainToReplaceGroupUsingClosureTests: XCTestCase {
         rootView.addSubview(view1)
         rootView.addSubview(view2)
         rootView.addSubview(view3)
+    }
+    
+    func testConstrain_installsConstraintsAtLocal_withLayoutGuideAndView() {
+        if #available(iOS 11.0, *) {
+            XCTAssertTrue(rootView.constraints.isEmpty)
+            
+            constrain {
+                withVFL(H: rootView.safeAreaLayoutGuide - view1)
+                withVFL(V: rootView.safeAreaLayoutGuide - view1)
+            }
+            
+            XCTAssertFalse(rootView.constraints.isEmpty)
+        }
     }
     
     func testConstrain_installsConstraintsAtLocal_withHeightAndWidth() {

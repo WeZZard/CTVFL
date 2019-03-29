@@ -8,6 +8,8 @@
 #ifndef CTVFLTransaction_Internal_h
 #define CTVFLTransaction_Internal_h
 
+#include <os/lock.h>
+
 #include <memory>
 #include <list>
 
@@ -42,6 +44,7 @@ namespace CTVFL {
         CFRunLoopObserverRef _runLoopObserver_;
         std::unique_ptr<std::list<Level>> _levels_;
         CTVFLEvaluationContext * _sharedEvaluationContext_;
+        pthread_mutex_t _lock_;
         
     public:
         Transaction(void);
@@ -56,6 +59,10 @@ namespace CTVFL {
         
         static void commit(void);
         
+        static void lock(void);
+        
+        static void unlock(void);
+        
         Level& topLevel(void);
         
         size_t levelsCount(void);
@@ -63,6 +70,10 @@ namespace CTVFL {
         void push(void);
         
         void pop(void);
+        
+        void _lock(void);
+        
+        void _unlock(void);
         
         CTVFLEvaluationContext * sharedEvaluationContext(void);
     };
