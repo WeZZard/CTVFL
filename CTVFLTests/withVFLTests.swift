@@ -31,8 +31,8 @@ class withVFLTests: XCTestCase {
     func testCanCompile_rightLeaningSyntaxTree() {
         let views1 = view2 - view3
         let views3 = view1 - views1
-        let h = withVFL(H: |views3|)
-        let v = withVFL(V: |views3|)
+        let (_, h) = withVFL(H: |views3|)
+        let (_, v) = withVFL(V: |views3|)
         
         NSLog("view1: %@", view1)
         NSLog("view2: %@", view2)
@@ -114,8 +114,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicatedView_ofEqualSemantic() {
-        let h = withVFL(H: view1.where(200))
-        let v = withVFL(V: view1.where(200))
+        let (_, h) = withVFL(H: view1.where(200))
+        let (_, v) = withVFL(V: view1.where(200))
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -139,8 +139,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicatedView_ofEqualSemantic_withPriority() {
-        let h = withVFL(H: view1.where(200 ~ 750))
-        let v = withVFL(V: view1.where(200 ~ 750))
+        let (_, h) = withVFL(H: view1.where(200 ~ 750))
+        let (_, v) = withVFL(V: view1.where(200 ~ 750))
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -164,8 +164,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicatedView_ofLessThanOrEqual() {
-        let h = withVFL(H: view1.where(<=200))
-        let v = withVFL(V: view1.where(<=200))
+        let (_, h) = withVFL(H: view1.where(<=200))
+        let (_, v) = withVFL(V: view1.where(<=200))
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -189,8 +189,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicatedView_ofLessThanOrEqual_withPriority() {
-        let h = withVFL(H: view1.where(<=200 ~ 750))
-        let v = withVFL(V: view1.where(<=200 ~ 750))
+        let (_, h) = withVFL(H: view1.where(<=200 ~ 750))
+        let (_, v) = withVFL(V: view1.where(<=200 ~ 750))
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -214,8 +214,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicatedView_ofGreaterThanOrEqual() {
-        let h = withVFL(H: view1.where(>=200))
-        let v = withVFL(V: view1.where(>=200))
+        let (_, h) = withVFL(H: view1.where(>=200))
+        let (_, v) = withVFL(V: view1.where(>=200))
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -239,8 +239,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicatedView_ofGreaterThanOrEqual_withPriority() {
-        let h = withVFL(H: view1.where(>=200 ~ 750))
-        let v = withVFL(V: view1.where(>=200 ~ 750))
+        let (_, h) = withVFL(H: view1.where(>=200 ~ 750))
+        let (_, v) = withVFL(V: view1.where(>=200 ~ 750))
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -264,8 +264,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicatedView_ofEqual() {
-        let h = withVFL(H: view1.where(==200))
-        let v = withVFL(V: view1.where(==200))
+        let (_, h) = withVFL(H: view1.where(==200))
+        let (_, v) = withVFL(V: view1.where(==200))
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -289,8 +289,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicatedView_ofEqual_withPriority() {
-        let h = withVFL(H: view1.where(==200 ~ 750))
-        let v = withVFL(V: view1.where(==200 ~ 750))
+        let (_, h) = withVFL(H: view1.where(==200 ~ 750))
+        let (_, v) = withVFL(V: view1.where(==200 ~ 750))
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -314,8 +314,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicatedView_ofEqualView() {
-        let h = withVFL(H: view1.where(==view2))
-        let v = withVFL(V: view1.where(==view2))
+        let (_, h) = withVFL(H: view1.where(==view2))
+        let (_, v) = withVFL(V: view1.where(==view2))
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -339,8 +339,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_multiplePredicatedView() {
-        let h = withVFL(H: view1.where(>=200, <=800))
-        let v = withVFL(V: view1.where(>=200, <=800))
+        let (_, h) = withVFL(H: view1.where(>=200, <=800))
+        let (_, v) = withVFL(V: view1.where(>=200, <=800))
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view1)
@@ -382,8 +382,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_multiplePredicatedView_withPriority() {
-        let h = withVFL(H: view1.where(>=200 ~ 250, <=800 ~ 750))
-        let v = withVFL(V: view1.where(>=200 ~ 250, <=800 ~ 750))
+        let (_, h) = withVFL(H: view1.where(>=200 ~ 250, <=800 ~ 750))
+        let (_, v) = withVFL(V: view1.where(>=200 ~ 250, <=800 ~ 750))
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view1)
@@ -425,8 +425,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_doubleEdgedView() {
-        let h = withVFL(H: |view1|)
-        let v = withVFL(V: |view1|)
+        let (_, h) = withVFL(H: |view1|)
+        let (_, v) = withVFL(V: |view1|)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view1)
@@ -468,8 +468,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_doubleEdgedView_withPredicate() {
-        let h = withVFL(H: |view1.where(200)|)
-        let v = withVFL(V: |view1.where(200)|)
+        let (_, h) = withVFL(H: |view1.where(200)|)
+        let (_, v) = withVFL(V: |view1.where(200)|)
         
         XCTAssertEqual(h.count, 3)
         XCTAssert(h[0].firstItem === view1)
@@ -529,8 +529,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_leadingEdgedView() {
-        let h = withVFL(H: |view1)
-        let v = withVFL(V: |view1)
+        let (_, h) = withVFL(H: |view1)
+        let (_, v) = withVFL(V: |view1)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === rootView)
@@ -554,8 +554,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_leadingEdgedView_withPredicate() {
-        let h = withVFL(H: |view1.where(200))
-        let v = withVFL(V: |view1.where(200))
+        let (_, h) = withVFL(H: |view1.where(200))
+        let (_, v) = withVFL(V: |view1.where(200))
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view1)
@@ -597,8 +597,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_trailingEdgedView() {
-        let h = withVFL(H: view1|)
-        let v = withVFL(V: view1|)
+        let (_, h) = withVFL(H: view1|)
+        let (_, v) = withVFL(V: view1|)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -622,8 +622,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_trailingEdgedView_withPredicate() {
-        let h = withVFL(H: view1.where(200)|)
-        let v = withVFL(V: view1.where(200)|)
+        let (_, h) = withVFL(H: view1.where(200)|)
+        let (_, v) = withVFL(V: view1.where(200)|)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view1)
@@ -665,8 +665,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_leadingSpaceEdgedTrailingEdgedView() {
-        let h = withVFL(H: |-view1|)
-        let v = withVFL(V: |-view1|)
+        let (_, h) = withVFL(H: |-view1|)
+        let (_, v) = withVFL(V: |-view1|)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view1)
@@ -708,8 +708,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_leadingEdgedTrailingSpaceEdgedView() {
-        let h = withVFL(H: |view1-|)
-        let v = withVFL(V: |view1-|)
+        let (_, h) = withVFL(H: |view1-|)
+        let (_, v) = withVFL(V: |view1-|)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view1)
@@ -751,8 +751,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_leadingSpaceEdgedView() {
-        let h = withVFL(H: |-view1)
-        let v = withVFL(V: |-view1)
+        let (_, h) = withVFL(H: |-view1)
+        let (_, v) = withVFL(V: |-view1)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === rootView)
@@ -776,8 +776,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_leadingSpaceEdgedView_withAdjacentView() {
-        let h = withVFL(H: |-view1 | view2)
-        let v = withVFL(V: |-view1 | view2)
+        let (_, h) = withVFL(H: |-view1 | view2)
+        let (_, v) = withVFL(V: |-view1 | view2)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === rootView)
@@ -819,8 +819,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_leadingSpaceEdgedView_withSpacedView() {
-        let h = withVFL(H: |-view1 - view2)
-        let v = withVFL(V: |-view1 - view2)
+        let (_, h) = withVFL(H: |-view1 - view2)
+        let (_, v) = withVFL(V: |-view1 - view2)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === rootView)
@@ -862,8 +862,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_leadingSpaceEdgedView_withSpecificNumberSpacedView() {
-        let h = withVFL(H: |-view1 - 4 - view2)
-        let v = withVFL(V: |-view1 - 4 - view2)
+        let (_, h) = withVFL(H: |-view1 - 4 - view2)
+        let (_, v) = withVFL(V: |-view1 - 4 - view2)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === rootView)
@@ -905,8 +905,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_leadingSpaceEdgedView_withPredicateSpacedView() {
-        let h = withVFL(H: |-view1 - (>=200) - view2)
-        let v = withVFL(V: |-view1 - (>=200) - view2)
+        let (_, h) = withVFL(H: |-view1 - (>=200) - view2)
+        let (_, v) = withVFL(V: |-view1 - (>=200) - view2)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === rootView)
@@ -948,8 +948,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_trailingSpaceEdgedView() {
-        let h = withVFL(H: view1-|)
-        let v = withVFL(V: view1-|)
+        let (_, h) = withVFL(H: view1-|)
+        let (_, v) = withVFL(V: view1-|)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -973,8 +973,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_trailingSpaceEdgedView_withAdjacentView() {
-        let h = withVFL(H: view1 | view2-|)
-        let v = withVFL(V: view1 | view2-|)
+        let (_, h) = withVFL(H: view1 | view2-|)
+        let (_, v) = withVFL(V: view1 | view2-|)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view2)
@@ -1016,8 +1016,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_trailingSpaceEdgedView_withSpacedView() {
-        let h = withVFL(H: view1 - view2-|)
-        let v = withVFL(V: view1 - view2-|)
+        let (_, h) = withVFL(H: view1 - view2-|)
+        let (_, v) = withVFL(V: view1 - view2-|)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view2)
@@ -1059,8 +1059,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_trailingSpaceEdgedView_withSpecificNumberSpacedView() {
-        let h = withVFL(H: view1 - 4 - view2-|)
-        let v = withVFL(V: view1 - 4 - view2-|)
+        let (_, h) = withVFL(H: view1 - 4 - view2-|)
+        let (_, v) = withVFL(V: view1 - 4 - view2-|)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view2)
@@ -1102,8 +1102,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_trailingSpaceEdgedView_withPredicateSpacedView() {
-        let h = withVFL(H: view1 - (>=200) - view2-|)
-        let v = withVFL(V: view1 - (>=200) - view2-|)
+        let (_, h) = withVFL(H: view1 - (>=200) - view2-|)
+        let (_, v) = withVFL(V: view1 - (>=200) - view2-|)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view2)
@@ -1145,8 +1145,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_specificNumberLeadingSpaceEdgedView() {
-        let h = withVFL(H: |-4 - view1)
-        let v = withVFL(V: |-4 - view1)
+        let (_, h) = withVFL(H: |-4 - view1)
+        let (_, v) = withVFL(V: |-4 - view1)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === rootView)
@@ -1170,8 +1170,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_specificNumberTrailingSpaceEdgedView() {
-        let h = withVFL(H: view1 - 4-|)
-        let v = withVFL(V: view1 - 4-|)
+        let (_, h) = withVFL(H: view1 - 4-|)
+        let (_, v) = withVFL(V: view1 - 4-|)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -1195,8 +1195,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicateLeadingSpaceEdgedView() {
-        let h = withVFL(H: |-(>=4) - view1)
-        let v = withVFL(V: |-(>=4) - view1)
+        let (_, h) = withVFL(H: |-(>=4) - view1)
+        let (_, v) = withVFL(V: |-(>=4) - view1)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === rootView)
@@ -1220,8 +1220,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicateTrailingSpaceEdgedView() {
-        let h = withVFL(H: view1 - (>=4)-|)
-        let v = withVFL(V: view1 - (>=4)-|)
+        let (_, h) = withVFL(H: view1 - (>=4)-|)
+        let (_, v) = withVFL(V: view1 - (>=4)-|)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -1245,8 +1245,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_leadingSpaceEdgedView_withPredicate() {
-        let h = withVFL(H: |-view1.where(200))
-        let v = withVFL(V: |-view1.where(200))
+        let (_, h) = withVFL(H: |-view1.where(200))
+        let (_, v) = withVFL(V: |-view1.where(200))
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view1)
@@ -1288,8 +1288,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_trailingSpaceEdgedView_withPredicate() {
-        let h = withVFL(H: view1.where(200)-|)
-        let v = withVFL(V: view1.where(200)-|)
+        let (_, h) = withVFL(H: view1.where(200)-|)
+        let (_, v) = withVFL(V: view1.where(200)-|)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view1)
@@ -1331,8 +1331,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_adjacentViews() {
-        let h = withVFL(H: view1 | view2)
-        let v = withVFL(V: view1 | view2)
+        let (_, h) = withVFL(H: view1 | view2)
+        let (_, v) = withVFL(V: view1 | view2)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -1356,8 +1356,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_adjacentViews_ofMultipleTimes() {
-        let h = withVFL(H: view1 | view2 | view3)
-        let v = withVFL(V: view1 | view2 | view3)
+        let (_, h) = withVFL(H: view1 | view2 | view3)
+        let (_, v) = withVFL(V: view1 | view2 | view3)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view1)
@@ -1399,8 +1399,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_spacedViews() {
-        let h = withVFL(H: view1 - view2)
-        let v = withVFL(V: view1 - view2)
+        let (_, h) = withVFL(H: view1 - view2)
+        let (_, v) = withVFL(V: view1 - view2)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -1425,8 +1425,8 @@ class withVFLTests: XCTestCase {
     
     /*
     func testCanCompile_spacedViews_ofMultipleTimes() {
-        let h = withVFL(H: view1 - view2 - view3)
-        let v = withVFL(V: view1 - view2 - view3)
+        let (_, h) = withVFL(H: view1 - view2 - view3)
+        let (_, v) = withVFL(V: view1 - view2 - view3)
         
         XCTAssertEqual(h.count, 2)
         XCTAssert(h[0].firstItem === view1)
@@ -1468,8 +1468,8 @@ class withVFLTests: XCTestCase {
     }*/
     
     func testCanCompile_specificNumberSpacedViews() {
-        let h = withVFL(H: view1 - 2 - view2)
-        let v = withVFL(V: view1 - 2 - view2)
+        let (_, h) = withVFL(H: view1 - 2 - view2)
+        let (_, v) = withVFL(V: view1 - 2 - view2)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)
@@ -1493,8 +1493,8 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_predicateSpacedViews() {
-        let h = withVFL(H: view1 - (<=200) - view2)
-        let v = withVFL(V: view1 - (<=200) - view2)
+        let (_, h) = withVFL(H: view1 - (<=200) - view2)
+        let (_, v) = withVFL(V: view1 - (<=200) - view2)
         
         XCTAssertEqual(h.count, 1)
         XCTAssert(h[0].firstItem === view1)

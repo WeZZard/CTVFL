@@ -31,8 +31,8 @@ class withVFL_UIKitTests: XCTestCase {
     
     func testCanCompile_withLayoutGuideAndViewWithSystemSpacing() {
         if #available(iOS 11.0, tvOS 11.0, *) {
-            let h = withVFL(H: rootView.safeAreaLayoutGuide - view1)
-            let v = withVFL(V: rootView.safeAreaLayoutGuide - view1)
+            let (_, h) = withVFL(H: rootView.safeAreaLayoutGuide - view1)
+            let (_, v) = withVFL(V: rootView.safeAreaLayoutGuide - view1)
             
             XCTAssertEqual(h.count, 1)
             XCTAssertEqual(h[0].firstAnchor, rootView.safeAreaLayoutGuide.leadingAnchor)
@@ -55,8 +55,8 @@ class withVFL_UIKitTests: XCTestCase {
     
     func testCanCompile_withViewAndLayoutGuideWithSystemSpacing() {
         if #available(iOS 11.0, tvOS 11.0, *) {
-            let h = withVFL(H: view1 - rootView.safeAreaLayoutGuide)
-            let v = withVFL(V: view1 - rootView.safeAreaLayoutGuide)
+            let (_, h) = withVFL(H: view1 - rootView.safeAreaLayoutGuide)
+            let (_, v) = withVFL(V: view1 - rootView.safeAreaLayoutGuide)
             
             XCTAssertEqual(h.count, 1)
             XCTAssertEqual(h[0].firstAnchor, view1.trailingAnchor)

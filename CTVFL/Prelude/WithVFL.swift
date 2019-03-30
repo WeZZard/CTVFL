@@ -10,30 +10,32 @@
 public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
     V syntax: @autoclosure ()-> S,
     options: CTVFLFormatOptions = []
-    ) -> [CTVFLConstraint] where
+    ) -> (S, [CTVFLConstraint]) where
     S.HeadBoundary == CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment,
     S.TailBoundary == CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
 {
-    let constraints = syntax().makeConstraints(
+    let generatedSyntax = syntax()
+    let constraints = generatedSyntax.makeConstraints(
         orientation: .vertical,
         options: options
     )
     CTVFLTransaction.addConstraints(constraints)
-    return constraints
+    return (generatedSyntax, constraints)
 }
 
 @discardableResult
 public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
     H syntax: @autoclosure ()-> S,
     options: CTVFLFormatOptions = []
-    ) -> [CTVFLConstraint] where
+    ) -> (S, [CTVFLConstraint]) where
     S.HeadBoundary == CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment,
     S.TailBoundary == CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
 {
-    let constraints = syntax().makeConstraints(
+    let generatedSyntax = syntax()
+    let constraints = generatedSyntax.makeConstraints(
         orientation: .horizontal,
         options: options
     )
     CTVFLTransaction.addConstraints(constraints)
-    return constraints
+    return (generatedSyntax, constraints)
 }
