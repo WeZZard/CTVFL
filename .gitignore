@@ -72,8 +72,10 @@ xcuserdata/
 # Carthage
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
 Carthage/Checkouts
+CTVFLBenchmark/Carthage/Checkouts
 
 Carthage/Build
+CTVFLBenchmark/Carthage/Build
 
 # fastlane
 # It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
