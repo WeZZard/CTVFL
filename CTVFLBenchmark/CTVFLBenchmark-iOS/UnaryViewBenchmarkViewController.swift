@@ -18,31 +18,36 @@ class UnaryViewBenchmarkViewController: BenchmarkViewController<UnaryBenchmarkIt
         rootView.addSubview(targetView)
     }
     
+    var once: Bool = false
+    
     override func viewDidAppear(_ animated: Bool) {
-        beginMeasure()
-        
-        measure(.vfl) {
-            _ = item.makeVFL(rootView, targetView)
-        }
-        
-        if let builder = item.makeCTVFL {
-            measure(.ctvfl) {
-                _ = builder(rootView, targetView)
+        if !once {
+            beginMeasure()
+            
+            measure(.vfl) {
+                _ = item.makeVFL(rootView, targetView)
             }
-        }
-        
-        if let builder = item.makeSnapKit {
-            measure(.snapKit) {
-                _ = builder(rootView, targetView)
+            
+            if let builder = item.makeCTVFL {
+                measure(.ctvfl) {
+                    _ = builder(rootView, targetView)
+                }
             }
-        }
-        
-        if let builder = item.makeCartography {
-            measure(.cartography) {
-                _ = builder(rootView, targetView)
+            
+            if let builder = item.makeSnapKit {
+                measure(.snapKit) {
+                    _ = builder(rootView, targetView)
+                }
             }
+            
+            if let builder = item.makeCartography {
+                measure(.cartography) {
+                    _ = builder(rootView, targetView)
+                }
+            }
+            
+            endMeasure(animated: animated)
+            once = true
         }
-        
-        endMeasure(animated: animated)
     }
 }

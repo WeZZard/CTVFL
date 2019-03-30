@@ -24,31 +24,36 @@ class TernaryViewBenchmarkViewController: BenchmarkViewController<TernaryBenchma
         rootView.addSubview(view3)
     }
     
+    var once: Bool = false
+    
     override func viewDidAppear(_ animated: Bool) {
-        beginMeasure()
-        
-        measure(.vfl) {
-            _ = item.makeVFL(rootView, view1, view2, view2)
-        }
-        
-        if let builder = item.makeCTVFL {
-            measure(.ctvfl) {
-                _ = builder(rootView, view1, view2, view3)
+        if !once {
+            beginMeasure()
+            
+            measure(.vfl) {
+                _ = item.makeVFL(rootView, view1, view2, view2)
             }
-        }
-        
-        if let builder = item.makeSnapKit {
-            measure(.snapKit) {
-                _ = builder(rootView, view1, view2, view3)
+            
+            if let builder = item.makeCTVFL {
+                measure(.ctvfl) {
+                    _ = builder(rootView, view1, view2, view3)
+                }
             }
-        }
-        
-        if let builder = item.makeCartography {
-            measure(.cartography) {
-                _ = builder(rootView, view1, view2, view3)
+            
+            if let builder = item.makeSnapKit {
+                measure(.snapKit) {
+                    _ = builder(rootView, view1, view2, view3)
+                }
             }
+            
+            if let builder = item.makeCartography {
+                measure(.cartography) {
+                    _ = builder(rootView, view1, view2, view3)
+                }
+            }
+            
+            endMeasure(animated: animated)
+            once = true
         }
-        
-        endMeasure(animated: animated)
     }
 }
