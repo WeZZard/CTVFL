@@ -32,7 +32,7 @@ let constraints = withVFL(H: view1 - 10 - view2);
 
 ## Performance Benchmark
 
-10000 times constraitns build time:
+10000 times constraitns build time on iPhone X:
 
 <div>
     <img src="https://github.com/WeZZard/CTVFL/raw/master/.README.d/benchmark-1-view.png" alt="1 View Constraining" width="250px"/>
