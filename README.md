@@ -8,17 +8,13 @@
 CTVFL is a tiny framework offers compile-time safe Visual Format Langauge to
 make Auto Layout painless on Apple platforms.
 
-## Grammar
+## Examples
 
 ```swift
 // Make constraints and install.
 
 constrain {
     withVFL(H: view1 - view2)
-}
-
-constrain {
-    withVFL(H: view1 - 10 - view2)
 }
 
 constrain {
