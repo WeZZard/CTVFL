@@ -83,7 +83,15 @@ public class CTVFLEvaluationContext: NSObject {
         _constriantsCount += 1
     }
     
-    internal func _appendItemToBeAligned(_ itemToBeAligned: CTVFLLayoutAnchorSelectable) {
+    internal func _appendItemToBeAligned(_ item: CTVFLOpcode.Item?) {
+        switch item {
+        case let .some(.layoutable(layoutable)):
+            __appendItemToBeAligned(layoutable._asAnchorSelector)
+        default: break;
+        }
+    }
+    
+    internal func __appendItemToBeAligned(_ itemToBeAligned: CTVFLLayoutAnchorSelectable) {
         let index = _itemsToBeAlignedCount
         if index == _itemsToBeAligned.endIndex {
             _itemsToBeAligned.append(itemToBeAligned)
@@ -132,13 +140,7 @@ public class CTVFLEvaluationContext: NSObject {
             case .pop:
                 retVal = _evaluationStack.pop()
             case let .moveFirstItem(item):
-                if needsAlign {
-                    switch item {
-                    case let .layoutable(layoutable):
-                        _appendItemToBeAligned(layoutable._asAnchorSelector)
-                    default: break
-                    }
-                }
+                if needsAlign { _appendItemToBeAligned(item) }
                 
                 _evaluationStack.modifyTopLevel { (level) in
                     level.firstItem = item
@@ -155,15 +157,10 @@ public class CTVFLEvaluationContext: NSObject {
                     case .second:
                         level.firstItem = retVal.secondItem
                     }
+                    if needsAlign { _appendItemToBeAligned(level.firstItem) }
                 }
             case let .moveSecondItem(item):
-                if needsAlign {
-                    switch item {
-                    case let .layoutable(layoutable):
-                        _appendItemToBeAligned(layoutable._asAnchorSelector)
-                    default: break
-                    }
-                }
+                if needsAlign { _appendItemToBeAligned(item) }
                 
                 _evaluationStack.modifyTopLevel { (level) in
                     level.secondItem = item
@@ -180,6 +177,7 @@ public class CTVFLEvaluationContext: NSObject {
                     case .second:
                         level.secondItem = retVal.secondItem
                     }
+                    if needsAlign { _appendItemToBeAligned(level.firstItem) }
                 }
             case let .moveFirstAttribute(attr):
                 _evaluationStack.modifyTopLevel { (level) in

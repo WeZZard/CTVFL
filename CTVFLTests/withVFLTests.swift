@@ -28,6 +28,31 @@ class withVFLTests: XCTestCase {
         rootView.addSubview(view3)
     }
     
+    func testFormatOptions_canAlign() {
+        let (_, h) = withVFL(H: view1 | view2, options: .alignAllCenterY)
+        let (_, v) = withVFL(V: view1 | view2, options: .alignAllCenterX)
+        
+        XCTAssertEqual(h.count, 2)
+        XCTAssert(h[0].firstItem === view1)
+        XCTAssertEqual(h[0].firstAttribute, .trailing)
+        XCTAssert(h[0].secondItem === view2)
+        XCTAssertEqual(h[0].secondAttribute, .leading)
+        XCTAssertEqual(h[0].relation, .equal)
+        XCTAssertEqual(h[0].constant, 0)
+        XCTAssertEqual(h[0].multiplier, 1)
+        XCTAssertEqual(h[0].priority, .required)
+        
+        XCTAssertEqual(v.count, 2)
+        XCTAssert(v[0].firstItem === view1)
+        XCTAssertEqual(v[0].firstAttribute, .bottom)
+        XCTAssert(v[0].secondItem === view2)
+        XCTAssertEqual(v[0].secondAttribute, .top)
+        XCTAssertEqual(v[0].relation, .equal)
+        XCTAssertEqual(v[0].constant, 0)
+        XCTAssertEqual(v[0].multiplier, 1)
+        XCTAssertEqual(v[0].priority, .required)
+    }
+    
     func testCanCompile_rightLeaningSyntaxTree() {
         let views1 = view2 - view3
         let views3 = view1 - views1
