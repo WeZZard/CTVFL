@@ -27,6 +27,7 @@ class withVFLTests: XCTestCase {
         rootView.addSubview(view2)
         rootView.addSubview(view3)
     }
+    
     func testFormatOptions_aligningThreeObjectWontDuplicate() {
         let h = withVFL(H: view1 | view2 | view3, options: .alignAllCenterY)
         let v = withVFL(V: view1 | view2 | view3, options: .alignAllCenterX)
