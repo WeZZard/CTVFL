@@ -35,9 +35,9 @@ let constraints = withVFL(H: view1 - 10 - view2);
 10000 times constraitns build time:
 
 <div>
-    <img src="https://github.com/WeZZard/CTVFL/raw/master/.README.d/benchmark-1-view.png" alt="1 View Constraining" width="200px"/>
-    <img src="https://github.com/WeZZard/CTVFL/raw/master/.README.d/benchmark-2-views.png" alt="2 Views Constraining" width="200px"/>
-    <img src="https://github.com/WeZZard/CTVFL/raw/master/.README.d/benchmark-3-views.png" alt="3 Views Constraining" width="200px"/>
+    <img src="https://github.com/WeZZard/CTVFL/raw/master/.README.d/benchmark-1-view.png" alt="1 View Constraining" width="250px"/>
+    <img src="https://github.com/WeZZard/CTVFL/raw/master/.README.d/benchmark-2-views.png" alt="2 Views Constraining" width="250px"/>
+    <img src="https://github.com/WeZZard/CTVFL/raw/master/.README.d/benchmark-3-views.png" alt="3 Views Constraining" width="250px"/>
 </div>
 
 ## Advantages
