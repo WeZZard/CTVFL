@@ -13,13 +13,11 @@ public class CTVFLEvaluationContext: NSObject {
     
     internal var _constraints: ContiguousArray<CTVFLConstraint>
     
-    internal var _itemsToBeAligned: ContiguousArray<CTVFLLayoutAnchorSelectable>
+    internal var _itemsToBeAligned: Set<CTVFLLayoutable>
     
     internal var _opcodes: ContiguousArray<CTVFLOpcode>
     
     internal var _constriantsCount: Int
-    
-    internal var _itemsToBeAlignedCount: Int
     
     internal var _opcodesCount: Int
     
@@ -33,7 +31,6 @@ public class CTVFLEvaluationContext: NSObject {
         
         _itemsToBeAligned = []
         _itemsToBeAligned.reserveCapacity(10)
-        _itemsToBeAlignedCount = 0
         
         _opcodes = []
         _opcodes.reserveCapacity(100)
@@ -46,8 +43,6 @@ public class CTVFLEvaluationContext: NSObject {
         // evaluation stack only hold an `unowned(unsafe)` relation to
         // the underlying view and layout guide objects, we dont' have
         // to clean to evaluation stack here.
-        _itemsToBeAligned.removeAll(keepingCapacity: true)
-        _itemsToBeAlignedCount = 0
         _constraints.removeAll(keepingCapacity: true)
         _constriantsCount = 0
     }
@@ -83,30 +78,18 @@ public class CTVFLEvaluationContext: NSObject {
         _constriantsCount += 1
     }
     
-    internal func _appendItemToBeAligned(_ item: CTVFLOpcode.Item?) {
+    internal func _insertItemToBeAligned(_ item: CTVFLOpcode.Item?) {
         switch item {
         case let .some(.layoutable(layoutable)):
-            __appendItemToBeAligned(layoutable._asAnchorSelector)
+            _itemsToBeAligned.insert(layoutable)
         default: break;
         }
     }
     
-    internal func __appendItemToBeAligned(_ itemToBeAligned: CTVFLLayoutAnchorSelectable) {
-        let index = _itemsToBeAlignedCount
-        if index == _itemsToBeAligned.endIndex {
-            _itemsToBeAligned.append(itemToBeAligned)
-        } else if index < _itemsToBeAligned.endIndex {
-            _itemsToBeAligned[index] = itemToBeAligned
-        } else {
-            preconditionFailure()
-        }
-        _itemsToBeAlignedCount += 1
-    }
-    
     @nonobjc
     internal func _prepareForReuse() {
+        _itemsToBeAligned.removeAll(keepingCapacity: true)
         _constriantsCount = 0
-        _itemsToBeAlignedCount = 0
         _opcodesCount = 0
     }
     
@@ -140,8 +123,6 @@ public class CTVFLEvaluationContext: NSObject {
             case .pop:
                 retVal = _evaluationStack.pop()
             case let .moveFirstItem(item):
-                if needsAlign { _appendItemToBeAligned(item) }
-                
                 _evaluationStack.modifyTopLevel { (level) in
                     level.firstItem = item
                 }
@@ -157,11 +138,8 @@ public class CTVFLEvaluationContext: NSObject {
                     case .second:
                         level.firstItem = retVal.secondItem
                     }
-                    if needsAlign { _appendItemToBeAligned(level.firstItem) }
                 }
             case let .moveSecondItem(item):
-                if needsAlign { _appendItemToBeAligned(item) }
-                
                 _evaluationStack.modifyTopLevel { (level) in
                     level.secondItem = item
                 }
@@ -177,7 +155,6 @@ public class CTVFLEvaluationContext: NSObject {
                     case .second:
                         level.secondItem = retVal.secondItem
                     }
-                    if needsAlign { _appendItemToBeAligned(level.firstItem) }
                 }
             case let .moveFirstAttribute(attr):
                 _evaluationStack.modifyTopLevel { (level) in
@@ -272,6 +249,11 @@ public class CTVFLEvaluationContext: NSObject {
                     topLevel.priority
                 )
                 
+                if needsAlign {
+                    _insertItemToBeAligned(firstItem)
+                    _insertItemToBeAligned(secondItem)
+                }
+                
                 let firstSelector = firstItem?._getAnchorSelector(with: secondItem)
                 
                 let secondSelector = secondItem?._getAnchorSelector(with: firstItem)
@@ -329,12 +311,14 @@ public class CTVFLEvaluationContext: NSObject {
         
         _ = _evaluationStack.pop()
         
-        if needsAlign && _itemsToBeAlignedCount > 1 {
+        if needsAlign && _itemsToBeAligned.count > 1 {
             let attributes = options._attributes
             
-            for index in 0..<(_itemsToBeAlignedCount - 1) {
-                let firstItem = _itemsToBeAligned[index]
-                let secondItem = _itemsToBeAligned[index + 1]
+            let items = Array(_itemsToBeAligned)
+            
+            for index in 0..<(items.count - 1) {
+                let firstItem = items[index]._asAnchorSelector
+                let secondItem = items[index + 1]._asAnchorSelector
                 
                 for eachAttribute in attributes {
                     let anchor1 = firstItem._ctvfl_anchor(for: eachAttribute)
