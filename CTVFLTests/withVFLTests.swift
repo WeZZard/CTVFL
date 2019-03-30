@@ -819,7 +819,6 @@ class withVFLTests: XCTestCase {
         XCTAssertEqual(v[1].priority, .required)
     }
     
-    /*
     func testCanCompile_leadingSpaceEdgedView_withPredicateSpacedView() {
         let h = withVFL(H: |-view1 - (>=200) - view2)
         let v = withVFL(V: |-view1 - (>=200) - view2)
@@ -861,7 +860,7 @@ class withVFLTests: XCTestCase {
         XCTAssertEqual(v[1].constant, 200)
         XCTAssertEqual(v[1].multiplier, 1)
         XCTAssertEqual(v[1].priority, .required)
-    }*/
+    }
     
     func testCanCompile_trailingSpaceEdgedView() {
         let h = withVFL(H: view1-|)

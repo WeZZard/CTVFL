@@ -22,16 +22,16 @@ public struct CTVFLConfinableToConstantSpacingSyntax<Lhs: CTVFLAssociatedOperand
     public let rhs: Rhs
 }
 
-public func - <Lhs: CTVFLExpressibleByLayoutGuideLiteral, Rhs: CTVFLExpressibleByConstantLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<CTVFLConfinable, CTVFLConstant> {
-    return CTVFLConfinableToConstantSpacingSyntax(lhs: Lhs._makeConfinable(lhs), rhs: Rhs._makeConstant(rhs))
+public func - <Rhs: CTVFLExpressibleByConstantLiteral>(lhs: CTVFLLayoutGuide, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<CTVFLConfinable, CTVFLConstant> {
+    return CTVFLConfinableToConstantSpacingSyntax(lhs: CTVFLLayoutGuide._makeConfinable(lhs), rhs: Rhs._makeConstant(rhs))
 }
 
 public func - <Lhs, Rhs: CTVFLExpressibleByConstantLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<Lhs, CTVFLConstant> {
     return CTVFLConfinableToConstantSpacingSyntax(lhs: lhs, rhs: Rhs._makeConstant(rhs))
 }
 
-public func - <Lhs: CTVFLExpressibleByLayoutGuideLiteral, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<CTVFLConfinable, Rhs> {
-    return CTVFLConfinableToConstantSpacingSyntax(lhs: Lhs._makeConfinable(lhs), rhs: rhs)
+public func - <Rhs>(lhs: CTVFLLayoutGuide, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<CTVFLConfinable, Rhs> {
+    return CTVFLConfinableToConstantSpacingSyntax(lhs: CTVFLLayoutGuide._makeConfinable(lhs), rhs: rhs)
 }
 
 public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<Lhs, Rhs> {

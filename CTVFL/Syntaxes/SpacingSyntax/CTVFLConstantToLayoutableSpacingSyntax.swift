@@ -22,8 +22,8 @@ public struct CTVFLConstantToLayoutableSpacingSyntax<Lhs: CTVFLAssociableOperand
     public let rhs: Rhs
 }
 
-public func - <Lhs, Rhs: CTVFLExpressibleByViewLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLConstantToLayoutableSpacingSyntax<Lhs, CTVFLLayoutable> {
-    return CTVFLConstantToLayoutableSpacingSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
+public func - <Lhs>(lhs: Lhs, rhs: CTVFLView) -> CTVFLConstantToLayoutableSpacingSyntax<Lhs, CTVFLLayoutable> {
+    return CTVFLConstantToLayoutableSpacingSyntax(lhs: lhs, rhs: CTVFLView._makeLayoutable(rhs))
 }
 
 public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLConstantToLayoutableSpacingSyntax<Lhs, Rhs> {

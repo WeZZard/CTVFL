@@ -20,8 +20,8 @@ public struct CTVFLEdgeSpaceToLayoutableSpacingSyntax<Lhs: CTVFLEdgeSpaceOperand
     public let rhs: Rhs
 }
 
-public func - <Lhs, Rhs: CTVFLExpressibleByViewLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLEdgeSpaceToLayoutableSpacingSyntax<Lhs, CTVFLLayoutable> {
-    return CTVFLEdgeSpaceToLayoutableSpacingSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
+public func - <Lhs>(lhs: Lhs, rhs: CTVFLView) -> CTVFLEdgeSpaceToLayoutableSpacingSyntax<Lhs, CTVFLLayoutable> {
+    return CTVFLEdgeSpaceToLayoutableSpacingSyntax(lhs: lhs, rhs: CTVFLView._makeLayoutable(rhs))
 }
 
 public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLEdgeSpaceToLayoutableSpacingSyntax<Lhs, Rhs> {

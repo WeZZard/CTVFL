@@ -26,14 +26,14 @@ public func | <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableAdjac
     return CTVFLLayoutableToConfinableAdjacentSyntax(lhs: lhs, rhs: rhs)
 }
 
-public func | <Lhs: CTVFLExpressibleByViewLiteral, Rhs: CTVFLExpressibleByLayoutGuideLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableAdjacentSyntax<CTVFLLayoutable, CTVFLConfinable> {
-    return CTVFLLayoutableToConfinableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeConfinable(rhs))
+public func | (lhs: CTVFLView, rhs: CTVFLLayoutGuide) -> CTVFLLayoutableToConfinableAdjacentSyntax<CTVFLLayoutable, CTVFLConfinable> {
+    return CTVFLLayoutableToConfinableAdjacentSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: CTVFLLayoutGuide._makeConfinable(rhs))
 }
 
-public func | <Lhs, Rhs: CTVFLExpressibleByLayoutGuideLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableAdjacentSyntax<Lhs, CTVFLConfinable> {
-    return CTVFLLayoutableToConfinableAdjacentSyntax(lhs: lhs, rhs: Rhs._makeConfinable(rhs))
+public func | <Lhs>(lhs: Lhs, rhs: CTVFLLayoutGuide) -> CTVFLLayoutableToConfinableAdjacentSyntax<Lhs, CTVFLConfinable> {
+    return CTVFLLayoutableToConfinableAdjacentSyntax(lhs: lhs, rhs: CTVFLLayoutGuide._makeConfinable(rhs))
 }
 
-public func | <Lhs: CTVFLExpressibleByViewLiteral, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConfinableAdjacentSyntax<CTVFLLayoutable, Rhs> {
-    return CTVFLLayoutableToConfinableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
+public func | <Rhs>(lhs: CTVFLView, rhs: Rhs) -> CTVFLLayoutableToConfinableAdjacentSyntax<CTVFLLayoutable, Rhs> {
+    return CTVFLLayoutableToConfinableAdjacentSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: rhs)
 }

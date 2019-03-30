@@ -72,14 +72,14 @@ public struct CTVFLPredicateObjectLayoutable: CTVFLPredicating, Equatable {
 }
 
 // MARK: - Compositing Predicate
-public prefix func <= <P: CTVFLExpressibleByViewLiteral>(predicate: P) -> CTVFLPredicateObjectLayoutable {
-    return .init(layoutable: P._makeLayoutable(predicate), relation: .lessThanOrEqual)
+public prefix func <= (predicate: CTVFLView) -> CTVFLPredicateObjectLayoutable {
+    return .init(layoutable: CTVFLView._makeLayoutable(predicate), relation: .lessThanOrEqual)
 }
 
-public prefix func >= <P: CTVFLExpressibleByViewLiteral>(predicate: P) -> CTVFLPredicateObjectLayoutable {
-    return .init(layoutable: P._makeLayoutable(predicate), relation: .greaterThanOrEqual)
+public prefix func >= (predicate: CTVFLView) -> CTVFLPredicateObjectLayoutable {
+    return .init(layoutable: CTVFLView._makeLayoutable(predicate), relation: .greaterThanOrEqual)
 }
 
-public prefix func == <P: CTVFLExpressibleByViewLiteral>(predicate: P) -> CTVFLPredicateObjectLayoutable {
-    return .init(layoutable: P._makeLayoutable(predicate), relation: .equal)
+public prefix func == (predicate: CTVFLView) -> CTVFLPredicateObjectLayoutable {
+    return .init(layoutable: CTVFLView._makeLayoutable(predicate), relation: .equal)
 }

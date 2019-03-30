@@ -40,8 +40,8 @@ public struct CTVFLLeadingLayoutableWithSpacingSyntax<O: CTVFLAssociatedOperand>
     }
 }
 
-public prefix func |- <Operand: CTVFLExpressibleByViewLiteral>(operand: Operand) -> CTVFLLeadingLayoutableWithSpacingSyntax<CTVFLLayoutable> {
-    return CTVFLLeadingLayoutableWithSpacingSyntax(operand: Operand._makeLayoutable(operand))
+public prefix func |- (operand: CTVFLView) -> CTVFLLeadingLayoutableWithSpacingSyntax<CTVFLLayoutable> {
+    return CTVFLLeadingLayoutableWithSpacingSyntax(operand: CTVFLView._makeLayoutable(operand))
 }
 
 public prefix func |- <Operand>(operand: Operand) -> CTVFLLeadingLayoutableWithSpacingSyntax<Operand> {

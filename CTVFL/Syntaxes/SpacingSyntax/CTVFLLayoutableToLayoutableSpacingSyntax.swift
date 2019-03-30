@@ -22,16 +22,16 @@ public struct CTVFLLayoutableToLayoutableSpacingSyntax<Lhs: CTVFLAssociatedOpera
     public let rhs: Rhs
 }
 
-public func - <Lhs: CTVFLExpressibleByViewLiteral, Rhs: CTVFLExpressibleByViewLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpacingSyntax<CTVFLLayoutable, CTVFLLayoutable> {
-    return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeLayoutable(rhs))
+public func - (lhs: CTVFLView, rhs: CTVFLView) -> CTVFLLayoutableToLayoutableSpacingSyntax<CTVFLLayoutable, CTVFLLayoutable> {
+    return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: CTVFLView._makeLayoutable(rhs))
 }
 
-public func - <Lhs, Rhs: CTVFLExpressibleByViewLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpacingSyntax<Lhs, CTVFLLayoutable> {
-    return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
+public func - <Lhs>(lhs: Lhs, rhs: CTVFLView) -> CTVFLLayoutableToLayoutableSpacingSyntax<Lhs, CTVFLLayoutable> {
+    return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: lhs, rhs: CTVFLView._makeLayoutable(rhs))
 }
 
-public func - <Lhs: CTVFLExpressibleByViewLiteral, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpacingSyntax<CTVFLLayoutable, Rhs> {
-    return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
+public func - <Rhs>(lhs: CTVFLView, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpacingSyntax<CTVFLLayoutable, Rhs> {
+    return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: rhs)
 }
 
 public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpacingSyntax<Lhs, Rhs> {

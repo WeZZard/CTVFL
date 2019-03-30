@@ -39,8 +39,8 @@ public struct CTVFLLeadingLayoutableSyntax<O: CTVFLAssociatedOperand>:
     }
 }
 
-public prefix func | <Operand: CTVFLExpressibleByViewLiteral>(operand: Operand) -> CTVFLLeadingLayoutableSyntax<CTVFLLayoutable> {
-    return CTVFLLeadingLayoutableSyntax(operand: Operand._makeLayoutable(operand))
+public prefix func | (operand: CTVFLView) -> CTVFLLeadingLayoutableSyntax<CTVFLLayoutable> {
+    return CTVFLLeadingLayoutableSyntax(operand: CTVFLView._makeLayoutable(operand))
 }
 
 public prefix func | <Operand>(operand: Operand) -> CTVFLLeadingLayoutableSyntax<Operand> {

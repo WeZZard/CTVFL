@@ -22,8 +22,8 @@ public struct CTVFLConstantToConfinableSpacingSyntax<Lhs: CTVFLAssociableOperand
     public let rhs: Rhs
 }
 
-public func - <Lhs, Rhs: CTVFLExpressibleByLayoutGuideLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLConstantToConfinableSpacingSyntax<Lhs, CTVFLConfinable> {
-    return CTVFLConstantToConfinableSpacingSyntax(lhs: lhs, rhs: Rhs._makeConfinable(rhs))
+public func - <Lhs>(lhs: Lhs, rhs: CTVFLLayoutGuide) -> CTVFLConstantToConfinableSpacingSyntax<Lhs, CTVFLConfinable> {
+    return CTVFLConstantToConfinableSpacingSyntax(lhs: lhs, rhs: CTVFLLayoutGuide._makeConfinable(rhs))
 }
 
 public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLConstantToConfinableSpacingSyntax<Lhs, Rhs> {

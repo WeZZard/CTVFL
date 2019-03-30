@@ -22,16 +22,16 @@ public struct CTVFLLayoutableToConstantSpacingSyntax<Lhs: CTVFLAssociatedOperand
     public let rhs: Rhs
 }
 
-public func - <Lhs: CTVFLExpressibleByViewLiteral, Rhs: CTVFLExpressibleByConstantLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSpacingSyntax<CTVFLLayoutable, CTVFLConstant> {
-    return CTVFLLayoutableToConstantSpacingSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeConstant(rhs))
+public func - <Rhs: CTVFLExpressibleByConstantLiteral>(lhs: CTVFLView, rhs: Rhs) -> CTVFLLayoutableToConstantSpacingSyntax<CTVFLLayoutable, CTVFLConstant> {
+    return CTVFLLayoutableToConstantSpacingSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: Rhs._makeConstant(rhs))
 }
 
 public func - <Lhs, Rhs: CTVFLExpressibleByConstantLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSpacingSyntax<Lhs, CTVFLConstant> {
     return CTVFLLayoutableToConstantSpacingSyntax(lhs: lhs, rhs: Rhs._makeConstant(rhs))
 }
 
-public func - <Lhs: CTVFLExpressibleByViewLiteral, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSpacingSyntax<CTVFLLayoutable, Rhs> {
-    return CTVFLLayoutableToConstantSpacingSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
+public func - <Rhs>(lhs: CTVFLView, rhs: Rhs) -> CTVFLLayoutableToConstantSpacingSyntax<CTVFLLayoutable, Rhs> {
+    return CTVFLLayoutableToConstantSpacingSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: rhs)
 }
 
 public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToConstantSpacingSyntax<Lhs, Rhs> {

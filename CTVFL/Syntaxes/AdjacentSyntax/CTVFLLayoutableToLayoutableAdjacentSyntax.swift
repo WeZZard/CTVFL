@@ -26,14 +26,14 @@ public func | <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjac
     return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: lhs, rhs: rhs)
 }
 
-public func | <Lhs: CTVFLExpressibleByViewLiteral, Rhs: CTVFLExpressibleByViewLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<CTVFLLayoutable, CTVFLLayoutable> {
-    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: Rhs._makeLayoutable(rhs))
+public func | (lhs: CTVFLView, rhs: CTVFLView) -> CTVFLLayoutableToLayoutableAdjacentSyntax<CTVFLLayoutable, CTVFLLayoutable> {
+    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: CTVFLView._makeLayoutable(rhs))
 }
 
-public func | <Lhs, Rhs: CTVFLExpressibleByViewLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs, CTVFLLayoutable> {
-    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: lhs, rhs: Rhs._makeLayoutable(rhs))
+public func | <Lhs>(lhs: Lhs, rhs: CTVFLView) -> CTVFLLayoutableToLayoutableAdjacentSyntax<Lhs, CTVFLLayoutable> {
+    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: lhs, rhs: CTVFLView._makeLayoutable(rhs))
 }
 
-public func | <Lhs: CTVFLExpressibleByViewLiteral, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<CTVFLLayoutable, Rhs> {
-    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: Lhs._makeLayoutable(lhs), rhs: rhs)
+public func | <Rhs>(lhs: CTVFLView, rhs: Rhs) -> CTVFLLayoutableToLayoutableAdjacentSyntax<CTVFLLayoutable, Rhs> {
+    return CTVFLLayoutableToLayoutableAdjacentSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: rhs)
 }

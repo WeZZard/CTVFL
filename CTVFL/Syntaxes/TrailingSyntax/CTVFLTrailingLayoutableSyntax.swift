@@ -39,8 +39,8 @@ public struct CTVFLTrailingLayoutableSyntax<O: CTVFLAssociatedOperand>:
     }
 }
 
-public postfix func | <Operand: CTVFLExpressibleByViewLiteral>(operand: Operand) -> CTVFLTrailingLayoutableSyntax<CTVFLLayoutable> {
-    return CTVFLTrailingLayoutableSyntax(operand: Operand._makeLayoutable(operand))
+public postfix func | (operand: CTVFLView) -> CTVFLTrailingLayoutableSyntax<CTVFLLayoutable> {
+    return CTVFLTrailingLayoutableSyntax(operand: CTVFLView._makeLayoutable(operand))
 }
 
 public postfix func | <Operand>(operand: Operand) -> CTVFLTrailingLayoutableSyntax<Operand> {

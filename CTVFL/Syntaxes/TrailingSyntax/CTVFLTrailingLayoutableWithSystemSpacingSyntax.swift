@@ -40,8 +40,8 @@ public struct CTVFLTrailingLayoutableWithSpacingSyntax<O: CTVFLAssociatedOperand
     }
 }
 
-public postfix func -| <Operand: CTVFLExpressibleByViewLiteral>(operand: Operand) -> CTVFLTrailingLayoutableWithSpacingSyntax<CTVFLLayoutable> {
-    return CTVFLTrailingLayoutableWithSpacingSyntax(operand: Operand._makeLayoutable(operand))
+public postfix func -| (operand: CTVFLView) -> CTVFLTrailingLayoutableWithSpacingSyntax<CTVFLLayoutable> {
+    return CTVFLTrailingLayoutableWithSpacingSyntax(operand: CTVFLView._makeLayoutable(operand))
 }
 
 public postfix func -| <Operand>(operand: Operand) -> CTVFLTrailingLayoutableWithSpacingSyntax<Operand> {
