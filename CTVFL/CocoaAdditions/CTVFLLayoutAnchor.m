@@ -58,11 +58,11 @@
         NSLayoutXAxisAnchor * another = (NSLayoutXAxisAnchor *)anchor;
         switch (relation) {
             case NSLayoutRelationEqual:
-                return [self constraintEqualToSystemSpacingAfterAnchor:another multiplier:1];
+                return [another constraintEqualToSystemSpacingAfterAnchor: self multiplier: 1];
             case NSLayoutRelationLessThanOrEqual:
-                return [self constraintLessThanOrEqualToSystemSpacingAfterAnchor:another multiplier:1];
+                return [another constraintLessThanOrEqualToSystemSpacingAfterAnchor: self multiplier: 1];
             case NSLayoutRelationGreaterThanOrEqual:
-                return [self constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:another multiplier:1];
+                return [another constraintGreaterThanOrEqualToSystemSpacingAfterAnchor: self multiplier: 1];
         }
     } else {
         [NSException raise: NSInvalidArgumentException format: @"Not implemented."];
@@ -109,11 +109,11 @@
         NSLayoutYAxisAnchor * another = (NSLayoutYAxisAnchor *)anchor;
         switch (relation) {
             case NSLayoutRelationEqual:
-                return [self constraintEqualToSystemSpacingBelowAnchor:another multiplier:1];
+                return [another constraintEqualToSystemSpacingBelowAnchor: self multiplier: 1];
             case NSLayoutRelationLessThanOrEqual:
-                return [self constraintLessThanOrEqualToSystemSpacingBelowAnchor:another multiplier:1];
+                return [another constraintLessThanOrEqualToSystemSpacingBelowAnchor: self multiplier: 1];
             case NSLayoutRelationGreaterThanOrEqual:
-                return [self constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:another multiplier:1];
+                return [another constraintGreaterThanOrEqualToSystemSpacingBelowAnchor: self multiplier: 1];
         }
     } else {
         [NSException raise: NSInvalidArgumentException format: @"Not implemented."];
