@@ -6,34 +6,39 @@
 //
 
 
-/// `n-|`
+/// `n-|`, `(>=n)-|`, `(>=n ~ m)-|`
 ///
-public struct CTVFLTrailingConstantSyntax<O: CTVFLConstantOperand>:
-    CTVFLOperand, CTVFLConstantOperand, _CTVFLTrailingSyntax where
+public struct CTVFLTrailingConstantSyntax<O: CTVFLAssociableOperand>:
+    CTVFLEdgeSpaceOperand, CTVFLUnarySyntax where
+    O.TailAttribute == CTVFLSyntaxAttributeConstant,
     O.TailAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
     public typealias Operand = O
     
-    public typealias LeadingLayoutBoundary = Operand.LeadingLayoutBoundary
-    public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias OperableForm = Operand.OperableForm
+    public typealias HeadBoundary = Operand.HeadBoundary
+    public typealias TailBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
+    public typealias HeadAttribute = CTVFLSyntaxAttributeConstant
+    public typealias TailAttribute = CTVFLSyntaxAttributeConfinment
     public typealias HeadAssociativity = Operand.HeadAssociativity
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsClosed
     
     public let operand: Operand
     
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
+        context._ensureOpcodesTailElements(1)
+        context._appendOpcode(.push)
         operand.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
-        context._ensureOpcodesTailElements(5)
-        context._appendOpcode(.moveItem(.container))
-        context._appendOpcode(.moveAttribute(attributeForContainer(at: .rhs, forOrientation: orientation, withOptions: options)))
-        context._appendOpcode(.moveReturnValue(.firstItem))
-        context._appendOpcode(.makeConstraint)
+        context._ensureOpcodesTailElements(6)
+        context._appendOpcode(.moveConstantFromRetVal)
+        context._appendOpcode(.moveReleationFromRetVal)
+        context._appendOpcode(.movePriorityFromRetVal)
+        context._appendOpcode(.moveSecondItem(.container))
+        context._appendOpcode(.moveSecondAttribute(attributeForContainer(at: .rhs, forOrientation: orientation, withOptions: options)))
         context._appendOpcode(.pop)
     }
 }
 
-public postfix func -| <Operand: CTVFLConstantConvertible>(operand: Operand) -> CTVFLTrailingConstantSyntax<CTVFLConstant> {
+public postfix func -| <Operand: CTVFLExpressibleByConstantLiteral>(operand: Operand) -> CTVFLTrailingConstantSyntax<CTVFLConstant> {
     return CTVFLTrailingConstantSyntax(operand: Operand._makeConstant(operand))
 }
 

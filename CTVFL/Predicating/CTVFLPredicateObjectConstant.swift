@@ -1,5 +1,5 @@
 //
-//  CTVFLConstantPredicate.swift
+//  CTVFLPredicateObjectConstant.swift
 //  CTVFL
 //
 //  Created on 2019/3/26.
@@ -7,10 +7,14 @@
 
 import CoreGraphics
 
-public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLConstantOperand, Equatable {
-    public typealias LeadingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
-    public typealias TrailingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
-    public typealias OperableForm = CTVFLSyntaxOperableFormConstant
+public struct CTVFLPredicateObjectConstant: CTVFLPredicating,
+    CTVFLAssociableOperand,
+    Equatable
+{
+    public typealias HeadBoundary = CTVFLSyntaxBoundaryIsConstant
+    public typealias TailBoundary = CTVFLSyntaxBoundaryIsConstant
+    public typealias HeadAttribute = CTVFLSyntaxAttributeConstant
+    public typealias TailAttribute = CTVFLSyntaxAttributeConstant
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
@@ -32,7 +36,7 @@ public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLConstantOperand, Eq
     }
     
     public func byUpdatingPriority(_ priority: CTVFLPriority)
-        -> CTVFLGenericPredicate
+        -> CTVFLPredicateObjectGeneric
     {
         return .constant(
             .init(
@@ -43,7 +47,7 @@ public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLConstantOperand, Eq
         )
     }
     
-    public func toCTVFLGenericPredicate() -> CTVFLGenericPredicate {
+    public func toCTVFLGenericPredicate() -> CTVFLPredicateObjectGeneric {
         return .constant(self)
     }
     
@@ -58,35 +62,38 @@ public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLConstantOperand, Eq
         withContext context: CTVFLEvaluationContext
         )
     {
-        let layoutAttributeOrNil = _layoutAttribute(forOrientation: orientation, forObject: object)
-        context._ensureOpcodesTailElements(4)
-        if let layoutAttribute = layoutAttributeOrNil {
-            context._appendOpcode(.moveAttribute(layoutAttribute))
-        }
-        context._appendOpcode(.moveConstant(_constant))
-        context._appendOpcode(.moveRelation(_relation))
-        context._appendOpcode(.movePriority(_priority))
-    }
-    
-    internal func _layoutAttribute(
-        forOrientation orientation: CTVFLOrientation,
-        forObject object: CTVFLPredicatedObject
-        ) -> CTVFLLayoutAttribute?
-    {
         switch object {
         case .dimension:
-            switch orientation {
-            case .horizontal:   return .width
-            case .vertical:     return .height
-            @unknown default:   fatalError()
-            }
+            let attribute = _attribute(forOrientation: orientation)
+            context._ensureOpcodesTailElements(6)
+            context._appendOpcode(.push)
+            context._appendOpcode(.moveFirstAttribute(attribute))
+            context._appendOpcode(.moveConstant(CGFloat(_constant.rawValue)))
+            context._appendOpcode(.moveRelation(_relation))
+            context._appendOpcode(.movePriority(_priority))
+            context._appendOpcode(.pop)
         case .position:
-            return nil
+            context._ensureOpcodesTailElements(5)
+            context._appendOpcode(.push)
+            context._appendOpcode(.moveConstant(CGFloat(_constant.rawValue)))
+            context._appendOpcode(.moveRelation(_relation))
+            context._appendOpcode(.movePriority(_priority))
+            context._appendOpcode(.pop)
+        }
+    }
+    
+    internal func _attribute(forOrientation orientation: CTVFLOrientation)
+        -> CTVFLLayoutAttribute
+    {
+        switch orientation {
+        case .horizontal:   return .width
+        case .vertical:     return .height
+        @unknown default:   fatalError()
         }
     }
 }
 
-extension CTVFLConstantPredicate: ExpressibleByIntegerLiteral {
+extension CTVFLPredicateObjectConstant: ExpressibleByIntegerLiteral {
     public typealias IntegerLiteralType = Int
     
     public init(integerLiteral value: IntegerLiteralType) {
@@ -94,7 +101,7 @@ extension CTVFLConstantPredicate: ExpressibleByIntegerLiteral {
     }
 }
 
-extension CTVFLConstantPredicate: ExpressibleByFloatLiteral {
+extension CTVFLPredicateObjectConstant: ExpressibleByFloatLiteral {
     public typealias FloatLiteralType = Float
     
     public init(floatLiteral value: FloatLiteralType) {
@@ -102,14 +109,14 @@ extension CTVFLConstantPredicate: ExpressibleByFloatLiteral {
     }
 }
 
-public prefix func <= <P: CTVFLConstantConvertible>(predicate: P) -> CTVFLConstantPredicate {
+public prefix func <= <P: CTVFLExpressibleByConstantLiteral>(predicate: P) -> CTVFLPredicateObjectConstant {
     return .init(constant: P._makeConstant(predicate), relation: .lessThanOrEqual)
 }
 
-public prefix func >= <P: CTVFLConstantConvertible>(predicate: P) -> CTVFLConstantPredicate {
+public prefix func >= <P: CTVFLExpressibleByConstantLiteral>(predicate: P) -> CTVFLPredicateObjectConstant {
     return .init(constant: P._makeConstant(predicate), relation: .greaterThanOrEqual)
 }
 
-public prefix func == <P: CTVFLConstantConvertible>(predicate: P) -> CTVFLConstantPredicate {
+public prefix func == <P: CTVFLExpressibleByConstantLiteral>(predicate: P) -> CTVFLPredicateObjectConstant {
     return .init(constant: P._makeConstant(predicate), relation: .equal)
 }

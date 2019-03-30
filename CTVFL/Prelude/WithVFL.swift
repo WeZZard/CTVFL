@@ -11,8 +11,8 @@ public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
     V syntax: @autoclosure ()-> S,
     options: CTVFLFormatOptions = []
     ) -> [CTVFLConstraint] where
-    S.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
-    S.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary
+    S.HeadBoundary == CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment,
+    S.TailBoundary == CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
 {
     let constraints = syntax().makeConstraints(
         orientation: .vertical,
@@ -27,8 +27,8 @@ public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
     H syntax: @autoclosure ()-> S,
     options: CTVFLFormatOptions = []
     ) -> [CTVFLConstraint] where
-    S.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
-    S.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary
+    S.HeadBoundary == CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment,
+    S.TailBoundary == CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
 {
     let constraints = syntax().makeConstraints(
         orientation: .horizontal,

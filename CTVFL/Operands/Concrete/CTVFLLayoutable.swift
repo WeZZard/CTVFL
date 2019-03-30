@@ -8,10 +8,11 @@
 /// An instance of `CTVFLLayoutable` does not hold a strong reference to
 /// its internal view.
 ///
-public struct CTVFLLayoutable: Hashable, CTVFLLayoutableOperand {
-    public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias OperableForm = CTVFLSyntaxOperableFormLayoutable
+public struct CTVFLLayoutable: Hashable, CTVFLAssociatedOperand {
+    public typealias HeadBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
+    public typealias TailBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
+    public typealias HeadAttribute = CTVFLSyntaxAttributeLayoutedObject
+    public typealias TailAttribute = CTVFLSyntaxAttributeLayoutedObject
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
@@ -25,7 +26,6 @@ public struct CTVFLLayoutable: Hashable, CTVFLLayoutableOperand {
         return _view
     }
     
-    // MARK: Hashable
     public func hash(into hasher: inout Hasher) {
         ObjectIdentifier(_view).hash(into: &hasher)
     }
@@ -35,8 +35,11 @@ public struct CTVFLLayoutable: Hashable, CTVFLLayoutableOperand {
     }
     
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
-        context._ensureOpcodesTailElements(1)
-        context._appendOpcode(.moveItem(.layoutable(self)))
+        context._ensureOpcodesTailElements(5)
+        context._appendOpcode(.push)
+        context._appendOpcode(.moveFirstItem(.layoutable(self)))
+        context._appendOpcode(.moveSecondItem(.layoutable(self)))
+        context._appendOpcode(.pop)
     }
     
     public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {

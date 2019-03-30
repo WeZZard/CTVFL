@@ -7,13 +7,15 @@
 
 import CoreGraphics
 
-public struct CTVFLConstant: Equatable, RawRepresentable,
-    CustomStringConvertible,
-    CTVFLConstantOperand
+public struct CTVFLConstant: CTVFLAssociableOperand,
+    RawRepresentable,
+    Equatable,
+    CustomStringConvertible
 {
-    public typealias LeadingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
-    public typealias TrailingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
-    public typealias OperableForm = CTVFLSyntaxOperableFormConstant
+    public typealias HeadBoundary = CTVFLSyntaxBoundaryIsConstant
+    public typealias TailBoundary = CTVFLSyntaxBoundaryIsConstant
+    public typealias HeadAttribute = CTVFLSyntaxAttributeConstant
+    public typealias TailAttribute = CTVFLSyntaxAttributeConstant
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
@@ -30,9 +32,10 @@ public struct CTVFLConstant: Equatable, RawRepresentable,
     }
     
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
-        context._ensureOpcodesTailElements(3)
-        context._appendOpcode(.moveConstant(self))
+        context._ensureOpcodesTailElements(4)
+        context._appendOpcode(.push)
+        context._appendOpcode(.moveConstant(CGFloat(rawValue)))
         context._appendOpcode(.moveRelation(.equal))
-        context._appendOpcode(.movePriority(.required))
+        context._appendOpcode(.pop)
     }
 }

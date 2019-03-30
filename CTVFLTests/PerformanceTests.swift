@@ -44,8 +44,9 @@ class PerformanceTests: XCTestCase {
         }
     }
     
+    #if os(iOS) || os(tvOS)
     func testAnchor() {
-        if #available(macOS 10.11, iOS 11.0, tvOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
             measure {
                 for _ in 0..<100000 {
                     _ = view2.leadingAnchor.constraint(equalToSystemSpacingAfter: view1.trailingAnchor, multiplier: 1)
@@ -53,6 +54,7 @@ class PerformanceTests: XCTestCase {
             }
         }
     }
+    #endif
     
     func testDirectlyInit() {
         measure {

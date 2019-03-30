@@ -9,24 +9,26 @@
 public enum CTVFLOpcode {
     case push
     case pop
-    case moveItem(Item)
-    case moveAttribute(CTVFLLayoutAttribute)
+    case moveFirstItem(Item)
+    case moveFirstItemFromRetVal(EvaluationSite)
+    case moveFirstAttribute(CTVFLLayoutAttribute)
+    case moveFirstAttributeFromRetVal(EvaluationSite)
+    case moveSecondItem(Item)
+    case moveSecondItemFromRetVal(EvaluationSite)
+    case moveSecondAttribute(CTVFLLayoutAttribute)
+    case moveSecondAttributeFromRetVal(EvaluationSite)
     case moveRelation(CTVFLLayoutRelation)
-    case moveConstant(CTVFLConstant)
+    case moveReleationFromRetVal
+    case moveConstant(CGFloat)
+    case moveConstantFromRetVal
     case moveUsesSystemSpace(Bool)
     case movePriority(CTVFLPriority)
-    case moveReturnValue(ReturnValue)
-    case moveEvaluationSite(EvaluationSite)
+    case movePriorityFromRetVal
     case makeConstraint
     
-    public enum ReturnValue {
-        case firstItem
-        case secondItem
-    }
-    
     public enum EvaluationSite {
-        case firstItem
-        case secondItem
+        case first
+        case second
     }
     
     public enum Item {

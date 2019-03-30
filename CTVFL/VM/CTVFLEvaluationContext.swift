@@ -119,6 +119,8 @@ public class CTVFLEvaluationContext: NSObject {
             withContext: self
         )
         
+        var retVal = _CTVFLEvaluationStackLevel()
+        
         _evaluationStack.push()
         
         for index in 0..<_opcodesCount {
@@ -128,23 +130,8 @@ public class CTVFLEvaluationContext: NSObject {
             case .push:
                 _evaluationStack.push()
             case .pop:
-                let topLevel = _evaluationStack.pop()
-                let retVal = topLevel.retVal
-                
-                let previousLevel = _evaluationStack.peek()
-                
-                switch previousLevel.evaluationSite {
-                case .firstItem:
-                    _evaluationStack.modifyTopLevel { (level) in
-                        level.firstItem = retVal
-                    }
-                case .secondItem:
-                    _evaluationStack.modifyTopLevel { (level) in
-                        level.secondItem = retVal
-                    }
-                }
-                
-            case let .moveItem(item):
+                retVal = _evaluationStack.pop()
+            case let .moveFirstItem(item):
                 if needsAlign {
                     switch item {
                     case let .layoutable(layoutable):
@@ -153,48 +140,80 @@ public class CTVFLEvaluationContext: NSObject {
                     }
                 }
                 
-                let topLevel = _evaluationStack.peek()
-                
-                if topLevel.firstItem == nil {
-                    _evaluationStack.modifyTopLevel { (level) in
-                        level.firstItem = item
-                    }
-                } else if topLevel.secondItem == nil {
-                    _evaluationStack.modifyTopLevel { (level) in
-                        level.secondItem = item
-                    }
-                } else {
-                    NSException(
-                        name: .internalInconsistencyException,
-                        reason: "Items overflow.",
-                        userInfo: nil
-                    ).raise()
+                _evaluationStack.modifyTopLevel { (level) in
+                    level.firstItem = item
                 }
-            case let .moveAttribute(attr):
-                let topLevel = _evaluationStack.peek()
+            case let .moveFirstItemFromRetVal(site):
+                _evaluationStack.modifyTopLevel { (level) in
+                    switch site {
+                    case .first:
+                        level.firstItem = retVal.firstItem
+                    case .second:
+                        level.firstItem = retVal.secondItem
+                    }
+                }
+            case let .moveSecondItem(item):
+                if needsAlign {
+                    switch item {
+                    case let .layoutable(layoutable):
+                        _appendItemToBeAligned(layoutable._asAnchorSelector)
+                    default: break
+                    }
+                }
                 
-                if topLevel.firstAttribute == nil {
-                    _evaluationStack.modifyTopLevel { (level) in
-                        level.firstAttribute = attr
+                _evaluationStack.modifyTopLevel { (level) in
+                    level.secondItem = item
+                }
+            case let .moveSecondItemFromRetVal(site):
+                _evaluationStack.modifyTopLevel { (level) in
+                    switch site {
+                    case .first:
+                        level.secondItem = retVal.firstItem
+                    case .second:
+                        level.secondItem = retVal.secondItem
                     }
-                } else if topLevel.secondAttribute == nil {
-                    _evaluationStack.modifyTopLevel { (level) in
-                        level.secondAttribute = attr
+                }
+            case let .moveFirstAttribute(attr):
+                _evaluationStack.modifyTopLevel { (level) in
+                    level.firstAttribute = attr
+                }
+            case let .moveFirstAttributeFromRetVal(site):
+                _evaluationStack.modifyTopLevel { (level) in
+                    switch (site) {
+                    case .first:
+                        level.firstAttribute = retVal.firstAttribute
+                    case .second:
+                        level.firstAttribute = retVal.secondAttribute
                     }
-                } else {
-                    NSException(
-                        name: .internalInconsistencyException,
-                        reason: "Attributes overflow.",
-                        userInfo: nil
-                    ).raise()
+                }
+            case let .moveSecondAttribute(attr):
+                _evaluationStack.modifyTopLevel { (level) in
+                    level.secondAttribute = attr
+                }
+            case let .moveSecondAttributeFromRetVal(site):
+                _evaluationStack.modifyTopLevel { (level) in
+                    switch (site) {
+                    case .first:
+                        level.secondAttribute = retVal.firstAttribute
+                    case .second:
+                        level.secondAttribute = retVal.secondAttribute
+                    }
                 }
             case let .moveRelation(rel):
                 _evaluationStack.modifyTopLevel { (topLevel) in
                     topLevel.relation = rel
                 }
+            case .moveReleationFromRetVal:
+                _evaluationStack.modifyTopLevel { (level) in
+                    level.relation = retVal.relation
+                }
             case let .moveConstant(value):
                 _evaluationStack.modifyTopLevel { (topLevel) in
                     topLevel.constant = value
+                }
+            case .moveConstantFromRetVal:
+                _evaluationStack.modifyTopLevel { (level) in
+                    level.constant = retVal.constant
                 }
             case let .moveUsesSystemSpace(flag):
                 _evaluationStack.modifyTopLevel { (topLevel) in
@@ -204,20 +223,9 @@ public class CTVFLEvaluationContext: NSObject {
                 _evaluationStack.modifyTopLevel { (topLevel) in
                     topLevel.priority = value
                 }
-            case let .moveReturnValue(retVal):
-                switch retVal {
-                case .firstItem:
-                    _evaluationStack.modifyTopLevel { (topLevel) in
-                        topLevel.retVal = topLevel.firstItem
-                    }
-                case .secondItem:
-                    _evaluationStack.modifyTopLevel { (topLevel) in
-                        topLevel.retVal = topLevel.secondItem
-                    }
-                }
-            case let .moveEvaluationSite(evaluationSite):
-                _evaluationStack.modifyTopLevel { (topLevel) in
-                    topLevel.evaluationSite = evaluationSite
+            case .movePriorityFromRetVal:
+                _evaluationStack.modifyTopLevel { (level) in
+                    level.priority = retVal.priority
                 }
             case .makeConstraint:
                 let topLevel = _evaluationStack.peek()
@@ -247,7 +255,7 @@ public class CTVFLEvaluationContext: NSObject {
                 let secondSelector = secondItem?._getAnchorSelector(with: firstItem)
                 
                 switch (firstSelector, firstAttribute, secondSelector, secondAttribute, relation, constant, usesSystemSpace) {
-                case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), .none, true):
+                case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), 0, true):
                     let anchor1 = sel1._ctvfl_anchor(for: attr1)
                     let anchor2 = sel2._ctvfl_anchor(for: attr2)
                     
@@ -271,28 +279,28 @@ public class CTVFLEvaluationContext: NSObject {
                     }
                     #endif
                     
-                case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), .none, false):
+                case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), 0, false):
                     let anchor1 = sel1._ctvfl_anchor(for: attr1)
                     let anchor2 = sel2._ctvfl_anchor(for: attr2)
                     let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2)
                     constraint.priority = priority
                     _appendConstraint(constraint)
                     
-                case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), .some(c), false):
+                case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), constant, false):
                     let anchor1 = sel1._ctvfl_anchor(for: attr1)
                     let anchor2 = sel2._ctvfl_anchor(for: attr2)
-                    let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2, constant: CGFloat(c.rawValue))
+                    let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2, constant: constant)
                     constraint.priority = priority
                     _appendConstraint(constraint)
                     
-                case let (.some(sel), .some(attr), .none, .none, .some(rel), .some(c), false):
+                case let (.some(sel), .some(attr), .none, .none, .some(rel), constant, false):
                     let anchor = sel._ctvfl_anchor(for: attr)
-                    let constraint = anchor._ctvfl_constraint(with: rel, toConstant: CGFloat(c.rawValue))
+                    let constraint = anchor._ctvfl_constraint(with: rel, toConstant: constant)
                     constraint.priority = priority
                     _appendConstraint(constraint)
                     
                 default:
-                    debugPrint("Invalid input: First Item = \(firstItem.map({"\($0)"}) ?? "nil"); First Attribute = \(firstAttribute.map({"\($0)"}) ?? "nil"); Second Item = \(secondItem.map({"\($0)"}) ?? "nil"); Second Attribute = \(secondAttribute.map({"\($0)"}) ?? "nil"); Relation = \(relation.map({"\($0)"}) ?? "nil"); Constant = \(constant.map({"\($0)"}) ?? "nil")");
+                    debugPrint("Invalid input: First Item = \(firstItem.map({"\($0)"}) ?? "nil"); First Attribute = \(firstAttribute.map({"\($0)"}) ?? "nil"); Second Item = \(secondItem.map({"\($0)"}) ?? "nil"); Second Attribute = \(secondAttribute.map({"\($0)"}) ?? "nil"); Relation = \(relation.map({"\($0)"}) ?? "nil"); Constant = \(constant)");
                 }
             }
         }

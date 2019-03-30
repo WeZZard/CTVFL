@@ -8,10 +8,11 @@
 /// An instance of `CTVFLConfinable` does not hold a strong reference to
 /// its internal layout guide.
 ///
-public struct CTVFLConfinable: Hashable, CTVFLConfinableOperand {
-    public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias OperableForm = CTVFLSyntaxOperableFormConfinable
+public struct CTVFLConfinable: Hashable, CTVFLAssociatedOperand {
+    public typealias HeadBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
+    public typealias TailBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
+    public typealias HeadAttribute = CTVFLSyntaxAttributeConfinment
+    public typealias TailAttribute = CTVFLSyntaxAttributeConfinment
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
@@ -23,7 +24,6 @@ public struct CTVFLConfinable: Hashable, CTVFLConfinableOperand {
     
     internal var _asAnchorSelector: CTVFLLayoutAnchorSelectable { return _layoutGuide }
     
-    // MARK: Hashable
     public func hash(into hasher: inout Hasher) {
         ObjectIdentifier(_layoutGuide).hash(into: &hasher)
     }
@@ -33,8 +33,11 @@ public struct CTVFLConfinable: Hashable, CTVFLConfinableOperand {
     }
     
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
-        context._ensureOpcodesTailElements(1)
-        context._appendOpcode(.moveItem(.confinable(self)))
+        context._ensureOpcodesTailElements(3)
+        context._appendOpcode(.push)
+        context._appendOpcode(.moveFirstItem(.confinable(self)))
+        context._appendOpcode(.moveSecondItem(.confinable(self)))
+        context._appendOpcode(.pop)
     }
     
     public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {

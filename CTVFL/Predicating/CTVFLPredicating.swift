@@ -17,7 +17,7 @@ public enum CTVFLPredicatedObject {
 }
 
 public protocol CTVFLPredicating {
-    func byUpdatingPriority(_ priority: CTVFLPriority) -> CTVFLGenericPredicate
+    func byUpdatingPriority(_ priority: CTVFLPriority) -> CTVFLPredicateObjectGeneric
     
     func generateOpcodes(
         forOrientation orientation: CTVFLOrientation,
@@ -26,26 +26,18 @@ public protocol CTVFLPredicating {
         withContext context: CTVFLEvaluationContext
     )
     
-    func toCTVFLGenericPredicate() -> CTVFLGenericPredicate
+    func toCTVFLGenericPredicate() -> CTVFLPredicateObjectGeneric
 }
 
 // MARK: - Updating Predication's Priority
-public func ~ <P: CTVFLPredicating>(lhs: P, rhs: CTVFLPriority) -> CTVFLGenericPredicate {
+public func ~ <P: CTVFLPredicating>(lhs: P, rhs: CTVFLPriority) -> CTVFLPredicateObjectGeneric {
     return lhs.byUpdatingPriority(rhs)
 }
 
-public func ~ <P: CTVFLPredicating>(lhs: P, rhs: Int) -> CTVFLGenericPredicate {
+public func ~ <Predicate: CTVFLPredicating, Priority: BinaryInteger>(lhs: Predicate, rhs: Priority) -> CTVFLPredicateObjectGeneric {
     return lhs.byUpdatingPriority(CTVFLPriority(Float(rhs)))
 }
 
-public func ~ <P: CTVFLPredicating>(lhs: P, rhs: Float) -> CTVFLGenericPredicate {
-    return lhs.byUpdatingPriority(CTVFLPriority(rhs))
-}
-
-public func ~ <P: CTVFLPredicating>(lhs: P, rhs: Double) -> CTVFLGenericPredicate {
-    return lhs.byUpdatingPriority(CTVFLPriority(Float(rhs)))
-}
-
-public func ~ <P: CTVFLPredicating>(lhs: P, rhs: CGFloat) -> CTVFLGenericPredicate {
+public func ~ <Predicate: CTVFLPredicating, Priority: BinaryFloatingPoint>(lhs: Predicate, rhs: Priority) -> CTVFLPredicateObjectGeneric {
     return lhs.byUpdatingPriority(CTVFLPriority(Float(rhs)))
 }

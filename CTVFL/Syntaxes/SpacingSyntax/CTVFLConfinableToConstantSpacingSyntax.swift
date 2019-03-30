@@ -8,43 +8,29 @@
 
 /// `layoutGuide - n`
 ///
-public struct CTVFLConfinableToConstantSpacingSyntax<Lhs: CTVFLConfinableOperand, Rhs: CTVFLConstantOperand>:
-    CTVFLConstraintsPopulatableSyntax, CTVFLConstantOperand, _CTVFLBinarySyntax where
+public struct CTVFLConfinableToConstantSpacingSyntax<Lhs: CTVFLAssociatedOperand, Rhs: CTVFLAssociableOperand>:
+    CTVFLAssociableOperand, CTVFLConstraintsPopulatableSyntax, CTVFLAssociatedToAssociableSpacingSyntax where
+    Lhs.TailAttribute == CTVFLSyntaxAttributeConfinment,
+    Rhs.HeadAttribute == CTVFLSyntaxAttributeConstant,
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
     public typealias LhsOperand = Lhs
     public typealias RhsOperand = Rhs
     
-    public typealias LeadingLayoutBoundary = Lhs.LeadingLayoutBoundary
-    public typealias TrailingLayoutBoundary = Rhs.TrailingLayoutBoundary
-    public typealias OperableForm = CTVFLSyntaxOperableFormConstant
-    public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsClosed
-    public typealias TailAssociativity = Rhs.HeadAssociativity
-    
     public let lhs: Lhs
     public let rhs: Rhs
-    
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
-        context._ensureOpcodesTailElements(2)
-        context._appendOpcode(.push)
-        context._appendOpcode(.moveAttribute(lhs.attributeForBeingEvaluated(at: .lhs, forOrientation: orientation, withOptions: options)))
-        lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
-        context._ensureOpcodesTailElements(1)
-        context._appendOpcode(.moveEvaluationSite(.firstItem))
-        rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
-    }
 }
 
-public func - <Lhs: CTVFLConfinableConvertible, Rhs: CTVFLConstantConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<CTVFLConfinable, CTVFLConstant> {
+public func - <Lhs: CTVFLExpressibleByLayoutGuideLiteral, Rhs: CTVFLExpressibleByConstantLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<CTVFLConfinable, CTVFLConstant> {
     return CTVFLConfinableToConstantSpacingSyntax(lhs: Lhs._makeConfinable(lhs), rhs: Rhs._makeConstant(rhs))
 }
 
-public func - <Lhs, Rhs: CTVFLConstantConvertible>(lhs: Lhs, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<Lhs, CTVFLConstant> {
+public func - <Lhs, Rhs: CTVFLExpressibleByConstantLiteral>(lhs: Lhs, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<Lhs, CTVFLConstant> {
     return CTVFLConfinableToConstantSpacingSyntax(lhs: lhs, rhs: Rhs._makeConstant(rhs))
 }
 
-public func - <Lhs: CTVFLConfinableConvertible, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<CTVFLConfinable, Rhs> {
+public func - <Lhs: CTVFLExpressibleByLayoutGuideLiteral, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLConfinableToConstantSpacingSyntax<CTVFLConfinable, Rhs> {
     return CTVFLConfinableToConstantSpacingSyntax(lhs: Lhs._makeConfinable(lhs), rhs: rhs)
 }
 

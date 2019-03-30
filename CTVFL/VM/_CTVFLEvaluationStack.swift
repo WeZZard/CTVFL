@@ -73,14 +73,13 @@ internal class _CTVFLEvaluationStack {
 }
 
 internal struct _CTVFLEvaluationStackLevel {
-    var firstItem: CTVFLOpcode.Item? = nil
-    var firstAttribute: CTVFLLayoutAttribute? = nil
-    var secondItem: CTVFLOpcode.Item? = nil
-    var secondAttribute: CTVFLLayoutAttribute? = nil
-    var relation: CTVFLLayoutRelation? = nil
-    var constant: CTVFLConstant? = nil
-    var usesSystemSpace: Bool = false
-    var priority: CTVFLPriority = .required
-    var evaluationSite: CTVFLOpcode.EvaluationSite = .firstItem
-    var retVal: CTVFLOpcode.Item? = nil
+    internal var firstItem: CTVFLOpcode.Item? = nil
+    internal var firstAttribute: CTVFLLayoutAttribute? = nil
+    internal var secondItem: CTVFLOpcode.Item? = nil
+    internal var secondAttribute: CTVFLLayoutAttribute? = nil
+    internal var relation: CTVFLLayoutRelation? = nil
+    internal var constant: CGFloat = 0
+    internal var usesSystemSpace: Bool = false
+    internal var priority: CTVFLPriority = .required
+    internal var makesConstraint: Bool = false
 }

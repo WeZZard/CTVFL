@@ -1,22 +1,17 @@
 //
-//  CTVFLGenericPredicate.swift
+//  CTVFLPredicateObjectGeneric.swift
 //  CTVFL
 //
 //  Created on 2019/3/26.
 //
 
 
-public enum CTVFLGenericPredicate: CTVFLPredicating, Equatable {
-    public typealias LeadingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
-    public typealias TrailingLayoutBoundary = CTVFLSyntaxNoLayoutBoundary
-    public typealias SyntaxOperableForm = CTVFLSyntaxOperableFormConstant
-    public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
-    
-    case constant(CTVFLConstantPredicate)
-    case layoutable(CTVFLLayoutablePredicate)
+public enum CTVFLPredicateObjectGeneric: CTVFLPredicating, Equatable {
+    case constant(CTVFLPredicateObjectConstant)
+    case layoutable(CTVFLPredicateObjectLayoutable)
     
     public func byUpdatingPriority(_ priority: CTVFLPriority)
-        -> CTVFLGenericPredicate
+        -> CTVFLPredicateObjectGeneric
     {
         switch self {
         case let .constant(constant):
@@ -51,7 +46,7 @@ public enum CTVFLGenericPredicate: CTVFLPredicating, Equatable {
         }
     }
     
-    public func toCTVFLGenericPredicate() -> CTVFLGenericPredicate {
+    public func toCTVFLGenericPredicate() -> CTVFLPredicateObjectGeneric {
         return self
     }
 }

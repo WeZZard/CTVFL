@@ -5,12 +5,13 @@
 //  Created by WeZZard on 9/20/17.
 //
 
-public class CTVFLPredicatedLayoutable: CTVFLConstraintsPopulatableSyntax,
-    CTVFLLayoutableOperand
+public class CTVFLPredicatedLayoutable: CTVFLAssociatedOperand,
+    CTVFLConstraintsPopulatableSyntax
 {
-    public typealias LeadingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias OperableForm = CTVFLSyntaxOperableFormLayoutable
+    public typealias HeadBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
+    public typealias TailBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
+    public typealias HeadAttribute = CTVFLSyntaxAttributeLayoutedObject
+    public typealias TailAttribute = CTVFLSyntaxAttributeLayoutedObject
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
@@ -33,16 +34,37 @@ public class CTVFLPredicatedLayoutable: CTVFLConstraintsPopulatableSyntax,
         withContext context: CTVFLEvaluationContext
         )
     {
+        context._ensureOpcodesTailElements(1)
+        context._appendOpcode(.push)
         for eachPredicate in _predicates {
             context._ensureOpcodesTailElements(2)
             context._appendOpcode(.push)
-            context._appendOpcode(.moveItem(.layoutable(_layoutable)))
-            eachPredicate.generateOpcodes(forOrientation: orientation, forObject: .dimension, withOptions: options, withContext: context)
-            context._ensureOpcodesTailElements(3)
-            context._appendOpcode(.moveReturnValue(.firstItem))
+            context._appendOpcode(.moveFirstItem(.layoutable(_layoutable)))
+            switch eachPredicate.toCTVFLGenericPredicate() {
+            case let .constant(constantPredicate):
+                constantPredicate.generateOpcodes(forOrientation: orientation, forObject: .dimension, withOptions: options, withContext: context)
+                context._ensureOpcodesTailElements(4)
+                context._appendOpcode(.moveFirstAttributeFromRetVal(.first))
+                context._appendOpcode(.moveReleationFromRetVal)
+                context._appendOpcode(.moveConstantFromRetVal)
+                context._appendOpcode(.movePriorityFromRetVal)
+            case let .layoutable(layoutablePredicate):
+                layoutablePredicate.generateOpcodes(forOrientation: orientation, forObject: .dimension, withOptions: options, withContext: context)
+                context._ensureOpcodesTailElements(5)
+                context._appendOpcode(.moveFirstAttributeFromRetVal(.first))
+                context._appendOpcode(.moveSecondItemFromRetVal(.second))
+                context._appendOpcode(.moveSecondAttributeFromRetVal(.second))
+                context._appendOpcode(.moveReleationFromRetVal)
+                context._appendOpcode(.movePriorityFromRetVal)
+            }
+            context._ensureOpcodesTailElements(2)
             context._appendOpcode(.makeConstraint)
             context._appendOpcode(.pop)
         }
+        context._ensureOpcodesTailElements(2)
+        context._appendOpcode(.moveFirstItem(.layoutable(_layoutable)))
+        context._appendOpcode(.moveSecondItem(.layoutable(_layoutable)))
+        context._appendOpcode(.pop)
     }
     
     public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {

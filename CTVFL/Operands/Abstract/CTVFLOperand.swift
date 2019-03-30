@@ -13,29 +13,37 @@ import AppKit
 
 // MARK: - CTVFLOperand
 public protocol CTVFLOperand: CTVFLAnySyntax {
-    associatedtype LeadingLayoutBoundary: CTVFLSyntaxLayoutBoundary
-    associatedtype TrailingLayoutBoundary: CTVFLSyntaxLayoutBoundary
-    associatedtype OperableForm: CTVFLSyntaxOperableForm
+    associatedtype HeadBoundary: CTVFLSyntaxBoundary
+    
+    associatedtype TailBoundary: CTVFLSyntaxBoundary
+    
+    associatedtype HeadAttribute: CTVFLSyntaxAttribute
+    
+    associatedtype TailAttribute: CTVFLSyntaxAttribute
+    
+    /// Whether can be associated "as" another syntax's lhs
     associatedtype HeadAssociativity: CTVFLSyntaxAssociativity
+    
+    /// Whether can be associated "as" another syntax's rhs
     associatedtype TailAssociativity: CTVFLSyntaxAssociativity
 }
 
 // MARK: -
-// MARK: CTVFLSyntaxOperableForm
-public protocol CTVFLSyntaxOperableForm {}
+// MARK: CTVFLSyntaxBoundary
+public protocol CTVFLSyntaxBoundary {}
 
-public struct CTVFLSyntaxOperableFormLayoutable: CTVFLSyntaxOperableForm {}
+public struct CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment: CTVFLSyntaxBoundary {}
 
-public struct CTVFLSyntaxOperableFormConfinable: CTVFLSyntaxOperableForm {}
+public struct CTVFLSyntaxBoundaryIsConstant: CTVFLSyntaxBoundary {}
 
-public struct CTVFLSyntaxOperableFormConstant: CTVFLSyntaxOperableForm {}
+// MARK: CTVFLSyntaxAttribute
+public protocol CTVFLSyntaxAttribute {}
 
-// MARK: CTVFLSyntaxLayoutBoundary
-public protocol CTVFLSyntaxLayoutBoundary {}
+public struct CTVFLSyntaxAttributeLayoutedObject: CTVFLSyntaxAttribute {}
 
-public struct CTVFLSyntaxHasLayoutBoundary: CTVFLSyntaxLayoutBoundary {}
+public struct CTVFLSyntaxAttributeConfinment: CTVFLSyntaxAttribute {}
 
-public struct CTVFLSyntaxNoLayoutBoundary: CTVFLSyntaxLayoutBoundary {}
+public struct CTVFLSyntaxAttributeConstant: CTVFLSyntaxAttribute {}
 
 // MARK: CTVFLSyntaxAssociativity
 public protocol CTVFLSyntaxAssociativity {}

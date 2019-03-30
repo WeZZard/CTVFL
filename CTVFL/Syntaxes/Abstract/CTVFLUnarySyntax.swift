@@ -1,12 +1,12 @@
 //
-//  _CTVFLUnarySyntax.swift
+//  CTVFLUnarySyntax.swift
 //  CTVFL
 //
 //  Created on 2019/3/28.
 //
 
 
-public protocol _CTVFLUnarySyntax: CTVFLOperand {
+public protocol CTVFLUnarySyntax: CTVFLOperand {
     associatedtype Operand: CTVFLOperand
     
     var operand: Operand { get }
@@ -14,7 +14,7 @@ public protocol _CTVFLUnarySyntax: CTVFLOperand {
     func attributeForContainer(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute
 }
 
-extension _CTVFLUnarySyntax {
+extension CTVFLUnarySyntax {
     public func attributeForContainer(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {
         let rawOptions = options.rawValue
         
@@ -70,7 +70,7 @@ extension _CTVFLUnarySyntax {
     }
 }
 
-extension _CTVFLUnarySyntax where Self: CTVFLObjectBasedOperand, Operand: CTVFLObjectBasedOperand {
+extension CTVFLUnarySyntax where Self: CTVFLAssociatedOperand, Operand: CTVFLAssociatedOperand {
     public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {
         return operand.attributeForBeingEvaluated(at: site, forOrientation: orientation, withOptions: options)
     }

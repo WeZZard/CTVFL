@@ -34,8 +34,9 @@ class ConstrainTests: XCTestCase {
         rootView.addSubview(view3)
     }
     
+    #if os(iOS) || os(tvOS)
     func testConstrain_installsConstraintsAtLocal_withLayoutGuideAndView() {
-        if #available(iOS 11.0, *) {
+        if #available(iOS 11.0, tvOS 11.0, *) {
             XCTAssertTrue(rootView.constraints.isEmpty)
             
             constrain {
@@ -46,6 +47,7 @@ class ConstrainTests: XCTestCase {
             XCTAssertFalse(rootView.constraints.isEmpty)
         }
     }
+    #endif
     
     func testConstrain_installsConstraintsAtLocal_withHeightAndWidth() {
         XCTAssertTrue(view1.constraints.isEmpty)

@@ -10,10 +10,10 @@ import XCTest
 import CTVFL
 
 class withVFLTests: XCTestCase {
-    var rootView: CTVFLView!
-    var view1: CTVFLView!
-    var view2: CTVFLView!
-    var view3: CTVFLView!
+    var rootView = CTVFLView()
+    var view1 = CTVFLView()
+    var view2 = CTVFLView()
+    var view3 = CTVFLView()
     
     override func setUp() {
         super.setUp()
@@ -819,6 +819,7 @@ class withVFLTests: XCTestCase {
         XCTAssertEqual(v[1].priority, .required)
     }
     
+    /*
     func testCanCompile_leadingSpaceEdgedView_withPredicateSpacedView() {
         let h = withVFL(H: |-view1 - (>=200) - view2)
         let v = withVFL(V: |-view1 - (>=200) - view2)
@@ -860,7 +861,7 @@ class withVFLTests: XCTestCase {
         XCTAssertEqual(v[1].constant, 200)
         XCTAssertEqual(v[1].multiplier, 1)
         XCTAssertEqual(v[1].priority, .required)
-    }
+    }*/
     
     func testCanCompile_trailingSpaceEdgedView() {
         let h = withVFL(H: view1-|)
@@ -1338,6 +1339,7 @@ class withVFLTests: XCTestCase {
         XCTAssertEqual(v[0].priority, .required)
     }
     
+    /*
     func testCanCompile_spacedViews_ofMultipleTimes() {
         let h = withVFL(H: view1 - view2 - view3)
         let v = withVFL(V: view1 - view2 - view3)
@@ -1379,7 +1381,7 @@ class withVFLTests: XCTestCase {
         XCTAssertEqual(v[1].constant, 8)
         XCTAssertEqual(v[1].multiplier, 1)
         XCTAssertEqual(v[1].priority, .required)
-    }
+    }*/
     
     func testCanCompile_specificNumberSpacedViews() {
         let h = withVFL(H: view1 - 2 - view2)

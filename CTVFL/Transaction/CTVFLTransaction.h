@@ -25,11 +25,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// ==============================================
 /// `CTVFLTransaction` runs an implicit transaction for each thread. But
 /// this transaction does not collect constraints unless you use those
-/// "enforces" API to add constraints to the transaction.
+/// "enforcing" API to add constraints to the transaction.
 ///
 /// When you called `+begin` and `+commit`, you opened up an explicit
-/// transaction. Explicit collects all the constraints generated in it.
-/// Since CTVFL drives transactions with RunLoop, the collected
+/// transaction. Explicit collects all the constraints generated inside
+/// it. Since CTVFL drives transactions with RunLoop, the collected
 /// constraints would be released in next loop of the RunLoop.
 ///
 @interface CTVFLTransaction : NSObject
@@ -52,6 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)addConstraints:(NSArray<NSLayoutConstraint *> *)constraints enforces:(BOOL)enforces;
 
 #pragma mark Computational Resources
+
 @property (nonatomic, class, strong, readonly) CTVFLEvaluationContext * sharedEvaluationContext;
 
 @end

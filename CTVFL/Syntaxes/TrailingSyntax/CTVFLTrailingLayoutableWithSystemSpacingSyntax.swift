@@ -8,37 +8,39 @@
 
 /// `view-|`
 ///
-public struct CTVFLTrailingLayoutableWithSpacingSyntax<O: CTVFLLayoutableOperand>:
-    CTVFLConstraintsPopulatableSyntax, CTVFLLayoutableOperand, _CTVFLTrailingSyntax where
+public struct CTVFLTrailingLayoutableWithSpacingSyntax<O: CTVFLAssociatedOperand>:
+    CTVFLAssociatedOperand, CTVFLConstraintsPopulatableSyntax, CTVFLUnarySyntax where
+    O.TailAttribute == CTVFLSyntaxAttributeLayoutedObject,
     O.TailAssociativity == CTVFLSyntaxAssociativityIsOpen
 {
     public typealias Operand = O
     
-    public typealias LeadingLayoutBoundary = Operand.LeadingLayoutBoundary
-    public typealias TrailingLayoutBoundary = CTVFLSyntaxHasLayoutBoundary
-    public typealias OperableForm = Operand.OperableForm
+    public typealias HeadBoundary = Operand.HeadBoundary
+    public typealias TailBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
+    public typealias HeadAttribute = Operand.HeadAttribute
+    public typealias TailAttribute = CTVFLSyntaxAttributeConfinment
     public typealias HeadAssociativity = Operand.HeadAssociativity
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsClosed
     
     public let operand: Operand
     
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
-        context._ensureOpcodesTailElements(4)
+        context._ensureOpcodesTailElements(1)
         context._appendOpcode(.push)
+        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
+        context._ensureOpcodesTailElements(8)
+        context._appendOpcode(.moveFirstItemFromRetVal(.second))
+        context._appendOpcode(.moveFirstAttribute(operand.attributeForBeingEvaluated(at: .lhs, forOrientation: orientation, withOptions: options)))
+        context._appendOpcode(.moveSecondItem(.container))
+        context._appendOpcode(.moveSecondAttribute(attributeForContainer(at: .rhs, forOrientation: orientation, withOptions: options)))
         context._appendOpcode(.moveUsesSystemSpace(true))
         context._appendOpcode(.moveRelation(.equal))
-        context._appendOpcode(.moveAttribute(operand.attributeForBeingEvaluated(at: .lhs, forOrientation: orientation, withOptions: options)))
-        operand.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
-        context._ensureOpcodesTailElements(5)
-        context._appendOpcode(.moveItem(.container))
-        context._appendOpcode(.moveAttribute(attributeForContainer(at: .rhs, forOrientation: orientation, withOptions: options)))
-        context._appendOpcode(.moveReturnValue(.firstItem))
         context._appendOpcode(.makeConstraint)
         context._appendOpcode(.pop)
     }
 }
 
-public postfix func -| <Operand: CTVFLLayoutableConvertible>(operand: Operand) -> CTVFLTrailingLayoutableWithSpacingSyntax<CTVFLLayoutable> {
+public postfix func -| <Operand: CTVFLExpressibleByViewLiteral>(operand: Operand) -> CTVFLTrailingLayoutableWithSpacingSyntax<CTVFLLayoutable> {
     return CTVFLTrailingLayoutableWithSpacingSyntax(operand: Operand._makeLayoutable(operand))
 }
 
