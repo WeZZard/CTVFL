@@ -11,11 +11,11 @@ public protocol _CTVFLUnarySyntax: CTVFLOperand {
     
     var operand: Operand { get }
     
-    func attributeForContainer(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute
+    func attributeForContainer(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute
 }
 
 extension _CTVFLUnarySyntax {
-    public func attributeForContainer(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+    public func attributeForContainer(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {
         let rawOptions = options.rawValue
         
         switch site {
@@ -71,14 +71,14 @@ extension _CTVFLUnarySyntax {
 }
 
 extension _CTVFLUnarySyntax where Self: CTVFLObjectBasedOperand, Operand: CTVFLObjectBasedOperand {
-    public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+    public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {
         return operand.attributeForBeingEvaluated(at: site, forOrientation: orientation, withOptions: options)
     }
 }
 
 #if os(iOS) || os(tvOS)
 @available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *)
-let _rawSpacingBaselineToBaseline = CTVFLOptions.spacingBaselineToBaseline.rawValue
+let _rawSpacingBaselineToBaseline = CTVFLFormatOptions.spacingBaselineToBaseline.rawValue
 #endif
-let _rawDirectionLeftToRight = CTVFLOptions.directionLeftToRight.rawValue
-let _rawDirectionRightToLeft = CTVFLOptions.directionRightToLeft.rawValue
+let _rawDirectionLeftToRight = CTVFLFormatOptions.directionLeftToRight.rawValue
+let _rawDirectionRightToLeft = CTVFLFormatOptions.directionRightToLeft.rawValue

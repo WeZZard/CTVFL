@@ -22,7 +22,7 @@ public struct CTVFLTrailingConstantSyntax<O: CTVFLConstantOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         operand.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
         context._ensureOpcodesTailElements(5)
         context._appendOpcode(.moveItem(.container))

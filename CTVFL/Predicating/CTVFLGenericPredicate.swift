@@ -29,7 +29,7 @@ public enum CTVFLGenericPredicate: CTVFLPredicating, Equatable {
     public func generateOpcodes(
         forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
-        withOptions options: CTVFLOptions,
+        withOptions options: CTVFLFormatOptions,
         withContext context: CTVFLEvaluationContext
         )
     {

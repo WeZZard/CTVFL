@@ -30,7 +30,7 @@ public typealias CTVFLLayoutGuide = NSLayoutGuide
 
 #endif
 
-public typealias CTVFLOptions = NSLayoutConstraint.FormatOptions
+public typealias CTVFLFormatOptions = NSLayoutConstraint.FormatOptions
 
 public typealias CTVFLLayoutRelation = NSLayoutConstraint.Relation
 

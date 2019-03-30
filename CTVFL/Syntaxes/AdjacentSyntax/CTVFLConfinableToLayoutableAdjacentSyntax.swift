@@ -25,7 +25,7 @@ public struct CTVFLConfinableToLayoutableAdjacentSyntax<Lhs: CTVFLConfinableOper
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(2)
         context._appendOpcode(.push)
         context._appendOpcode(.moveAttribute(lhs.attributeForBeingEvaluated(at: .lhs, forOrientation: orientation, withOptions: options)))

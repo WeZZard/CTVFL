@@ -18,7 +18,7 @@ extension CTVFLEqualSemanticPredicateLiteral where Self: BinaryInteger {
     public func generateOpcodes(
         forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
-        withOptions options: CTVFLOptions,
+        withOptions options: CTVFLFormatOptions,
         withContext context: CTVFLEvaluationContext
         )
     {
@@ -39,7 +39,7 @@ extension CTVFLEqualSemanticPredicateLiteral where Self: BinaryFloatingPoint {
     public func generateOpcodes(
         forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
-        withOptions options: CTVFLOptions,
+        withOptions options: CTVFLFormatOptions,
         withContext context: CTVFLEvaluationContext
         )
     {

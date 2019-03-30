@@ -29,7 +29,7 @@ public struct CTVFLConstant: Equatable, RawRepresentable,
         return rawValue.description
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(3)
         context._appendOpcode(.moveConstant(self))
         context._appendOpcode(.moveRelation(.equal))

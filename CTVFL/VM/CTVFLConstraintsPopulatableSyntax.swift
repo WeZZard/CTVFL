@@ -7,11 +7,11 @@
 
 
 public protocol CTVFLConstraintsPopulatableSyntax: CTVFLAnySyntax {
-    func makeConstraints(orientation: CTVFLOrientation, options: CTVFLOptions) -> [CTVFLConstraint]
+    func makeConstraints(orientation: CTVFLOrientation, options: CTVFLFormatOptions) -> [CTVFLConstraint]
 }
 
 extension CTVFLConstraintsPopulatableSyntax {
-    public func makeConstraints(orientation: CTVFLOrientation, options: CTVFLOptions) -> [CTVFLConstraint] {
+    public func makeConstraints(orientation: CTVFLOrientation, options: CTVFLFormatOptions) -> [CTVFLConstraint] {
         let evaluationContext = CTVFLTransaction.sharedEvaluationContext
         
         let constraints = evaluationContext.makeConstraint(withSyntax: self, forOrientation: orientation, withOptions: options);

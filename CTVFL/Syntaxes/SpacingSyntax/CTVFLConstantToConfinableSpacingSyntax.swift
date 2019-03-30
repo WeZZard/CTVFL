@@ -25,7 +25,7 @@ public struct CTVFLConstantToConfinableSpacingSyntax<Lhs: CTVFLConstantOperand, 
     public let lhs: Lhs
     public let rhs: Rhs
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
         context._ensureOpcodesTailElements(1)
         context._appendOpcode(.moveEvaluationSite(.secondItem))

@@ -47,14 +47,14 @@ public struct CTVFLConstantPredicate: CTVFLPredicating, CTVFLConstantOperand, Eq
         return .constant(self)
     }
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         return generateOpcodes(forOrientation: orientation, forObject: .position, withOptions: options, withContext: context)
     }
     
     public func generateOpcodes(
         forOrientation orientation: CTVFLOrientation,
         forObject object: CTVFLPredicatedObject,
-        withOptions options: CTVFLOptions,
+        withOptions options: CTVFLFormatOptions,
         withContext context: CTVFLEvaluationContext
         )
     {

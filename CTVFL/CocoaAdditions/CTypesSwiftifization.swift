@@ -32,7 +32,7 @@ extension CTVFLLayoutAttribute: CustomStringConvertible {
     }
 }
 
-extension CTVFLLayoutRelation: CustomStringConvertible {
+extension NSLayoutConstraint.Relation: CustomStringConvertible {
     public var description: String {
         switch self {
         case .equal:                return "Equal"
@@ -89,5 +89,55 @@ extension NSLayoutConstraint.Attribute: CustomStringConvertible {
         @unknown default:       fatalError()
         }
         #endif
+    }
+}
+
+extension NSLayoutConstraint.FormatOptions: CustomStringConvertible {
+    public var description: String {
+        var descriptions = [String]()
+        if self.contains(.alignAllBottom) {
+            descriptions.append("AlignAllBottom")
+        }
+        if self.contains(.alignAllTop) {
+            descriptions.append("AlignAllTop")
+        }
+        if self.contains(.alignAllLeft) {
+            descriptions.append("AlignAllLeft")
+        }
+        if self.contains(.alignAllRight) {
+            descriptions.append("AlignAllRight")
+        }
+        if self.contains(.alignAllCenterX) {
+            descriptions.append("AlignAllCenterX")
+        }
+        if self.contains(.alignAllCenterY) {
+            descriptions.append("AlignAllCenterY")
+        }
+        if self.contains(.alignAllLeading) {
+            descriptions.append("AlignAllLeading")
+        }
+        if self.contains(.alignAllTrailing) {
+            descriptions.append("AlignAllTrailing")
+        }
+        if self.contains(.alignAllFirstBaseline) {
+            descriptions.append("AlignAllFirstBaseline")
+        }
+        if self.contains(.alignAllLastBaseline) {
+            descriptions.append("AlignAllLastBaseline")
+        }
+        if self.contains(.directionLeftToRight) {
+            descriptions.append("DirectionLeftToRight")
+        }
+        if self.contains(.directionRightToLeft) {
+            descriptions.append("DirectionRightToLeft")
+        }
+        #if os(iOS) || os(tvOS)
+        if #available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *) {
+            if self.contains(.spacingBaselineToBaseline) {
+                descriptions.append("SpacingBaselineToBaseline")
+            }
+        }
+        #endif
+        return descriptions.joined(separator: ", ")
     }
 }

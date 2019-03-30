@@ -29,7 +29,7 @@ public class CTVFLPredicatedLayoutable: CTVFLConstraintsPopulatableSyntax,
     
     public func generateOpcodes(
         forOrientation orientation: CTVFLOrientation,
-        withOptions options: CTVFLOptions,
+        withOptions options: CTVFLFormatOptions,
         withContext context: CTVFLEvaluationContext
         )
     {
@@ -45,7 +45,7 @@ public class CTVFLPredicatedLayoutable: CTVFLConstraintsPopulatableSyntax,
         }
     }
     
-    public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+    public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {
         return _layoutable.attributeForBeingEvaluated(at: site, forOrientation: orientation, withOptions: options)
     }
 }

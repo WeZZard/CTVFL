@@ -621,8 +621,8 @@
 		9CE2E515224CD82F00382E11 /* Prelude */ = {
 			isa = PBXGroup;
 			children = (
-				9CB77A961F7155260052448F /* Constrain.swift */,
 				9CE2E537224CE0C500382E11 /* WithVFL.swift */,
+				9CB77A961F7155260052448F /* Constrain.swift */,
 				9CE2E53B224CE0E600382E11 /* Operators.swift */,
 			);
 			path = Prelude;

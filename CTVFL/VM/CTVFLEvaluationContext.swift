@@ -106,7 +106,7 @@ public class CTVFLEvaluationContext: NSObject {
     public func makeConstraint(
         withSyntax syntax: CTVFLAnySyntax,
         forOrientation orientation: CTVFLOrientation,
-        withOptions options: CTVFLOptions
+        withOptions options: CTVFLFormatOptions
         ) -> [CTVFLConstraint]
     {
         _prepareForReuse()
@@ -300,7 +300,7 @@ public class CTVFLEvaluationContext: NSObject {
         _ = _evaluationStack.pop()
         
         if needsAlign && _itemsToBeAlignedCount > 1 {
-            let attributes = _attributes(forOptions: options)
+            let attributes = options._attributes
             
             for index in 0..<(_itemsToBeAlignedCount - 1) {
                 let firstItem = _itemsToBeAligned[index]
@@ -327,51 +327,52 @@ public class CTVFLEvaluationContext: NSObject {
         
         return constratins
     }
-    
-    internal func _attributes(forOptions options: CTVFLOptions)
-        -> [CTVFLLayoutAttribute]
-    {
+}
+
+
+extension CTVFLFormatOptions {
+    internal var _attributes: [CTVFLLayoutAttribute] {
         var attributes = [CTVFLLayoutAttribute]()
         
-        if options.contains(.alignAllBottom) {
+        if contains(.alignAllBottom) {
             attributes.append(.bottom)
         }
         
-        if options.contains(.alignAllTop) {
+        if contains(.alignAllTop) {
             attributes.append(.top)
         }
         
-        if options.contains(.alignAllLeft) {
+        if contains(.alignAllLeft) {
             attributes.append(.left)
         }
         
-        if options.contains(.alignAllRight) {
+        if contains(.alignAllRight) {
             attributes.append(.right)
         }
         
-        if options.contains(.alignAllCenterX) {
+        if contains(.alignAllCenterX) {
             attributes.append(.centerX)
         }
         
-        if options.contains(.alignAllCenterY) {
+        if contains(.alignAllCenterY) {
             attributes.append(.centerY)
         }
         
-        if options.contains(.alignAllLeading) {
+        if contains(.alignAllLeading) {
             attributes.append(.leading)
         }
         
-        if options.contains(.alignAllTrailing) {
+        if contains(.alignAllTrailing) {
             attributes.append(.trailing)
         }
         
         if #available(macOSApplicationExtension 10.11, *) {
-            if options.contains(.alignAllFirstBaseline) {
+            if contains(.alignAllFirstBaseline) {
                 attributes.append(.firstBaseline)
             }
         }
         
-        if options.contains(.alignAllLastBaseline) {
+        if contains(.alignAllLastBaseline) {
             attributes.append(.lastBaseline)
         }
         

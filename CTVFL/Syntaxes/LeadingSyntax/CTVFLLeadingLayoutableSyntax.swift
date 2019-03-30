@@ -22,7 +22,7 @@ public struct CTVFLLeadingLayoutableSyntax<O: CTVFLLayoutableOperand>:
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(7)
         context._appendOpcode(.push)
         context._appendOpcode(.moveConstant(CTVFLConstant(rawValue: 0)))

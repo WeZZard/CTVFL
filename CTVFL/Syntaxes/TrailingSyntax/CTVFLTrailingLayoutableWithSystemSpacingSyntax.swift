@@ -22,7 +22,7 @@ public struct CTVFLTrailingLayoutableWithSpacingSyntax<O: CTVFLLayoutableOperand
     
     public let operand: Operand
     
-    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions, withContext context: CTVFLEvaluationContext) {
+    public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(4)
         context._appendOpcode(.push)
         context._appendOpcode(.moveUsesSystemSpace(true))

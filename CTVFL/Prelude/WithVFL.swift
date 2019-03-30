@@ -9,7 +9,7 @@
 @discardableResult
 public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
     V syntax: @autoclosure ()-> S,
-    options: CTVFLOptions = []
+    options: CTVFLFormatOptions = []
     ) -> [CTVFLConstraint] where
     S.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
     S.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary
@@ -25,7 +25,7 @@ public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
 @discardableResult
 public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
     H syntax: @autoclosure ()-> S,
-    options: CTVFLOptions = []
+    options: CTVFLFormatOptions = []
     ) -> [CTVFLConstraint] where
     S.LeadingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary,
     S.TrailingLayoutBoundary == CTVFLSyntaxHasLayoutBoundary

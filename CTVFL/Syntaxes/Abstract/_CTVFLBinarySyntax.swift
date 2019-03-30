@@ -17,7 +17,7 @@ public protocol _CTVFLBinarySyntax: CTVFLOperand where
 }
 
 extension _CTVFLBinarySyntax where Self: CTVFLObjectBasedOperand, RhsOperand: CTVFLObjectBasedOperand {
-    public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLOptions)-> CTVFLLayoutAttribute {
+    public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {
         return rhs.attributeForBeingEvaluated(at: site, forOrientation: orientation, withOptions: options)
     }
 }
