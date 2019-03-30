@@ -37,8 +37,8 @@ public struct CTVFLLayoutable: Hashable, CTVFLAssociatedOperand {
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(5)
         context._appendOpcode(.push)
-        context._appendOpcode(.moveFirstItem(.layoutable(self)))
-        context._appendOpcode(.moveSecondItem(.layoutable(self)))
+        context._appendOpcode(.moveLhsItem(.layoutable(self)))
+        context._appendOpcode(.moveRhsItem(.layoutable(self)))
         context._appendOpcode(.pop)
     }
     

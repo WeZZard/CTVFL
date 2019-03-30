@@ -25,8 +25,10 @@ public struct CTVFLLeadingConstantSyntax<O: CTVFLAssociableOperand>:
     public let operand: Operand
     
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
-        context._ensureOpcodesTailElements(3)
+        context._ensureOpcodesTailElements(5)
         context._appendOpcode(.push)
+        context._appendOpcode(.moveLhsItem(.container))
+        context._appendOpcode(.moveRhsItem(.container))
         context._appendOpcode(.moveFirstItem(.container))
         context._appendOpcode(.moveFirstAttribute(attributeForContainer(at: .lhs, forOrientation: orientation, withOptions: options)))
         operand.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)

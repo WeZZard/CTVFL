@@ -81,5 +81,6 @@ internal struct _CTVFLEvaluationStackLevel {
     internal var constant: CGFloat = 0
     internal var usesSystemSpace: Bool = false
     internal var priority: CTVFLPriority = .required
-    internal var makesConstraint: Bool = false
+    internal var lhsItem: CTVFLOpcode.Item? = nil
+    internal var rhsItem: CTVFLOpcode.Item? = nil
 }

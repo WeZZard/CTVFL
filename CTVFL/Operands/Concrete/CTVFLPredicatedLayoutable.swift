@@ -62,8 +62,8 @@ public class CTVFLPredicatedLayoutable: CTVFLAssociatedOperand,
             context._appendOpcode(.pop)
         }
         context._ensureOpcodesTailElements(2)
-        context._appendOpcode(.moveFirstItem(.layoutable(_layoutable)))
-        context._appendOpcode(.moveSecondItem(.layoutable(_layoutable)))
+        context._appendOpcode(.moveLhsItem(.layoutable(_layoutable)))
+        context._appendOpcode(.moveRhsItem(.layoutable(_layoutable)))
         context._appendOpcode(.pop)
     }
     

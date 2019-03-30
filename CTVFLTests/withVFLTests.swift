@@ -28,6 +28,91 @@ class withVFLTests: XCTestCase {
         rootView.addSubview(view3)
     }
     
+    func testCanCompile_rightLeaningSyntaxTree() {
+        let views1 = view2 - view3
+        let views3 = view1 - views1
+        let h = withVFL(H: |views3|)
+        let v = withVFL(V: |views3|)
+        
+        NSLog("view1: %@", view1)
+        NSLog("view2: %@", view2)
+        NSLog("view3: %@", view3)
+        
+        XCTAssertEqual(h.count, 4)
+        XCTAssert(h[0].firstItem === view2)
+        XCTAssertEqual(h[0].firstAttribute, .trailing)
+        XCTAssert(h[0].secondItem === view3)
+        XCTAssertEqual(h[0].secondAttribute, .leading)
+        XCTAssertEqual(h[0].relation, .equal)
+        XCTAssertEqual(h[0].constant, 8)
+        XCTAssertEqual(h[0].multiplier, 1)
+        XCTAssertEqual(h[0].priority, .required)
+        
+        XCTAssert(h[1].firstItem === view1)
+        XCTAssertEqual(h[1].firstAttribute, .trailing)
+        XCTAssert(h[1].secondItem === view2)
+        XCTAssertEqual(h[1].secondAttribute, .leading)
+        XCTAssertEqual(h[1].relation, .equal)
+        XCTAssertEqual(h[1].constant, 8)
+        XCTAssertEqual(h[1].multiplier, 1)
+        XCTAssertEqual(h[1].priority, .required)
+        
+        XCTAssert(h[2].firstItem === view3)
+        XCTAssertEqual(h[2].firstAttribute, .trailing)
+        XCTAssert(h[2].secondItem === rootView)
+        XCTAssertEqual(h[2].secondAttribute, .trailing)
+        XCTAssertEqual(h[2].relation, .equal)
+        XCTAssertEqual(h[2].constant, 0)
+        XCTAssertEqual(h[2].multiplier, 1)
+        XCTAssertEqual(h[2].priority, .required)
+        
+        XCTAssert(h[3].firstItem === rootView)
+        XCTAssertEqual(h[3].firstAttribute, .leading)
+        XCTAssert(h[3].secondItem === view1)
+        XCTAssertEqual(h[3].secondAttribute, .leading)
+        XCTAssertEqual(h[3].relation, .equal)
+        XCTAssertEqual(h[3].constant, 0)
+        XCTAssertEqual(h[3].multiplier, 1)
+        XCTAssertEqual(h[3].priority, .required)
+        
+        XCTAssertEqual(v.count, 4)
+        XCTAssert(v[0].firstItem === view2)
+        XCTAssertEqual(v[0].firstAttribute, .bottom)
+        XCTAssert(v[0].secondItem === view3)
+        XCTAssertEqual(v[0].secondAttribute, .top)
+        XCTAssertEqual(v[0].relation, .equal)
+        XCTAssertEqual(v[0].constant, 8)
+        XCTAssertEqual(v[0].multiplier, 1)
+        XCTAssertEqual(v[0].priority, .required)
+        
+        XCTAssert(v[1].firstItem === view1)
+        XCTAssertEqual(v[1].firstAttribute, .bottom)
+        XCTAssert(v[1].secondItem === view2)
+        XCTAssertEqual(v[1].secondAttribute, .top)
+        XCTAssertEqual(v[1].relation, .equal)
+        XCTAssertEqual(v[1].constant, 8)
+        XCTAssertEqual(v[1].multiplier, 1)
+        XCTAssertEqual(v[1].priority, .required)
+        
+        XCTAssert(v[2].firstItem === view3)
+        XCTAssertEqual(v[2].firstAttribute, .bottom)
+        XCTAssert(v[2].secondItem === rootView)
+        XCTAssertEqual(v[2].secondAttribute, .bottom)
+        XCTAssertEqual(v[2].relation, .equal)
+        XCTAssertEqual(v[2].constant, 0)
+        XCTAssertEqual(v[2].multiplier, 1)
+        XCTAssertEqual(v[2].priority, .required)
+        
+        XCTAssert(v[3].firstItem === rootView)
+        XCTAssertEqual(v[3].firstAttribute, .top)
+        XCTAssert(v[3].secondItem === view1)
+        XCTAssertEqual(v[3].secondAttribute, .top)
+        XCTAssertEqual(v[3].relation, .equal)
+        XCTAssertEqual(v[3].constant, 0)
+        XCTAssertEqual(v[3].multiplier, 1)
+        XCTAssertEqual(v[3].priority, .required)
+    }
+    
     func testCanCompile_predicatedView_ofEqualSemantic() {
         let h = withVFL(H: view1.where(200))
         let v = withVFL(V: view1.where(200))

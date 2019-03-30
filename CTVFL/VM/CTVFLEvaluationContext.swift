@@ -143,9 +143,13 @@ public class CTVFLEvaluationContext: NSObject {
                 _evaluationStack.modifyTopLevel { (level) in
                     level.firstItem = item
                 }
-            case let .moveFirstItemFromRetVal(site):
+            case let .moveFirstItemFromRetVal(index):
                 _evaluationStack.modifyTopLevel { (level) in
-                    switch site {
+                    switch index {
+                    case .lhs:
+                        level.firstItem = retVal.lhsItem
+                    case .rhs:
+                        level.firstItem = retVal.rhsItem
                     case .first:
                         level.firstItem = retVal.firstItem
                     case .second:
@@ -164,9 +168,13 @@ public class CTVFLEvaluationContext: NSObject {
                 _evaluationStack.modifyTopLevel { (level) in
                     level.secondItem = item
                 }
-            case let .moveSecondItemFromRetVal(site):
+            case let .moveSecondItemFromRetVal(index):
                 _evaluationStack.modifyTopLevel { (level) in
-                    switch site {
+                    switch index {
+                    case .lhs:
+                        level.secondItem = retVal.lhsItem
+                    case .rhs:
+                        level.secondItem = retVal.rhsItem
                     case .first:
                         level.secondItem = retVal.firstItem
                     case .second:
@@ -226,6 +234,22 @@ public class CTVFLEvaluationContext: NSObject {
             case .movePriorityFromRetVal:
                 _evaluationStack.modifyTopLevel { (level) in
                     level.priority = retVal.priority
+                }
+            case let .moveLhsItem(item):
+                _evaluationStack.modifyTopLevel { (level) in
+                    level.lhsItem = item
+                }
+            case .moveLhsItemFromRetValLhsItem:
+                _evaluationStack.modifyTopLevel { (level) in
+                    level.lhsItem = retVal.lhsItem
+                }
+            case let .moveRhsItem(item):
+                _evaluationStack.modifyTopLevel { (level) in
+                    level.rhsItem = item
+                }
+            case .moveRhsItemFromRetValRhsItem:
+                _evaluationStack.modifyTopLevel { (level) in
+                    level.rhsItem = retVal.rhsItem
                 }
             case .makeConstraint:
                 let topLevel = _evaluationStack.peek()

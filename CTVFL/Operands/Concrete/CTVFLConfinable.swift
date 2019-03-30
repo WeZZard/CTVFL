@@ -35,8 +35,8 @@ public struct CTVFLConfinable: Hashable, CTVFLAssociatedOperand {
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(3)
         context._appendOpcode(.push)
-        context._appendOpcode(.moveFirstItem(.confinable(self)))
-        context._appendOpcode(.moveSecondItem(.confinable(self)))
+        context._appendOpcode(.moveLhsItem(.confinable(self)))
+        context._appendOpcode(.moveRhsItem(.confinable(self)))
         context._appendOpcode(.pop)
     }
     
