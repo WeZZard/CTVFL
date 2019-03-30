@@ -37,7 +37,7 @@ public struct CTVFLLayoutableToConfinableSpacingSyntax<Lhs: CTVFLLayoutableOpera
         context._appendOpcode(.moveAttribute(rhs.attributeForBeingEvaluated(at: .rhs, forOrientation: orientation, withOptions: options)))
         context._appendOpcode(.moveRelation(.equal))
         context._appendOpcode(.moveUsesSystemSpace(true))
-        context._appendOpcode(.moveReturnValue(.secondItem))
+        context._appendOpcode(.moveReturnValue(.firstItem))
         context._appendOpcode(.makeConstraint)
         context._appendOpcode(.pop)
     }

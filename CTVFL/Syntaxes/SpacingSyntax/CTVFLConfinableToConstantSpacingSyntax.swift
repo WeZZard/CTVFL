@@ -31,7 +31,7 @@ public struct CTVFLConfinableToConstantSpacingSyntax<Lhs: CTVFLConfinableOperand
         context._appendOpcode(.moveAttribute(lhs.attributeForBeingEvaluated(at: .lhs, forOrientation: orientation, withOptions: options)))
         lhs.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
         context._ensureOpcodesTailElements(1)
-        context._appendOpcode(.moveEvaluationSite(.secondItem))
+        context._appendOpcode(.moveEvaluationSite(.firstItem))
         rhs.generateOpcodes(forOrientation: orientation, withOptions: options, withContext: context)
     }
 }
