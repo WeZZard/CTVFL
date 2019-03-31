@@ -36,12 +36,12 @@ class CTVFLTransactionTests: XCTestCase {
         
         let constraint = NSLayoutConstraint(item: self.rootView as Any, attribute: .leading, relatedBy: .equal, toItem: self.view1 as Any, attribute: .leading, multiplier: 1, constant: 0)
         
-        for _ in 0..<10000 {
+        for _ in 0..<1000 {
             queue.async {
                 autoreleasepool {
                     CTVFLTransaction.begin()
                     
-                    for _ in 0..<10000 {
+                    for _ in 0..<1000 {
                         CTVFLTransaction.addConstraint(constraint, enforces: true);
                     }
                     
