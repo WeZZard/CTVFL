@@ -42,20 +42,16 @@ class withVFLTests: XCTestCase {
         let v = withVFL(V: view1 | view2, options: .alignAllCenterX)
         
         XCTAssertEqual(h.count, 2)
-        XCTAssert(h[0].firstItem === view1)
-        XCTAssertEqual(h[0].firstAttribute, .trailing)
-        XCTAssert(h[0].secondItem === view2)
-        XCTAssertEqual(h[0].secondAttribute, .leading)
+        XCTAssertEqual(h[0]._ctvfl_firstAnchor, view1.trailingAnchor)
+        XCTAssertEqual(h[0]._ctvfl_secondAnchor, view2.leadingAnchor)
         XCTAssertEqual(h[0].relation, .equal)
         XCTAssertEqual(h[0].constant, 0)
         XCTAssertEqual(h[0].multiplier, 1)
         XCTAssertEqual(h[0].priority, .required)
         
         XCTAssertEqual(v.count, 2)
-        XCTAssert(v[0].firstItem === view1)
-        XCTAssertEqual(v[0].firstAttribute, .bottom)
-        XCTAssert(v[0].secondItem === view2)
-        XCTAssertEqual(v[0].secondAttribute, .top)
+        XCTAssertEqual(v[0]._ctvfl_firstAnchor, view1.bottomAnchor)
+        XCTAssertEqual(v[0]._ctvfl_secondAnchor, view2.topAnchor)
         XCTAssertEqual(v[0].relation, .equal)
         XCTAssertEqual(v[0].constant, 0)
         XCTAssertEqual(v[0].multiplier, 1)
@@ -63,20 +59,18 @@ class withVFLTests: XCTestCase {
     }
     
     func testCanCompile_rightLeaningSyntaxTree() {
-        let views1 = view2 - view3
-        let views3 = view1 - views1
-        let h = withVFL(H: |views3|)
-        let v = withVFL(V: |views3|)
+        let view2_3 = view2 - view3
+        let view1_3 = view1 - view2_3
+        let h = withVFL(H: |view1_3|)
+        let v = withVFL(V: |view1_3|)
         
         NSLog("view1: %@", view1)
         NSLog("view2: %@", view2)
         NSLog("view3: %@", view3)
         
         XCTAssertEqual(h.count, 4)
-        XCTAssert(h[0].firstItem === view2)
-        XCTAssertEqual(h[0].firstAttribute, .trailing)
-        XCTAssert(h[0].secondItem === view3)
-        XCTAssertEqual(h[0].secondAttribute, .leading)
+        XCTAssertEqual(h[0]._ctvfl_firstAnchor, view2.trailingAnchor)
+        XCTAssertEqual(h[0]._ctvfl_secondAnchor, view3.leadingAnchor)
         XCTAssertEqual(h[0].relation, .equal)
         XCTAssertEqual(h[0].constant, 8)
         XCTAssertEqual(h[0].multiplier, 1)
