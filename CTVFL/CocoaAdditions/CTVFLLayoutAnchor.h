@@ -21,8 +21,6 @@ __attribute__((visibility("hidden")))
 @protocol CTVFLLayoutAnchor<NSObject>
 - (NSLayoutConstraint *)_ctvfl_constraintWithRelation:(NSLayoutRelation)relation toAnchor:(id<CTVFLLayoutAnchor>)anchor constant:(CGFloat)constant;
 
-- (NSLayoutConstraint *)_ctvfl_constraintUsingSystemSpacingWithRelation:(NSLayoutRelation)relation toAnchor:(id<CTVFLLayoutAnchor>)anchor API_AVAILABLE(ios(11.0), tvos(11.0)) API_UNAVAILABLE(macos);
-
 - (NSLayoutConstraint *)_ctvfl_constraintWithRelation:(NSLayoutRelation)relation toAnchor:(id<CTVFLLayoutAnchor>)anchor;
 
 - (NSLayoutConstraint *)_ctvfl_constraintWithRelation:(NSLayoutRelation)relation toConstant:(CGFloat)constant;

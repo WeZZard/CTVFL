@@ -263,25 +263,9 @@ public class CTVFLEvaluationContext: NSObject {
                     let anchor1 = sel1._ctvfl_anchor(for: attr1)
                     let anchor2 = sel2._ctvfl_anchor(for: attr2)
                     
-                    #if os(macOS)
                     let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2, constant: 8)
                     constraint.priority = priority
                     _appendConstraint(constraint)
-                    #endif
-                    
-                    #if os(iOS) || os(tvOS)
-                    if #available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *) {
-                        let constraint = anchor1._ctvfl_constraintUsingSystemSpacing(with: rel, to: anchor2)
-                        constraint.priority = priority
-                        _appendConstraint(constraint)
-                    } else {
-                        let anchor1 = sel1._ctvfl_anchor(for: attr1)
-                        let anchor2 = sel2._ctvfl_anchor(for: attr2)
-                        let constraint = anchor1._ctvfl_constraint(with: rel, to: anchor2, constant: 8)
-                        constraint.priority = priority
-                        _appendConstraint(constraint)
-                    }
-                    #endif
                     
                 case let (.some(sel1), .some(attr1), .some(sel2), .some(attr2), .some(rel), 0, false):
                     let anchor1 = sel1._ctvfl_anchor(for: attr1)
