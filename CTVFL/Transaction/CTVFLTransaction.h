@@ -51,8 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)addConstraints:(NSArray<NSLayoutConstraint *> *)constraints enforces:(BOOL)enforces;
 
-// TODO: Add a class property which stores system spacing.
-
 #pragma mark Computational Resources
 
 @property (nonatomic, class, strong, readonly) CTVFLEvaluationContext * sharedEvaluationContext;
