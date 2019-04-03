@@ -37,7 +37,7 @@ internal class _CTVFLEvaluationStack {
             //
             // I picked 1.5 such that the OS may have an opportunity to
             // reuse memory spaces which have been allocated for past
-            // reallocation after several reallocations.
+            // reallocations after several reallocations.
             //
             // Initial allocation:   1 2 3
             // First re-allocation:  . . . 1 2 3 4
