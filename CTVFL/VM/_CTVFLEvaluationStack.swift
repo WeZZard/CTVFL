@@ -33,7 +33,17 @@ internal class _CTVFLEvaluationStack {
     internal func push() {
         let nextLevelIndex = _count
         if _capacity < nextLevelIndex {
-            let enlargedCapacity = Int(Float(_capacity) * 1.3)
+            // Bitwise 1.5x enlarging.
+            //
+            // I picked 1.5 such that the OS may have an opportunity to
+            // reuse memory spaces which have been allocated for past
+            // reallocation after several reallocations.
+            //
+            // Initial allocation:   1 2 3 4 5
+            // First re-allocation:  . . . . . 1 2 3 4 5 6 7
+            // Second re-allocation: 1 2 3 4 5 6 7 8 9 A
+            //
+            let enlargedCapacity = _capacity + (_capacity >> 1)
             let oldBuffer = _buffer
             let newBuffer = _Buffer.allocate(capacity: enlargedCapacity)
             newBuffer.initialize(repeating: .init(), count: enlargedCapacity)
