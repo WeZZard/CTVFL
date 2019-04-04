@@ -32,7 +32,7 @@ public protocol CTVFLOperand: CTVFLAnySyntax {
 // MARK: CTVFLSyntaxBoundary
 public protocol CTVFLSyntaxBoundary {}
 
-public struct CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment: CTVFLSyntaxBoundary {}
+public struct CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinement: CTVFLSyntaxBoundary {}
 
 public struct CTVFLSyntaxBoundaryIsConstant: CTVFLSyntaxBoundary {}
 
@@ -41,7 +41,7 @@ public protocol CTVFLSyntaxAttribute {}
 
 public struct CTVFLSyntaxAttributeLayoutedObject: CTVFLSyntaxAttribute {}
 
-public struct CTVFLSyntaxAttributeConfinment: CTVFLSyntaxAttribute {}
+public struct CTVFLSyntaxAttributeConfinement: CTVFLSyntaxAttribute {}
 
 public struct CTVFLSyntaxAttributeConstant: CTVFLSyntaxAttribute {}
 

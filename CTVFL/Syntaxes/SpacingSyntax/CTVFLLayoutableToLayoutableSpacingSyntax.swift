@@ -22,6 +22,10 @@ public struct CTVFLLayoutableToLayoutableSpacingSyntax<Lhs: CTVFLAssociatedOpera
     public let rhs: Rhs
 }
 
+public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpacingSyntax<Lhs, Rhs> {
+    return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: lhs, rhs: rhs)
+}
+
 public func - (lhs: CTVFLView, rhs: CTVFLView) -> CTVFLLayoutableToLayoutableSpacingSyntax<CTVFLLayoutable, CTVFLLayoutable> {
     return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: CTVFLView._makeLayoutable(rhs))
 }
@@ -32,8 +36,4 @@ public func - <Lhs>(lhs: Lhs, rhs: CTVFLView) -> CTVFLLayoutableToLayoutableSpac
 
 public func - <Rhs>(lhs: CTVFLView, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpacingSyntax<CTVFLLayoutable, Rhs> {
     return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: rhs)
-}
-
-public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpacingSyntax<Lhs, Rhs> {
-    return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: lhs, rhs: rhs)
 }

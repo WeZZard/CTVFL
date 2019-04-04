@@ -16,9 +16,9 @@ public struct CTVFLTrailingConstantSyntax<O: CTVFLAssociableOperand>:
     public typealias Operand = O
     
     public typealias HeadBoundary = Operand.HeadBoundary
-    public typealias TailBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
+    public typealias TailBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinement
     public typealias HeadAttribute = CTVFLSyntaxAttributeConstant
-    public typealias TailAttribute = CTVFLSyntaxAttributeConfinment
+    public typealias TailAttribute = CTVFLSyntaxAttributeConfinement
     public typealias HeadAssociativity = Operand.HeadAssociativity
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsClosed
     

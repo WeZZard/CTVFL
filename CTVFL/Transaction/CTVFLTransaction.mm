@@ -15,10 +15,13 @@
 
 FOUNDATION_EXTERN {
     static void _CTVFLTransactionRunLoopObserverHandler(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info);
-    static void _CTVFLTransactionCleanupTLS(void * arg);
+    static void _CTVFLTransactionTLSDestructor(void * arg);
+    
+    /// Why don't use C++ `thread_local` + `std::unique_ptr`? Because god
+    /// damn Carthage builds for non-active architectures, and some of
+    /// those architectures don't support C++ 11 thread local storage!
+    static pthread_key_t _CTVFLTransactionTLSKey = 0;
 }
-
-pthread_key_t _CTVFLTransactionKey = 0;
 
 #pragma mark -
 
@@ -29,13 +32,11 @@ pthread_key_t _CTVFLTransactionKey = 0;
 @implementation CTVFLTransaction(Implicit)
 + (BOOL)_isImplicit
 {
-    CTVFL::Transaction::ensureImplicit();
     return CTVFL::Transaction::levelsCount() == 1;
 }
 
 + (BOOL)_hasNoTransactionsRunning
 {
-    CTVFL::Transaction::ensureImplicit();
     return CTVFL::Transaction::levelsCount() == 0;
 }
 @end
@@ -167,11 +168,11 @@ namespace CTVFL {
     }
     
     Transaction& Transaction::threadLocal(void) {
-        if (Transaction * transaction = static_cast<Transaction *>(pthread_getspecific(_CTVFLTransactionKey))) {
+        if (Transaction * transaction = static_cast<Transaction *>(pthread_getspecific(_CTVFLTransactionTLSKey))) {
             return * transaction;
         } else {
             CTVFL::Transaction * newTransaction = new CTVFL::Transaction();
-            pthread_setspecific(_CTVFLTransactionKey, newTransaction);
+            pthread_setspecific(_CTVFLTransactionTLSKey, newTransaction);
             return * newTransaction;
         }
     }
@@ -248,20 +249,23 @@ void _CTVFLTransactionRunLoopObserverHandler(CFRunLoopObserverRef observer, CFRu
     }
 }
 
-void _CTVFLTransactionCleanupTLS(void * arg) {
-    CTVFL::Transaction * transaction = static_cast<CTVFL::Transaction *>(pthread_getspecific(_CTVFLTransactionKey));
+/// pthread specific data destroyer invoked by `pthread_exit()`, and
+/// the app exit by invoking `exit()`. Thus pthread specific data on
+/// main thread would not be cleaned.
+///
+void _CTVFLTransactionTLSDestructor(void * arg) {
+    CTVFL::Transaction * transaction = static_cast<CTVFL::Transaction *>(pthread_getspecific(_CTVFLTransactionTLSKey));
     delete transaction;
 }
 
 __attribute__((constructor))
 void _InitCTVFLTransaction(void) {
     // TLS
-    pthread_key_create(&_CTVFLTransactionKey, &_CTVFLTransactionCleanupTLS);
+    pthread_key_create(&_CTVFLTransactionTLSKey, &_CTVFLTransactionTLSDestructor);
     
     // Create a transaction for main thread by accessing the lazy
-    // initializing getter.
-    //
-    // Run Loop observer is get ready at the same time.
+    // initializing getter. Run Loop observer is also get ready at the
+    // same time.
     //
     CTVFL::Transaction::threadLocal();
     CTVFL::Transaction::ensureImplicit();
@@ -270,5 +274,5 @@ void _InitCTVFLTransaction(void) {
 __attribute__((destructor))
 void _DeinitCTVFLTransaction(void) {
     // TLS
-    pthread_key_delete(_CTVFLTransactionKey);
+    pthread_key_delete(_CTVFLTransactionTLSKey);
 }

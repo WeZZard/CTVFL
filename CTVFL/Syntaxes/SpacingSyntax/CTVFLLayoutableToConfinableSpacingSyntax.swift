@@ -11,7 +11,7 @@
 public struct CTVFLLayoutableToConfinableSpacingSyntax<Lhs: CTVFLAssociatedOperand, Rhs: CTVFLAssociatedOperand>:
     CTVFLAssociatedOperand, CTVFLConstraintsPopulatableSyntax, CTVFLAssociatedToAssociatedSpacingSyntax where
     Lhs.TailAttribute == CTVFLSyntaxAttributeLayoutedObject,
-    Rhs.HeadAttribute == CTVFLSyntaxAttributeConfinment,
+    Rhs.HeadAttribute == CTVFLSyntaxAttributeConfinement,
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
 {

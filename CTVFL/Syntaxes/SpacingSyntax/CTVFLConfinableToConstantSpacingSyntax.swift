@@ -10,7 +10,7 @@
 ///
 public struct CTVFLConfinableToConstantSpacingSyntax<Lhs: CTVFLAssociatedOperand, Rhs: CTVFLAssociableOperand>:
     CTVFLAssociableOperand, CTVFLConstraintsPopulatableSyntax, CTVFLAssociatedToAssociableSpacingSyntax where
-    Lhs.TailAttribute == CTVFLSyntaxAttributeConfinment,
+    Lhs.TailAttribute == CTVFLSyntaxAttributeConfinement,
     Rhs.HeadAttribute == CTVFLSyntaxAttributeConstant,
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen

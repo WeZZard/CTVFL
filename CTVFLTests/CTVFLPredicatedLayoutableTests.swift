@@ -19,14 +19,14 @@ class CTVFLPredicatedLayoutableTests: XCTestCase {
         let predicate1 = ==0
         let predicate2 = >=0
         
-        let predicates = [predicate0, predicate1, predicate2]
+        let predicates: [CTVFLPredicating] = [predicate0, predicate1, predicate2]
         
         let predicatedLayoutable = CTVFLPredicatedLayoutable(
             layoutable: layoutable, predicates: predicates
         )
         
-        XCTAssert(predicatedLayoutable._layoutable == layoutable)
+        XCTAssertEqual(predicatedLayoutable._layoutable, layoutable)
         
-        // XCTAssert(predicatedLayoutable._predicates == predicates)
+        XCTAssertEqual(predicatedLayoutable._predicates.count, predicates.count)
     }
 }

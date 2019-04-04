@@ -9,36 +9,103 @@
 
 #import "CTVFLTransaction+Implicit.h"
 
-@interface CTVFLTransaction_ImplicitTests : XCTestCase
-
+@interface CTVFLTransaction_ImplicitTests: XCTestCase {
+    NSThread * _thread;
+    NSLock * _lock;
+    NSMutableArray * _blocks;
+}
 @end
 
 @implementation CTVFLTransaction_ImplicitTests
-- (void)testImplicitTransactionIsRunning
+- (void)setUp
 {
-    XCTAssertTrue([CTVFLTransaction _isImplicit]);
+    _lock = [[NSLock alloc] init];
+    _blocks = [[NSMutableArray alloc] init];
+    _thread = [[NSThread alloc] initWithTarget: self selector: @selector(performTransactionTests) object: nil];
+    [_thread start];
 }
 
-- (void)testHasTransactionsRunning
+- (void)tearDown
 {
-    XCTAssertFalse([CTVFLTransaction _hasNoTransactionsRunning]);
+    _thread = nil;
+    _lock = nil;
+    _blocks = nil;
 }
 
-- (void)testBegin_entersANonImplicitTransaction
+- (void)performTransactionTests
 {
-    XCTAssertTrue([CTVFLTransaction _isImplicit]);
-    [CTVFLTransaction begin];
-    XCTAssertFalse([CTVFLTransaction _isImplicit]);
-    [CTVFLTransaction commit];
-    XCTAssertTrue([CTVFLTransaction _isImplicit]);
+    if ([_lock tryLock]) {
+        
+        [_blocks enumerateObjectsUsingBlock:^(void (^block)(CTVFLTransaction_ImplicitTests *), NSUInteger idx, BOOL * _Nonnull stop) {
+            block(self);
+        }];
+        
+        [_lock unlock];
+    }
 }
 
-- (void)testCommit_escapesFromANonImplicitTransaction
+- (void)addTransactionTestWithBlock:(void (^)(CTVFLTransaction_ImplicitTests *))block
 {
-    XCTAssertTrue([CTVFLTransaction _isImplicit]);
-    [CTVFLTransaction begin];
-    XCTAssertFalse([CTVFLTransaction _isImplicit]);
-    [CTVFLTransaction commit];
-    XCTAssertTrue([CTVFLTransaction _isImplicit]);
+    [_lock lock];
+    [_blocks addObject: block];
+    [_lock unlock];
+}
+
+- (void)waitForTransactionTests
+{
+    while (![_thread isFinished]) {
+        usleep(1000);
+    }
+}
+
+- (void)test_isImplicit_returnsFalse_whenNothingCalledBefore
+{
+    [self addTransactionTestWithBlock: ^(CTVFLTransaction_ImplicitTests * self){
+        XCTAssertFalse([CTVFLTransaction _isImplicit]);
+    }];
+    
+    [self waitForTransactionTests];
+}
+
+- (void)test_hasTransactionsRunning_returnsTrue_whenNothingCalledBefore
+{
+    [self addTransactionTestWithBlock: ^(CTVFLTransaction_ImplicitTests * self){
+        XCTAssertTrue([CTVFLTransaction _hasNoTransactionsRunning]);
+    }];
+    
+    [self waitForTransactionTests];
+}
+
+- (void)testBegin_entersIntoAnExplicitTransaction
+{
+    [self addTransactionTestWithBlock: ^(CTVFLTransaction_ImplicitTests * self){
+        XCTAssertFalse([CTVFLTransaction _isImplicit]);
+        XCTAssertTrue([CTVFLTransaction _hasNoTransactionsRunning]);
+        [CTVFLTransaction begin];
+        XCTAssertFalse([CTVFLTransaction _isImplicit]);
+        XCTAssertFalse([CTVFLTransaction _hasNoTransactionsRunning]);
+        [CTVFLTransaction commit];
+        XCTAssertTrue([CTVFLTransaction _isImplicit]);
+        XCTAssertFalse([CTVFLTransaction _hasNoTransactionsRunning]);
+    }];
+    
+    [self waitForTransactionTests];
+}
+
+- (void)testCommit_exitsFromANonImplicitTransaction
+{
+    [self addTransactionTestWithBlock: ^(CTVFLTransaction_ImplicitTests * self){
+        XCTAssertFalse([CTVFLTransaction _isImplicit]);
+        XCTAssertTrue([CTVFLTransaction _hasNoTransactionsRunning]);
+        [CTVFLTransaction begin];
+        XCTAssertFalse([CTVFLTransaction _isImplicit]);
+        XCTAssertFalse([CTVFLTransaction _hasNoTransactionsRunning]);
+        [CTVFLTransaction commit];
+        XCTAssertTrue([CTVFLTransaction _isImplicit]);
+        XCTAssertFalse([CTVFLTransaction _hasNoTransactionsRunning]);
+    }];
+    
+    [self waitForTransactionTests];
 }
 @end
+

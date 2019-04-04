@@ -9,10 +9,10 @@
 /// its internal layout guide.
 ///
 public struct CTVFLConfinable: Hashable, CTVFLAssociatedOperand {
-    public typealias HeadBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
-    public typealias TailBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
-    public typealias HeadAttribute = CTVFLSyntaxAttributeConfinment
-    public typealias TailAttribute = CTVFLSyntaxAttributeConfinment
+    public typealias HeadBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinement
+    public typealias TailBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinement
+    public typealias HeadAttribute = CTVFLSyntaxAttributeConfinement
+    public typealias TailAttribute = CTVFLSyntaxAttributeConfinement
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     

@@ -9,8 +9,8 @@
 /// its internal view.
 ///
 public struct CTVFLLayoutable: Hashable, CTVFLAssociatedOperand {
-    public typealias HeadBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
-    public typealias TailBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinment
+    public typealias HeadBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinement
+    public typealias TailBoundary = CTVFLSyntaxBoundaryIsLayoutedObjectOrConfinement
     public typealias HeadAttribute = CTVFLSyntaxAttributeLayoutedObject
     public typealias TailAttribute = CTVFLSyntaxAttributeLayoutedObject
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen

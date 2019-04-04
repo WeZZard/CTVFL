@@ -10,7 +10,7 @@
 ///
 public struct CTVFLConfinableToLayoutableSpacingSyntax<Lhs: CTVFLAssociatedOperand, Rhs: CTVFLAssociatedOperand>:
     CTVFLAssociatedOperand, CTVFLConstraintsPopulatableSyntax, CTVFLAssociatedToAssociatedSpacingSyntax where
-    Lhs.TailAttribute == CTVFLSyntaxAttributeConfinment,
+    Lhs.TailAttribute == CTVFLSyntaxAttributeConfinement,
     Rhs.HeadAttribute == CTVFLSyntaxAttributeLayoutedObject,
     Lhs.TailAssociativity == CTVFLSyntaxAssociativityIsOpen,
     Rhs.HeadAssociativity == CTVFLSyntaxAssociativityIsOpen
