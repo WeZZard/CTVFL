@@ -39,13 +39,14 @@ internal class _CTVFLEvaluationStack {
             // reuse memory spaces which have been allocated for past
             // reallocations after several reallocations.
             //
-            // Initial allocation:   1 2 3
-            // First re-allocation:  . . . 1 2 3 4
-            // Second re-allocation: . . . . . . . 1 2 3 4 5 6
-            // Third re-allocation:  . . . . . . . . . . . . . 1 2 3 4 5 6 7 8 9
-            // Fourth re-allocation: 1 2 3 4 5 6 7 8 9 A B C D
+            // Initial allocation:   1  2
+            // First re-allocation:  .  .  1  2  3
+            // Second re-allocation: .  .  .  .  .  1  2  3  4  5
+            // Third re-allocation:  .  .  .  .  .  .  .  .  .  .  1  2  3  4  5  6  7  8
+            // Fourth re-allocation: .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 1 2 3 4 5 6 7 8 9 A B C
+            // Fivth re-allocation:  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F  11 12
             //
-            let enlargedCapacity = _capacity + (_capacity >> 1)
+            let enlargedCapacity = _capacity + ((_capacity + 1) >> 1)
             let oldBuffer = _buffer
             let newBuffer = _Buffer.allocate(capacity: enlargedCapacity)
             newBuffer.initialize(repeating: .init(), count: enlargedCapacity)
