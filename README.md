@@ -149,6 +149,31 @@ safe.
 Of course, calls to `CTVFLTransaction.begin()` and
 `CTVFLTransaction.end()` shall be balanced.
 
+## Known Issues
+
+The compiler cannot correctly recognize following syntax:
+
+```swift
+withVFL(H: view1 - view2 - view3)
+```
+
+This is because of a bug in Swift compiler which puts the operator overload:
+
+```swift
+extension Numeric {
+    public func - (lhs: Self, rhs: Self) -> Self {
+        ...
+    }
+}
+```
+
+in here. You can use syntax concatenation to workaround.
+
+```swift
+let view1_2 = view1 - view2
+withVFL(H: view1_2 - view3)
+```
+
 ## License
 
 MIT License
