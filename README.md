@@ -167,7 +167,7 @@ extension Numeric {
 }
 ```
 
-in here. You can use syntax concatenation to workaround.
+at here. You can use syntax concatenation to workaround.
 
 ```swift
 let view1_2 = view1 - view2
