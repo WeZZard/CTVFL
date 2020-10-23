@@ -42,7 +42,7 @@ class CTVFLConstraintGroupTests: XCTestCase {
     func testInit() {
         let group = CTVFLConstraintGroup()
         XCTAssert(group._handlers.isEmpty)
-        XCTAssert(!group.areAllAcrive)
+        XCTAssert(!group.areAllActive)
     }
     
     func testReplaceConstraints() {
@@ -60,15 +60,15 @@ class CTVFLConstraintGroupTests: XCTestCase {
         let handler2 = _CTVFLConstraintHandler(view: view, constraint: viewHeight100Constraint)
         let handlers: ContiguousArray<_CTVFLConstraintHandler> = [handler1, handler2]
         let group = CTVFLConstraintGroup()
-        XCTAssert(!group.areAllAcrive)
+        XCTAssert(!group.areAllActive)
         group._replaceConstraintHandlers(handlers)
-        XCTAssert(group.areAllAcrive)
+        XCTAssert(group.areAllActive)
         group.setActive(false)
-        XCTAssert(!group.areAllAcrive)
+        XCTAssert(!group.areAllActive)
         group.setActive(true)
-        XCTAssert(group.areAllAcrive)
+        XCTAssert(group.areAllActive)
         viewWidth100Constraint.isActive = false
-        XCTAssert(!group.areAllAcrive)
+        XCTAssert(!group.areAllActive)
     }
     
 }

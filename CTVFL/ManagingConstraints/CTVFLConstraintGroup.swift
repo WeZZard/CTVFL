@@ -31,7 +31,7 @@ public class CTVFLConstraintGroup {
     
     @available(macOS, introduced: 10.10)
     @available(macOSApplicationExtension, introduced: 10.10)
-    public var areAllAcrive: Bool {
+    public var areAllActive: Bool {
         return _handlers.isEmpty
             ? false
             : _handlers.map({ $0.isActive }).reduce(true, { $0 && $1 })

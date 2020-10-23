@@ -79,6 +79,12 @@
 		9C782EF522510A8800982AF7 /* NSLayoutConstraint+CTVFLTestAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C782EF422510A8800982AF7 /* NSLayoutConstraint+CTVFLTestAdditions.swift */; };
 		9C782EF622510A8800982AF7 /* NSLayoutConstraint+CTVFLTestAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C782EF422510A8800982AF7 /* NSLayoutConstraint+CTVFLTestAdditions.swift */; };
 		9C782EF722510A8800982AF7 /* NSLayoutConstraint+CTVFLTestAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C782EF422510A8800982AF7 /* NSLayoutConstraint+CTVFLTestAdditions.swift */; };
+		9C79262B240BE32700E2A2CD /* withVFLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB77AD61F7179A20052448F /* withVFLTests.swift */; };
+		9C79262C240BE32900E2A2CD /* withVFLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB77AD61F7179A20052448F /* withVFLTests.swift */; };
+		9C79262D240BE32900E2A2CD /* withVFLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB77AD61F7179A20052448F /* withVFLTests.swift */; };
+		9C79262E240BE32E00E2A2CD /* withVFL_UIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E53F224CEA5B00382E11 /* withVFL_UIKitTests.swift */; };
+		9C79262F240BE32E00E2A2CD /* withVFL_UIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E53F224CEA5B00382E11 /* withVFL_UIKitTests.swift */; };
+		9C792630240BE32F00E2A2CD /* withVFL_UIKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E53F224CEA5B00382E11 /* withVFL_UIKitTests.swift */; };
 		9C80D054224E49FB00CFCF9E /* CTVFLTransaction+Implicit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C316E4A224D3690009E0660 /* CTVFLTransaction+Implicit.h */; };
 		9C80D055224E49FB00CFCF9E /* CTVFLTransaction+Implicit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C316E4A224D3690009E0660 /* CTVFLTransaction+Implicit.h */; };
 		9C80D056224E49FC00CFCF9E /* CTVFLTransaction+Implicit.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C316E4A224D3690009E0660 /* CTVFLTransaction+Implicit.h */; };
@@ -1064,6 +1070,7 @@
 			files = (
 				9C782EE7224FB47E00982AF7 /* NSLayoutConstraintBaselineTests.swift in Sources */,
 				9C6503F71F72C201006881E5 /* _CTVFLConstraintHandlerTests.swift in Sources */,
+				9C79262B240BE32700E2A2CD /* withVFLTests.swift in Sources */,
 				9C782EF522510A8800982AF7 /* NSLayoutConstraint+CTVFLTestAdditions.swift in Sources */,
 				9C6503FF1F72C270006881E5 /* CTVFLPredicatedLayoutableTests.swift in Sources */,
 				9C6504071F72C28D006881E5 /* CTVFLConstantTests.swift in Sources */,
@@ -1075,6 +1082,7 @@
 				9C6503FB1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift in Sources */,
 				9C6503E71F72C0DC006881E5 /* CTVFLNSLayoutConstrainedTests.swift in Sources */,
 				9C6504031F72C280006881E5 /* CTVFLPredicatableTests.swift in Sources */,
+				9C79262E240BE32E00E2A2CD /* withVFL_UIKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1153,6 +1161,7 @@
 			files = (
 				9C782EE8224FB47F00982AF7 /* NSLayoutConstraintBaselineTests.swift in Sources */,
 				9C6503F81F72C201006881E5 /* _CTVFLConstraintHandlerTests.swift in Sources */,
+				9C79262C240BE32900E2A2CD /* withVFLTests.swift in Sources */,
 				9C782EF622510A8800982AF7 /* NSLayoutConstraint+CTVFLTestAdditions.swift in Sources */,
 				9C6504001F72C270006881E5 /* CTVFLPredicatedLayoutableTests.swift in Sources */,
 				9C6504081F72C28D006881E5 /* CTVFLConstantTests.swift in Sources */,
@@ -1164,6 +1173,7 @@
 				9C6503FC1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift in Sources */,
 				9C6503E81F72C0DC006881E5 /* CTVFLNSLayoutConstrainedTests.swift in Sources */,
 				9C6504041F72C280006881E5 /* CTVFLPredicatableTests.swift in Sources */,
+				9C79262F240BE32E00E2A2CD /* withVFL_UIKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1242,6 +1252,7 @@
 			files = (
 				9C6503F91F72C201006881E5 /* _CTVFLConstraintHandlerTests.swift in Sources */,
 				9CDCE80E224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m in Sources */,
+				9C79262D240BE32900E2A2CD /* withVFLTests.swift in Sources */,
 				9C6504011F72C270006881E5 /* CTVFLPredicatedLayoutableTests.swift in Sources */,
 				9C6504091F72C28D006881E5 /* CTVFLConstantTests.swift in Sources */,
 				9CE2E475224BE41A00382E11 /* ConstrainTests.swift in Sources */,
@@ -1253,6 +1264,7 @@
 				9C782EE9224FB47F00982AF7 /* NSLayoutConstraintBaselineTests.swift in Sources */,
 				9C6504051F72C280006881E5 /* CTVFLPredicatableTests.swift in Sources */,
 				9C782EF722510A8800982AF7 /* NSLayoutConstraint+CTVFLTestAdditions.swift in Sources */,
+				9C792630240BE32F00E2A2CD /* withVFL_UIKitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
