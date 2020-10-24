@@ -10,7 +10,8 @@ public class CTVFLConstraintGroup {
         return _handlers_
     }
     
-    private var _handlers_: ContiguousArray<_CTVFLConstraintHandler>
+    @usableFromInline
+    internal var _handlers_: ContiguousArray<_CTVFLConstraintHandler>
     
     public init<C: Sequence>(constraints: C) where
         C.Element == CTVFLConstraint
@@ -37,10 +38,12 @@ public class CTVFLConstraintGroup {
             : _handlers.map({ $0.isActive }).reduce(true, { $0 && $1 })
     }
     
+    @inlinable
     internal init() {
         _handlers_ = []
     }
     
+    @usableFromInline
     internal func _replaceConstraintHandlers(
         _ constraintHandlers: ContiguousArray<_CTVFLConstraintHandler>
         )

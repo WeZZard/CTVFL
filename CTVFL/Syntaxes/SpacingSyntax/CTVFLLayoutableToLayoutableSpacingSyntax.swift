@@ -20,20 +20,30 @@ public struct CTVFLLayoutableToLayoutableSpacingSyntax<Lhs: CTVFLAssociatedOpera
     
     public let lhs: Lhs
     public let rhs: Rhs
+    
+    @inline(__always)
+    public init(lhs: Lhs, rhs: Rhs) {
+        self.lhs = lhs
+        self.rhs = rhs
+    }
 }
 
+@inlinable
 public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpacingSyntax<Lhs, Rhs> {
     return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: lhs, rhs: rhs)
 }
 
+@inlinable
 public func - (lhs: CTVFLView, rhs: CTVFLView) -> CTVFLLayoutableToLayoutableSpacingSyntax<CTVFLLayoutable, CTVFLLayoutable> {
     return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: CTVFLView._makeLayoutable(rhs))
 }
 
+@inlinable
 public func - <Lhs>(lhs: Lhs, rhs: CTVFLView) -> CTVFLLayoutableToLayoutableSpacingSyntax<Lhs, CTVFLLayoutable> {
     return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: lhs, rhs: CTVFLView._makeLayoutable(rhs))
 }
 
+@inlinable
 public func - <Rhs>(lhs: CTVFLView, rhs: Rhs) -> CTVFLLayoutableToLayoutableSpacingSyntax<CTVFLLayoutable, Rhs> {
     return CTVFLLayoutableToLayoutableSpacingSyntax(lhs: CTVFLView._makeLayoutable(lhs), rhs: rhs)
 }

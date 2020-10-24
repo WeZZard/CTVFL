@@ -47,6 +47,7 @@ public class CTVFLEvaluationContext: NSObject {
         _constriantsCount = 0
     }
     
+    @usableFromInline
     internal func _ensureOpcodesTailElements(_ addition: Int) {
         let targetCount = Swift.max(100, _opcodesCount + addition)
         if _opcodes.capacity < targetCount {
@@ -54,6 +55,7 @@ public class CTVFLEvaluationContext: NSObject {
         }
     }
     
+    @usableFromInline
     internal func _appendOpcode(_ opcode: CTVFLOpcode) {
         let index = _opcodesCount
         if index == _opcodes.endIndex {
@@ -66,6 +68,7 @@ public class CTVFLEvaluationContext: NSObject {
         _opcodesCount += 1
     }
     
+    @usableFromInline
     internal func _appendConstraint(_ constraint: CTVFLConstraint) {
         let index = _constriantsCount
         if index == _constraints.endIndex {

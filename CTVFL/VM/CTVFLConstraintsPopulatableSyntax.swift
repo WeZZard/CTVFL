@@ -11,6 +11,7 @@ public protocol CTVFLConstraintsPopulatableSyntax: CTVFLAnySyntax {
 }
 
 extension CTVFLConstraintsPopulatableSyntax {
+    @inlinable
     public func makeConstraints(orientation: CTVFLOrientation, options: CTVFLFormatOptions) -> [CTVFLConstraint] {
         let evaluationContext = CTVFLTransaction.sharedEvaluationContext
         

@@ -7,7 +7,7 @@
 
 extension CTVFLLayoutGuide {
     @inline(__always)
-    internal static func _makeConfinable(_ value: CTVFLLayoutGuide) -> CTVFLConfinable {
+    public static func _makeConfinable(_ value: CTVFLLayoutGuide) -> CTVFLConfinable {
         return .init(value)
     }
 }

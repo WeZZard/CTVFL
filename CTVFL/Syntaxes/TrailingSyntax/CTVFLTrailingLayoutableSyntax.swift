@@ -24,6 +24,11 @@ public struct CTVFLTrailingLayoutableSyntax<O: CTVFLAssociatedOperand>:
     
     public let operand: Operand
     
+    @inline(__always)
+    public init(operand: Operand) {
+        self.operand = operand
+    }
+    
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(1)
         context._appendOpcode(.push)
@@ -41,10 +46,12 @@ public struct CTVFLTrailingLayoutableSyntax<O: CTVFLAssociatedOperand>:
     }
 }
 
+@inlinable
 public postfix func | (operand: CTVFLView) -> CTVFLTrailingLayoutableSyntax<CTVFLLayoutable> {
     return CTVFLTrailingLayoutableSyntax(operand: CTVFLView._makeLayoutable(operand))
 }
 
+@inlinable
 public postfix func | <Operand>(operand: Operand) -> CTVFLTrailingLayoutableSyntax<Operand> {
     return CTVFLTrailingLayoutableSyntax(operand: operand)
 }

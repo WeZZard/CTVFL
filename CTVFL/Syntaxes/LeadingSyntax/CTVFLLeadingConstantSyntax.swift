@@ -24,6 +24,11 @@ public struct CTVFLLeadingConstantSyntax<O: CTVFLAssociableOperand>:
     
     public let operand: Operand
     
+    @inline(__always)
+    public init(operand: Operand) {
+        self.operand = operand
+    }
+    
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(5)
         context._appendOpcode(.push)
@@ -40,10 +45,12 @@ public struct CTVFLLeadingConstantSyntax<O: CTVFLAssociableOperand>:
     }
 }
 
+@inlinable
 public prefix func |- <Operand: CTVFLExpressibleByConstantLiteral>(operand: Operand) -> CTVFLLeadingConstantSyntax<CTVFLConstant> {
     return CTVFLLeadingConstantSyntax(operand: Operand._makeConstant(operand))
 }
 
+@inlinable
 public prefix func |- <Operand>(operand: Operand) -> CTVFLLeadingConstantSyntax<Operand> {
     return CTVFLLeadingConstantSyntax(operand: operand)
 }

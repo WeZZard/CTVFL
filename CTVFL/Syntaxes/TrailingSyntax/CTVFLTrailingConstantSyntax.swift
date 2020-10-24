@@ -24,6 +24,12 @@ public struct CTVFLTrailingConstantSyntax<O: CTVFLAssociableOperand>:
     
     public let operand: Operand
     
+    @inline(__always)
+    public init(operand: Operand) {
+        self.operand = operand
+    }
+    
+    @inlinable
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(1)
         context._appendOpcode(.push)
@@ -39,10 +45,12 @@ public struct CTVFLTrailingConstantSyntax<O: CTVFLAssociableOperand>:
     }
 }
 
+@inlinable
 public postfix func -| <Operand: CTVFLExpressibleByConstantLiteral>(operand: Operand) -> CTVFLTrailingConstantSyntax<CTVFLConstant> {
     return CTVFLTrailingConstantSyntax(operand: Operand._makeConstant(operand))
 }
 
+@inlinable
 public postfix func -| <Operand>(operand: Operand) -> CTVFLTrailingConstantSyntax<Operand> {
     return CTVFLTrailingConstantSyntax(operand: operand)
 }

@@ -1,15 +1,15 @@
+// 
+// CTVFLPerformanceTests.swift
+// CTVFL
 //
-//  PerformanceTests.swift
-//  CTVFL
-//
-//  Created on 2019/3/28.
+// Created by WeZZard on 10/23/20.
+// Copyright © 2020 WeZZard. All rights reserved.
 //
 
 import XCTest
-@testable
 import CTVFL
 
-class PerformanceTests: XCTestCase {
+class CTVFLPerformanceTests: XCTestCase {
     var rootView: CTVFLView!
     var view1: CTVFLView!
     var view2: CTVFLView!
@@ -30,7 +30,7 @@ class PerformanceTests: XCTestCase {
     
     func testCTVFL() {
         measure {
-            for _ in 0..<100000 {
+            for _ in 0..<1000000000000 {
                 withVFL(H: view1 - view2)
             }
         }
@@ -63,4 +63,5 @@ class PerformanceTests: XCTestCase {
             }
         }
     }
+
 }

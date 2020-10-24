@@ -16,8 +16,10 @@ public struct CTVFLLayoutable: Hashable, CTVFLAssociatedOperand {
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
+    @usableFromInline
     internal unowned(unsafe) var _view: CTVFLLayoutAnchorSelectable
     
+    @inline(__always)
     internal init(_ view: CTVFLView) {
         _view = view
     }
@@ -34,6 +36,7 @@ public struct CTVFLLayoutable: Hashable, CTVFLAssociatedOperand {
         return lhs._view === rhs._view
     }
     
+    @inlinable
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(5)
         context._appendOpcode(.push)
@@ -42,6 +45,7 @@ public struct CTVFLLayoutable: Hashable, CTVFLAssociatedOperand {
         context._appendOpcode(.pop)
     }
     
+    @inlinable
     public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {
         return _view._ctvfl_attributeForBeingEvaluated(at: site, for: orientation, with: options)
     }

@@ -17,6 +17,7 @@ public protocol CTVFLAssociatedToAssociableSpacingSyntax: CTVFLBinarySyntax wher
 }
 
 extension CTVFLAssociatedToAssociableSpacingSyntax {
+    @inlinable
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(1)
         context._appendOpcode(.push)

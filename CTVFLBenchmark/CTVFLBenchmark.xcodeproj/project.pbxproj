@@ -22,8 +22,6 @@
 		9CE2E468224BB75900382E11 /* UnaryViewBenchmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E467224BB75900382E11 /* UnaryViewBenchmarkViewController.swift */; };
 		9CE2E46A224BB81300382E11 /* BenchmarkItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E469224BB81300382E11 /* BenchmarkItem.swift */; };
 		9CE2E46C224BC89E00382E11 /* BenchmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E46B224BC89E00382E11 /* BenchmarkViewController.swift */; };
-		9CE2E470224BE26E00382E11 /* SwiftCharts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE2E46F224BE26E00382E11 /* SwiftCharts.framework */; };
-		9CE2E471224BE26E00382E11 /* SwiftCharts.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9CE2E46F224BE26E00382E11 /* SwiftCharts.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9CEB59A3224EF49D00EA9197 /* UIView+Addition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEB59A2224EF49D00EA9197 /* UIView+Addition.swift */; };
 		9CEB59A5224F070900EA9197 /* BinaryViewBenchmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEB59A4224F070900EA9197 /* BinaryViewBenchmarkViewController.swift */; };
 		9CEB59A7224F072500EA9197 /* TernaryViewBenchmarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEB59A6224F072500EA9197 /* TernaryViewBenchmarkViewController.swift */; };
@@ -40,7 +38,6 @@
 				9CE2E462224BAF2500382E11 /* Cartography.framework in Embed Frameworks */,
 				9CE2E463224BAF2500382E11 /* CTVFL.framework in Embed Frameworks */,
 				9CE2E464224BAF2500382E11 /* SnapKit.framework in Embed Frameworks */,
-				9CE2E471224BE26E00382E11 /* SwiftCharts.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -65,7 +62,6 @@
 		9CE2E467224BB75900382E11 /* UnaryViewBenchmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnaryViewBenchmarkViewController.swift; sourceTree = "<group>"; };
 		9CE2E469224BB81300382E11 /* BenchmarkItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkItem.swift; sourceTree = "<group>"; };
 		9CE2E46B224BC89E00382E11 /* BenchmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BenchmarkViewController.swift; sourceTree = "<group>"; };
-		9CE2E46F224BE26E00382E11 /* SwiftCharts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCharts.framework; path = Carthage/Build/iOS/SwiftCharts.framework; sourceTree = "<group>"; };
 		9CEB59A2224EF49D00EA9197 /* UIView+Addition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Addition.swift"; sourceTree = "<group>"; };
 		9CEB59A4224F070900EA9197 /* BinaryViewBenchmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryViewBenchmarkViewController.swift; sourceTree = "<group>"; };
 		9CEB59A6224F072500EA9197 /* TernaryViewBenchmarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TernaryViewBenchmarkViewController.swift; sourceTree = "<group>"; };
@@ -77,7 +73,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CE2E470224BE26E00382E11 /* SwiftCharts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +83,6 @@
 			isa = PBXGroup;
 			children = (
 				9CE2E443224BA2F400382E11 /* CTVFLBenchmark-iOS */,
-				9CE2E46F224BE26E00382E11 /* SwiftCharts.framework */,
 				9CE2E45F224BAF2500382E11 /* Cartography.framework */,
 				9CE2E460224BAF2500382E11 /* CTVFL.framework */,
 				9CE2E461224BAF2500382E11 /* SnapKit.framework */,
@@ -266,6 +260,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEVELOPMENT_TEAM = A8KGC2QQ74;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -299,6 +294,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEVELOPMENT_TEAM = A8KGC2QQ74;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -347,7 +343,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 3R2L6323L4;
+				DEVELOPMENT_TEAM = A8KGC2QQ74;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -424,7 +420,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 3R2L6323L4;
+				DEVELOPMENT_TEAM = A8KGC2QQ74;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (

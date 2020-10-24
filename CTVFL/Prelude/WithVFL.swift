@@ -7,6 +7,7 @@
 
 
 @discardableResult
+@inlinable
 public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
     V syntax: @autoclosure ()-> S,
     options: CTVFLFormatOptions = []
@@ -23,6 +24,7 @@ public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
 }
 
 @discardableResult
+@inlinable
 public func withVFL<S: CTVFLOperand & CTVFLConstraintsPopulatableSyntax>(
     H syntax: @autoclosure ()-> S,
     options: CTVFLFormatOptions = []

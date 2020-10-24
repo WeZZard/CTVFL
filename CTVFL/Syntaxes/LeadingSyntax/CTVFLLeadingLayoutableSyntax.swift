@@ -24,6 +24,11 @@ public struct CTVFLLeadingLayoutableSyntax<O: CTVFLAssociatedOperand>:
     
     public let operand: Operand
     
+    @inline(__always)
+    public init(operand: Operand) {
+        self.operand = operand
+    }
+    
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(3)
         context._appendOpcode(.push)
@@ -41,10 +46,12 @@ public struct CTVFLLeadingLayoutableSyntax<O: CTVFLAssociatedOperand>:
     }
 }
 
+@inlinable
 public prefix func | (operand: CTVFLView) -> CTVFLLeadingLayoutableSyntax<CTVFLLayoutable> {
     return CTVFLLeadingLayoutableSyntax(operand: CTVFLView._makeLayoutable(operand))
 }
 
+@inlinable
 public prefix func | <Operand>(operand: Operand) -> CTVFLLeadingLayoutableSyntax<Operand> {
     return CTVFLLeadingLayoutableSyntax(operand: operand)
 }

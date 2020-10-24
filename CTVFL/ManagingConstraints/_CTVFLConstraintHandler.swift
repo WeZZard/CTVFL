@@ -5,6 +5,8 @@
 //  Created by WeZZard on 9/19/17.
 //
 
+
+@usableFromInline
 internal class _CTVFLConstraintHandler {
     // Set to unowned to avoid a retain cycle on the associated view.
     internal unowned let view: CTVFLView
@@ -31,6 +33,7 @@ internal class _CTVFLConstraintHandler {
         self.constraint = constraint
     }
     
+    @usableFromInline
     internal static func makeHandlers<C>(constraints: C)
         -> ContiguousArray<_CTVFLConstraintHandler> where
         C: Sequence, C.Element == CTVFLConstraint

@@ -15,6 +15,7 @@ public protocol CTVFLUnarySyntax: CTVFLOperand {
 }
 
 extension CTVFLUnarySyntax {
+    @inlinable
     public func attributeForContainer(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {
         let rawOptions = options.rawValue
         
@@ -78,7 +79,10 @@ extension CTVFLUnarySyntax where Self: CTVFLAssociatedOperand, Operand: CTVFLAss
 
 #if os(iOS) || os(tvOS)
 @available(iOSApplicationExtension 11.0, tvOSApplicationExtension 11.0, *)
-let _rawSpacingBaselineToBaseline = CTVFLFormatOptions.spacingBaselineToBaseline.rawValue
+@usableFromInline
+internal let _rawSpacingBaselineToBaseline = CTVFLFormatOptions.spacingBaselineToBaseline.rawValue
 #endif
-let _rawDirectionLeftToRight = CTVFLFormatOptions.directionLeftToRight.rawValue
-let _rawDirectionRightToLeft = CTVFLFormatOptions.directionRightToLeft.rawValue
+@usableFromInline
+internal let _rawDirectionLeftToRight = CTVFLFormatOptions.directionLeftToRight.rawValue
+@usableFromInline
+internal let _rawDirectionRightToLeft = CTVFLFormatOptions.directionRightToLeft.rawValue

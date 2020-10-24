@@ -21,6 +21,7 @@ public protocol CTVFLBinarySyntax: CTVFLOperand {
 }
 
 extension CTVFLBinarySyntax where Self: CTVFLAssociatedOperand, RhsOperand: CTVFLAssociatedOperand {
+    @inlinable
     public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {
         return rhs.attributeForBeingEvaluated(at: site, forOrientation: orientation, withOptions: options)
     }

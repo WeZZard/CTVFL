@@ -49,6 +49,8 @@
 		9C316E4C224DDD9E009E0660 /* _CTVFLEvaluationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C316E4B224DDD9E009E0660 /* _CTVFLEvaluationStack.swift */; };
 		9C316E4D224DDD9E009E0660 /* _CTVFLEvaluationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C316E4B224DDD9E009E0660 /* _CTVFLEvaluationStack.swift */; };
 		9C316E4E224DDD9E009E0660 /* _CTVFLEvaluationStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C316E4B224DDD9E009E0660 /* _CTVFLEvaluationStack.swift */; };
+		9C35128725432DC400DC03DE /* CTVFLPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C35128625432DC400DC03DE /* CTVFLPerformanceTests.swift */; };
+		9C35128925432DC400DC03DE /* CTVFL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CB77A3C1F71548A0052448F /* CTVFL.framework */; };
 		9C6503DA1F72BC9B006881E5 /* CTVFL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9CB77A3C1F71548A0052448F /* CTVFL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C6503E01F72BCBE006881E5 /* CTVFL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9CB77A751F7154A50052448F /* CTVFL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9C6503E11F72BCEE006881E5 /* CTVFL.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9CB77A591F7154970052448F /* CTVFL.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -181,9 +183,6 @@
 		9CE2E4C0224C95FF00382E11 /* CTVFLLayoutAnchor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4BC224C95FF00382E11 /* CTVFLLayoutAnchor.m */; };
 		9CE2E4C1224C95FF00382E11 /* CTVFLLayoutAnchor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4BC224C95FF00382E11 /* CTVFLLayoutAnchor.m */; };
 		9CE2E4C2224C95FF00382E11 /* CTVFLLayoutAnchor.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4BC224C95FF00382E11 /* CTVFLLayoutAnchor.m */; };
-		9CE2E4C4224CA0AC00382E11 /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4C3224CA0AC00382E11 /* PerformanceTests.swift */; };
-		9CE2E4C5224CA0AC00382E11 /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4C3224CA0AC00382E11 /* PerformanceTests.swift */; };
-		9CE2E4C6224CA0AC00382E11 /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4C3224CA0AC00382E11 /* PerformanceTests.swift */; };
 		9CE2E4CC224CA6E400382E11 /* CTVFLConfinable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4CB224CA6E400382E11 /* CTVFLConfinable.swift */; };
 		9CE2E4CD224CA6E400382E11 /* CTVFLConfinable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4CB224CA6E400382E11 /* CTVFLConfinable.swift */; };
 		9CE2E4CE224CA6E400382E11 /* CTVFLConfinable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE2E4CB224CA6E400382E11 /* CTVFLConfinable.swift */; };
@@ -268,6 +267,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		9C35128A25432DC400DC03DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9CB77A311F7154520052448F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9CB77A3B1F71548A0052448F;
+			remoteInfo = "CTVFL-iOS";
+		};
 		9CB77A471F71548A0052448F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9CB77A311F7154520052448F /* Project object */;
@@ -332,6 +338,9 @@
 		9C316E46224D339B009E0660 /* CTVFLTransactionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLTransactionTests.swift; sourceTree = "<group>"; };
 		9C316E4A224D3690009E0660 /* CTVFLTransaction+Implicit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CTVFLTransaction+Implicit.h"; sourceTree = "<group>"; };
 		9C316E4B224DDD9E009E0660 /* _CTVFLEvaluationStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _CTVFLEvaluationStack.swift; sourceTree = "<group>"; };
+		9C35128425432DC400DC03DE /* CTVFLPerformanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CTVFLPerformanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C35128625432DC400DC03DE /* CTVFLPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLPerformanceTests.swift; sourceTree = "<group>"; };
+		9C35128825432DC400DC03DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C6503E61F72C0DC006881E5 /* CTVFLNSLayoutConstrainedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLNSLayoutConstrainedTests.swift; sourceTree = "<group>"; };
 		9C6503F21F72C160006881E5 /* CTVFLPredicatedLayoutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLPredicatedLayoutable.swift; sourceTree = "<group>"; };
 		9C6503F61F72C201006881E5 /* _CTVFLConstraintHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _CTVFLConstraintHandlerTests.swift; sourceTree = "<group>"; };
@@ -382,7 +391,6 @@
 		9CE2E4AB224C752800382E11 /* CTVFLAnySyntax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLAnySyntax.swift; sourceTree = "<group>"; };
 		9CE2E4BB224C95FF00382E11 /* CTVFLLayoutAnchor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CTVFLLayoutAnchor.h; sourceTree = "<group>"; };
 		9CE2E4BC224C95FF00382E11 /* CTVFLLayoutAnchor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CTVFLLayoutAnchor.m; sourceTree = "<group>"; };
-		9CE2E4C3224CA0AC00382E11 /* PerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceTests.swift; sourceTree = "<group>"; };
 		9CE2E4CB224CA6E400382E11 /* CTVFLConfinable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLConfinable.swift; sourceTree = "<group>"; };
 		9CE2E4CF224CA6ED00382E11 /* CTVFLLayoutGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLLayoutGuide.swift; sourceTree = "<group>"; };
 		9CE2E4D7224CAEF400382E11 /* CTVFLOpcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTVFLOpcode.swift; sourceTree = "<group>"; };
@@ -420,6 +428,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9C35128125432DC400DC03DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C35128925432DC400DC03DE /* CTVFL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9CB77A381F71548A0052448F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -479,11 +495,21 @@
 			path = Abstract;
 			sourceTree = "<group>";
 		};
+		9C35128525432DC400DC03DE /* CTVFLPerformanceTests */ = {
+			isa = PBXGroup;
+			children = (
+				9C35128625432DC400DC03DE /* CTVFLPerformanceTests.swift */,
+				9C35128825432DC400DC03DE /* Info.plist */,
+			);
+			path = CTVFLPerformanceTests;
+			sourceTree = "<group>";
+		};
 		9CB77A301F7154520052448F = {
 			isa = PBXGroup;
 			children = (
 				9CB77A8F1F7154CE0052448F /* CTVFL */,
 				9CB77A8C1F7154CE0052448F /* CTVFLTests */,
+				9C35128525432DC400DC03DE /* CTVFLPerformanceTests */,
 				9CB77A3D1F71548A0052448F /* Products */,
 				9CE2E432224B8ED300382E11 /* Frameworks */,
 			);
@@ -498,6 +524,7 @@
 				9CB77A611F7154970052448F /* CTVFL-tvOSTests.xctest */,
 				9CB77A751F7154A50052448F /* CTVFL.framework */,
 				9CB77A7D1F7154A60052448F /* CTVFL-macOSTests.xctest */,
+				9C35128425432DC400DC03DE /* CTVFLPerformanceTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -520,7 +547,6 @@
 				9CDCE80B224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m */,
 				9C782EE3224FB47900982AF7 /* NSLayoutConstraintBaselineTests.swift */,
 				9C782EF422510A8800982AF7 /* NSLayoutConstraint+CTVFLTestAdditions.swift */,
-				9CE2E4C3224CA0AC00382E11 /* PerformanceTests.swift */,
 			);
 			path = CTVFLTests;
 			sourceTree = "<group>";
@@ -774,6 +800,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		9C35128325432DC400DC03DE /* CTVFLPerformanceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C35128E25432DC400DC03DE /* Build configuration list for PBXNativeTarget "CTVFLPerformanceTests" */;
+			buildPhases = (
+				9C35128025432DC400DC03DE /* Sources */,
+				9C35128125432DC400DC03DE /* Frameworks */,
+				9C35128225432DC400DC03DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9C35128B25432DC400DC03DE /* PBXTargetDependency */,
+			);
+			name = CTVFLPerformanceTests;
+			productName = CTVFLPerformanceTests;
+			productReference = 9C35128425432DC400DC03DE /* CTVFLPerformanceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		9CB77A3B1F71548A0052448F /* CTVFL-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9CB77A4E1F71548A0052448F /* Build configuration list for PBXNativeTarget "CTVFL-iOS" */;
@@ -891,9 +935,13 @@
 		9CB77A311F7154520052448F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1010;
+				LastSwiftUpdateCheck = 1210;
 				LastUpgradeCheck = 1020;
 				TargetAttributes = {
+					9C35128325432DC400DC03DE = {
+						CreatedOnToolsVersion = 12.1;
+						ProvisioningStyle = Automatic;
+					};
 					9CB77A3B1F71548A0052448F = {
 						CreatedOnToolsVersion = 9.0;
 						LastSwiftMigration = 1020;
@@ -945,11 +993,19 @@
 				9CB77A601F7154970052448F /* CTVFL-tvOSTests */,
 				9CB77A741F7154A50052448F /* CTVFL-macOS */,
 				9CB77A7C1F7154A60052448F /* CTVFL-macOSTests */,
+				9C35128325432DC400DC03DE /* CTVFLPerformanceTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		9C35128225432DC400DC03DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9CB77A3A1F71548A0052448F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -995,6 +1051,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9C35128025432DC400DC03DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C35128725432DC400DC03DE /* CTVFLPerformanceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9CB77A371F71548A0052448F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1077,7 +1141,6 @@
 				9CE2E473224BE41A00382E11 /* ConstrainTests.swift in Sources */,
 				9C316E47224D339B009E0660 /* CTVFLTransactionTests.swift in Sources */,
 				9CDCE80C224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m in Sources */,
-				9CE2E4C4224CA0AC00382E11 /* PerformanceTests.swift in Sources */,
 				9C65040B1F72C297006881E5 /* CTVFLLayoutableTests.swift in Sources */,
 				9C6503FB1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift in Sources */,
 				9C6503E71F72C0DC006881E5 /* CTVFLNSLayoutConstrainedTests.swift in Sources */,
@@ -1168,7 +1231,6 @@
 				9CE2E474224BE41A00382E11 /* ConstrainTests.swift in Sources */,
 				9C316E48224D339B009E0660 /* CTVFLTransactionTests.swift in Sources */,
 				9CDCE80D224E48CE0059F3B5 /* CTVFLTransaction_ImplicitTests.m in Sources */,
-				9CE2E4C5224CA0AC00382E11 /* PerformanceTests.swift in Sources */,
 				9C65040C1F72C297006881E5 /* CTVFLLayoutableTests.swift in Sources */,
 				9C6503FC1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift in Sources */,
 				9C6503E81F72C0DC006881E5 /* CTVFLNSLayoutConstrainedTests.swift in Sources */,
@@ -1256,7 +1318,6 @@
 				9C6504011F72C270006881E5 /* CTVFLPredicatedLayoutableTests.swift in Sources */,
 				9C6504091F72C28D006881E5 /* CTVFLConstantTests.swift in Sources */,
 				9CE2E475224BE41A00382E11 /* ConstrainTests.swift in Sources */,
-				9CE2E4C6224CA0AC00382E11 /* PerformanceTests.swift in Sources */,
 				9C316E49224D339B009E0660 /* CTVFLTransactionTests.swift in Sources */,
 				9C65040D1F72C297006881E5 /* CTVFLLayoutableTests.swift in Sources */,
 				9C6503FD1F72C20A006881E5 /* CTVFLConstraintGroupTests.swift in Sources */,
@@ -1271,6 +1332,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		9C35128B25432DC400DC03DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9CB77A3B1F71548A0052448F /* CTVFL-iOS */;
+			targetProxy = 9C35128A25432DC400DC03DE /* PBXContainerItemProxy */;
+		};
 		9CB77A481F71548A0052448F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9CB77A3B1F71548A0052448F /* CTVFL-iOS */;
@@ -1289,6 +1355,87 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		9C35128C25432DC400DC03DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = CTVFLPerformanceTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WeZZard.CTVFLPerformanceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9C35128D25432DC400DC03DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = CTVFLPerformanceTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.WeZZard.CTVFLPerformanceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		9CB77A351F7154520052448F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2114,6 +2261,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9C35128E25432DC400DC03DE /* Build configuration list for PBXNativeTarget "CTVFLPerformanceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9C35128C25432DC400DC03DE /* Debug */,
+				9C35128D25432DC400DC03DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9CB77A341F7154520052448F /* Build configuration list for PBXProject "CTVFL" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

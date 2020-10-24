@@ -15,10 +15,13 @@ public class CTVFLPredicatedLayoutable: CTVFLAssociatedOperand,
     public typealias HeadAssociativity = CTVFLSyntaxAssociativityIsOpen
     public typealias TailAssociativity = CTVFLSyntaxAssociativityIsOpen
     
+    @usableFromInline
     internal let _layoutable: CTVFLLayoutable
     
+    @usableFromInline
     internal let _predicates: [CTVFLPredicating]
     
+    @inline(__always)
     internal init(
         layoutable: CTVFLLayoutable,
         predicates: [CTVFLPredicating]
@@ -28,6 +31,7 @@ public class CTVFLPredicatedLayoutable: CTVFLAssociatedOperand,
         _predicates = predicates.map({$0})
     }
     
+    @inlinable
     public func generateOpcodes(
         forOrientation orientation: CTVFLOrientation,
         withOptions options: CTVFLFormatOptions,
@@ -67,6 +71,7 @@ public class CTVFLPredicatedLayoutable: CTVFLAssociatedOperand,
         context._appendOpcode(.pop)
     }
     
+    @inlinable
     public func attributeForBeingEvaluated(at site: CTVFLSyntaxEvaluationSite, forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions)-> CTVFLLayoutAttribute {
         return _layoutable.attributeForBeingEvaluated(at: site, forOrientation: orientation, withOptions: options)
     }

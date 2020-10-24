@@ -20,12 +20,20 @@ public struct CTVFLConstantToConfinableSpacingSyntax<Lhs: CTVFLAssociableOperand
     
     public let lhs: Lhs
     public let rhs: Rhs
+    
+    @inline(__always)
+    public init(lhs: Lhs, rhs: Rhs) {
+        self.lhs = lhs
+        self.rhs = rhs
+    }
 }
 
+@inlinable
 public func - <Lhs>(lhs: Lhs, rhs: CTVFLLayoutGuide) -> CTVFLConstantToConfinableSpacingSyntax<Lhs, CTVFLConfinable> {
     return CTVFLConstantToConfinableSpacingSyntax(lhs: lhs, rhs: CTVFLLayoutGuide._makeConfinable(rhs))
 }
 
+@inlinable
 public func - <Lhs, Rhs>(lhs: Lhs, rhs: Rhs) -> CTVFLConstantToConfinableSpacingSyntax<Lhs, Rhs> {
     return CTVFLConstantToConfinableSpacingSyntax(lhs: lhs, rhs: rhs)
 }

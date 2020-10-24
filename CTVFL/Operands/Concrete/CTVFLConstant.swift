@@ -23,6 +23,7 @@ public struct CTVFLConstant: CTVFLAssociableOperand,
     
     public var rawValue: RawValue
     
+    @inline(__always)
     public init(rawValue: RawValue) {
         self.rawValue = rawValue
     }
@@ -31,6 +32,7 @@ public struct CTVFLConstant: CTVFLAssociableOperand,
         return rawValue.description
     }
     
+    @inlinable
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         context._ensureOpcodesTailElements(4)
         context._appendOpcode(.push)

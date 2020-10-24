@@ -7,6 +7,7 @@
 
 
 @discardableResult
+@inlinable
 public func constrain(
     toReplace gruop: CTVFLConstraintGroup? = nil,
     using closure: () -> Void

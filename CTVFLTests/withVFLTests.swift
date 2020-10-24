@@ -1302,6 +1302,7 @@ class withVFLTests: XCTestCase {
     // a bug of the compiler
     //
     
+    /*
     func testWithVFL_spacedViews_ofMultipleTimes() {
         let a = view1 - view2 - view3
         let h = withVFL(H: view1 - view2 - view3)
@@ -1341,6 +1342,7 @@ class withVFLTests: XCTestCase {
         XCTAssertEqual(vc.multiplier, 1)
         XCTAssertEqual(vc.priority, .required)
     }
+    */
     
     func testWithVFL_specificNumberSpacedViews() {
         let h = withVFL(H: view1 - 2 - view2)

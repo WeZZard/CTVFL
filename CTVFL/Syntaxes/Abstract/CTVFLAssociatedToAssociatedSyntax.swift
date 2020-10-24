@@ -14,6 +14,7 @@ public protocol CTVFLAssociatedToAssociatedSyntax: CTVFLBinarySyntax
 }
 
 extension CTVFLAssociatedToAssociatedSyntax {
+    @inlinable
     public func generateOpcodes(forOrientation orientation: CTVFLOrientation, withOptions options: CTVFLFormatOptions, withContext context: CTVFLEvaluationContext) {
         let usesSystemSpacing = Self.usesSystemSpacing
         context._ensureOpcodesTailElements(1)
