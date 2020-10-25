@@ -7,23 +7,27 @@
 
 
 internal class _CTVFLEvaluationStack {
-    internal typealias _Buffer = UnsafeMutablePointer<_CTVFLEvaluationStackLevel>
-    internal var _buffer: _Buffer
+    @inline(__always)
+    internal static var _levelStride: Int {
+        return MemoryLayout<_CTVFLEvaluationStackLevel>.stride
+    }
+    
+    internal var _buffer: UnsafeMutableRawPointer?
     
     internal var _count: Int
     
     internal var _capacity: Int
     
     internal init() {
-        let buffer = _Buffer.allocate(capacity: 10)
-        buffer.initialize(repeating: .init(), count: 10)
-        _buffer = buffer
+        _buffer = nil
         _count = 0
-        _capacity = 10
+        _capacity = 0
     }
     
     deinit {
-        _buffer.deallocate()
+        if let buffer = _buffer {
+            buffer.deallocate()
+        }
     }
     
     internal var level: Int {
@@ -31,8 +35,26 @@ internal class _CTVFLEvaluationStack {
     }
     
     internal func push() {
-        let nextLevelIndex = _count
-        if _capacity < nextLevelIndex {
+        let index = _count
+        
+        reallocIfNeeded(index + 1)
+        
+        guard let buffer = _buffer else {
+            preconditionFailure()
+        }
+        
+        let offsetInBytes = index * Self._levelStride
+        
+        buffer.advanced(by: offsetInBytes)
+            .assumingMemoryBound(to: _CTVFLEvaluationStackLevel.self)
+            .initialize(to: .init())
+        
+        _count += 1
+    }
+    
+    @inline(__always)
+    internal func reallocIfNeeded(_ wantedCapacity: Int) {
+        if wantedCapacity > _capacity {
             // Bitwise 1.5x enlarging.
             //
             // I picked 1.5 such that the OS may have an opportunity to
@@ -46,33 +68,59 @@ internal class _CTVFLEvaluationStack {
             // Fourth re-allocation: .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 1 2 3 4 5 6 7 8 9 A B C
             // Fivth re-allocation:  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F  11 12
             //
-            let enlargedCapacity = _capacity + ((_capacity + 1) >> 1)
-            let oldBuffer = _buffer
-            let newBuffer = _Buffer.allocate(capacity: enlargedCapacity)
-            newBuffer.initialize(repeating: .init(), count: enlargedCapacity)
-            newBuffer.moveAssign(from: oldBuffer, count: _capacity)
-            oldBuffer.deallocate()
-            _buffer = newBuffer
-            _capacity = enlargedCapacity
+            let newCapacity = _capacity + max(_capacity >> 1, 1)
+            let newSize = newCapacity * Self._levelStride
+            let goodNewSize = malloc_good_size(newSize)
+            let goodNewCapacity = goodNewSize / Self._levelStride
+            if malloc_size(_buffer) < goodNewSize {
+                let newBuffer = realloc(_buffer, goodNewSize)
+                _buffer = newBuffer
+                _capacity = goodNewCapacity
+            }
         }
-        _buffer[nextLevelIndex] = _CTVFLEvaluationStackLevel()
-        _count += 1
     }
     
     internal func pop() -> _CTVFLEvaluationStackLevel {
-        let poppedLevelIndex = _count - 1
-        let poppedLevel = _buffer[poppedLevelIndex]
+        guard let buffer = _buffer else {
+            preconditionFailure()
+        }
+        
+        let index = _count - 1
+        
+        let offsetInBytes = index * Self._levelStride
+        
+        let popped = buffer.advanced(by: offsetInBytes)
+            .load(as: _CTVFLEvaluationStackLevel.self)
+        
         _count -= 1
-        return poppedLevel
+        
+        return popped
     }
     
     internal func peek() -> _CTVFLEvaluationStackLevel {
-        let topLevelIndex = _count - 1
-        return _buffer[topLevelIndex]
+        guard let buffer = _buffer else {
+            preconditionFailure()
+        }
+        
+        let index = _count - 1
+        
+        let offsetInBytes = index * Self._levelStride
+        
+        return buffer.advanced(by: offsetInBytes)
+            .load(as: _CTVFLEvaluationStackLevel.self)
     }
     
+    @inline(__always)
     internal func modifyTopLevel(with closure: (inout _CTVFLEvaluationStackLevel) -> Void) {
-        closure(&_buffer[_count - 1])
+        guard let buffer = _buffer else {
+            preconditionFailure()
+        }
+        
+        let index = _count - 1
+        
+        let offsetInBytes = index * Self._levelStride
+        
+        closure(&buffer.advanced(by: offsetInBytes).assumingMemoryBound(to: _CTVFLEvaluationStackLevel.self).pointee)
     }
     
     @inline(__always)
