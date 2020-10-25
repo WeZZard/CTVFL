@@ -30,7 +30,7 @@ class CTVFLPerformanceTests: XCTestCase {
     
     func testCTVFL() {
         measure {
-            for _ in 0..<1000000000000 {
+            for _ in 0..<100000 {
                 withVFL(H: view1 - view2)
             }
         }
